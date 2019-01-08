@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.asiainfo.fcm.mapper.primary.ActivityEvalutionMapper">
+	
+
+	<select id="getActEvaDetail" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+			a.camp_id,
+			a.channel_id,
+			b.channel_name channel_name,
+			a.vic_num,
+			a.touch_num
+		from qcd.marking_activity_mx_pg_activity_zonghe a
+		left join channel b on a.channel_id = b.channel_id
+		where a.camp_id in
+		<foreach collection="campIdList" index="index" item="item"  open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>		
+	
+	<select id="getActEvalution" parameterType="java.util.Map" resultType="java.util.Map">
+		select
+			t.camp_id camp_id,
+	 		d.camp_name camp_name,
+			d.city_id city_id,
+			d.channel_id channel_id,
+			d.create_time create_time,
+			d.start_time start_time,
+			d.end_time end_time,
+			d.create_name create_name,
+			b.channel_name,
+			c.city_name city_name,
+			${indexItem}
+		from (
+			select 
+				row_number() over( order by a.create_time desc ) nrows,
+				a.camp_id camp_id,
+				a.create_time create_time
+			from qcd.marking_activity_mx_pg_activity_zonghe a
+			where a.create_time between #{startTime} and #{endTime}
+			<if test='areaId != "@" '>
+				and a.city_id = #{areaId}
+			</if>
+			<if test='channelId != "@" '>
+				and a.channel_id = #{channelId}
+			</if>
+			<if test="searchVal !='' ">
+				and (a.camp_id like CONCAT(CONCAT('%',#{searchVal}),'%') 
+					or a.camp_name like CONCAT(CONCAT('%',#{searchVal}),'%') 
+					or a.create_name like CONCAT(CONCAT('%',#{searchVal}),'%') 
+					)
+			</if>
+			group by a.camp_id ,a.create_time
+			order by a.create_time desc 
+		) t
+		left join (
+			select * from 
+				(select  a.*,row_NUMBER() OVER(PARTITION  by camp_id order by camp_id) as cn from qcd.marking_activity_mx_pg_activity_zonghe as a)where cn=1
+		) d on t.camp_id = d.camp_id
+		left join channel b on d.channel_id = b.channel_id
+		left join city c on d.city_id = c.city_id
+		where t.nrows BETWEEN #{startRow}+1 AND #{startRow} + 10 order by d.create_time DESC
+		
+		
+	</select>
+	
+	
+	<select id="getActEvalutionTotals" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select
+		 	count(1)
+		from (
+			select
+				camp_id
+			from qcd.marking_activity_mx_pg_activity_zonghe a
+			left join channel b on a.channel_id = b.channel_id
+			left join city c on a.city_id = c.city_id
+			where a.create_time between #{startTime} and #{endTime}
+			<if test='areaId != "@" '>
+				and a.city_id = #{areaId}
+			</if>
+			<if test='channelId != "@" '>
+				and a.channel_id = #{channelId}
+			</if>
+			<if test="searchVal !='' ">
+				and (a.camp_id like CONCAT(CONCAT('%',#{searchVal}),'%') 
+					or a.camp_name like CONCAT(CONCAT('%',#{searchVal}),'%') 
+					or a.create_name like CONCAT(CONCAT('%',#{searchVal}),'%')  
+				)
+			</if>
+			group by a.camp_id
+		)
+	</select>
+	
+	<select id="getActEvalutionAll" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+				a.camp_id camp_id,
+				a.create_name create_name,
+				a.camp_name camp_name,
+				a.city_id city_id,
+				a.channel_id channel_id,
+				a.create_time create_time,
+				a.start_time start_time,
+				a.end_time end_time,
+				c.city_name city_name,
+				b.channel_name, 
+				${indexItem}
+			from qcd.marking_activity_mx_pg_activity_zonghe a
+			left join channel b on a.channel_id = b.channel_id
+			left join city c on a.city_id = c.city_id
+			where a.create_time between #{startTime} and #{endTime}
+				<if test='areaId != "@" '>
+					and a.city_id = #{areaId}
+				</if>
+				<if test='channelId != "@" '>
+					and a.channel_id = #{channelId}
+				</if>
+			<if test="searchVal !='' ">
+				and (a.camp_id like CONCAT(CONCAT('%',#{searchVal}),'%') 
+					or a.camp_name like CONCAT(CONCAT('%',#{searchVal}),'%') 
+					or a.create_name like CONCAT(CONCAT('%',#{searchVal}),'%')  
+					)
+			</if>
+			order by a.create_time DESC
+	</select>
+
+	<select id="getActEvalutionDetail" parameterType="string" resultType="map">
+		select
+			camp_id,
+			cur_date,
+			${indexs}
+		from qcd.activity_vic_pg_everyday
+		where camp_id = #{activityId}
+		order by int(cur_date) asc
+	</select>
+	
+</mapper>

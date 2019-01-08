@@ -1,0 +1,46 @@
+
+.content-tab{
+    margin-top: 20px;
+}
+.icon {
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    margin-right: 3px;
+    position: relative;
+}
+.modal-box-title h3 {
+    display: inline-block;
+}
+.modal-wrap .modal-box-content{
+    border-right: none;
+    height:150px;
+}
+.modal-box{
+    width:60%;
+    margin-left: -30%;
+    top: 20%;
+}
+.modal-box .inner-content{
+    width: 410px;
+    margin: 0 auto;
+}
+.modal-box-content .row{
+    margin-top:20px;
+}
+.modal-box-content .row .item-property{
+    display: inline-block;
+    width:90px;
+}
+.select-m-style{
+    width: 300px;
+    height: 30px;
+    margin-left:10px;
+    background: #FBFCFE;
+    border: 1px solid #d4d9e4;
+    border-radius: 2px;
+    padding: 0 5px;
+}
+.content .panel-title{
+    height: 40px;
+}

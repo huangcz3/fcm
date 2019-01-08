@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asiainfo.fcm.mapper.primary.PriorityMapper">
+    <select id="getPrioritiesTotalRecord" parameterType="map" resultType="long">
+        select count(1) from activity_info
+        where city_id=#{cityId} and activity_state=8 and stopped=0 and deleted=0
+        and activity_name like '%'||#{activityName}||'%'
+    </select>
+    <select id="getPriorities" parameterType="map" resultType="com.asiainfo.fcm.entity.Activity">
+        select activity_id,activity_name,start_time,end_time,create_time,creator_name
+        from
+            (select a.activity_id,
+                a.activity_name,
+                a.start_time,
+                a.end_time,
+                a.create_time,
+                a.creator_name,
+                row_number() over(order by b.priority_time desc) row_number
+            from activity_info a
+            left join activity_priority b
+            on a.activity_id=b.activity_id
+            where a.city_id=#{cityId} and a.activity_state=8 and a.stopped=0 and a.deleted=0
+            and a.activity_name like '%'||#{activityName}||'%'
+            )
+        where row_number between #{page.startPosition} and #{page.endPosition}
+    </select>
+    <update id="changePriorities" parameterType="com.asiainfo.fcm.entity.ActivityPriority">
+        update activity_priority set priority_time=CURRENT_TIMESTAMP
+        where activity_id=#{activityId}
+        and city_id=#{cityId}
+    </update>
+</mapper>

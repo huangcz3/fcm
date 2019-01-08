@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>策略库-运营案例</title>
+	<link rel="stylesheet" type="text/css" href="css/generalStyle.css">
+	<link rel="stylesheet" type="text/css" href="css/area.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/iopPublicStyle.css">
+	<link rel="stylesheet" type="text/css" href="css/iopModel.css">
+	<link rel="stylesheet" href="css/iopCase.css">
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="./lib/public/html5shiv.min.js"></script>
+	<script type="text/javascript" src="./lib/public/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<!--start 顶部导航 -->
+	<div class="nav-wrap">
+		<div class="logo lt">
+			<img src="./img/logo.png" alt="全触点"/>
+		</div>
+		<ul class="nav clearfix lt" id="headerNav">
+
+		</ul>
+		<div class="user rt clearfix">
+			<i class="user-icon"></i>
+			<span>您好，</span>
+			<span id="user">请登录</span>
+			<b title="退出">
+				<i class="exit"></i>
+			</b>
+		</div>
+	</div>
+	<!--end 顶部导航 -->
+	<!--左侧导航和主体内容-->
+	<div class="content-wrap clearfix">
+		<!--start 左侧导航 -->
+		<div class="side-nav">
+			<ul id="sideNav">
+
+			</ul>
+		</div>
+		<!--end 左侧导航 -->
+		<!--start主体内容-->
+		<div class="main">
+			<div class="content">
+				<div class="inner-content">
+					<div class="panel-title clearfix tab-nav">
+						<span class="title lt selected" data-type="1">
+							<a href="#provinceCase">本省上传(<span id="provinceCaseNum" class="color-grey">0</span>)</a>
+						</span>
+						<span class="title lt" data-type="2">
+							<a href="#groupAssign">集团下发(<span id="groupAssignNum" class="color-grey">0</span>)</a>
+						</span>
+						<div class="rt clearfix">
+							<div class="lt search-box">
+								<input type="text" id="search" class="search" placeholder="支持案例名称搜索"/>
+								<i></i>
+							</div>
+							<span id="filter-btn" class="filter-btn lt border_radius">筛选<i></i></span>
+							<a href="##" class="lt create-new">新建案例</a>
+							<span class="load-btn border_radius lt" id="download">
+								<i></i>
+								<span>数据下载</span>
+							</span>
+						</div>
+					</div>
+
+					<div class="content-tab">
+						
+						<div id="provinceCase" class="selected">
+							<div class="panel-mid-s">
+	     						<!--<p class="searchResult">"全省" "2016-03-01~2016-06-01"相关搜索结果25455个</p>-->
+	     					</div>
+							<div class="panel-bottom">
+								<table cellspacing="0" id="table1" class="table">
+									<thead>
+										<tr>
+											<td class="width-5 text-align-center">&nbsp;</td>
+											<td class="text-align-left">案例名称</td>
+											<td>省份</td>
+											<td>上报日期</td>
+											<td>上报人</td>
+											<td>创建日期</td>
+											<td>状态</td>
+											<td class="text-align-center">操作</td>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+							<div class="page-wrap clearfix" id="page1"></div>
+						</div>
+						<div id="groupAssign">
+							<div class="panel-mid-s">
+	     						<!--<p calss="searchResult">"全省" "2016-03-01~2016-06-01"相关搜索结果25455个</p>-->
+	     					</div>
+							<div class="panel-bottom">
+								<table cellspacing="0" id="table2" class="table">
+									<thead>
+										<tr>
+											<td class="width-5 text-align-center">&nbsp;</td>
+											<td class="text-align-left">案例名称</td>
+											<td>省份</td>
+											<td>上报日期</td>
+											<!--<td>上报人</td>-->
+											<!--<td>创建日期</td>-->
+											<td>状态</td>
+											<td class="text-align-center">操作</td>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+							<div class="page-wrap clearfix" id="page2">
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<!--end主体内容-->
+		<!--start筛选弹框-->
+		<form id="filter">
+			<div class="filter-panel">
+				<div class="inner-filter-panel">
+					<div class="row">
+						<p>创建时间：</p>
+						<input type="text" class="Wdate" id="startDate" onFocus="WdatePicker({maxDate:'%y-%M-%d'})"/>
+						-
+						<input type="text" class="Wdate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}' })"/>
+					</div>
+
+					<div class="row btns">
+						<button id="ensure" class="ensure border_radius">确定</button>
+						<button id="cancel" class="cancel border_radius">取消</button>
+					</div>
+				</div>
+			</div>
+		</form>
+		<!--end筛选弹框-->
+	</div>
+	<!--start新建模态框-->
+	<div class="modal-wrap modal-wrap-new">
+			<div class="modal-box">
+				<div class="modal-box-title">
+					<h3 style="display: inline-block;">新建案例</h3>
+					<a href="javascript: void(0);" class="modal-box-cancel">取消</a>
+					<a href="javascript: void(0);" class="modal-box-save" id="saveNew">保存</a>
+				</div>
+				<div class="modal-box-content">
+					<div id="model_lib_pro" class="content-item content-item-new-modal">
+						<form id="basicInfo">
+							<div class="row">
+								<div class="col-mar">
+									<span class="item-property">案例编号：</span>
+									<span name="caseId" id="activityId"></span>
+									<input type="hidden" name="caseId">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property h-block is-required">标题：</span>
+									<input class="h-block" name="title">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property h-block is-required">关键字：</span>
+									<!-- <textarea class="h-block" rows="2" onpropertychange="this.style.posHeight = this.scrollHeight+5" onscroll="this.rows++;"></textarea> -->
+									<input class="h-block" name="keyword">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property h-block is-required">案例描述：</span>
+									<textarea class="h-block higher" name="desc"></textarea>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property h-block is-required">案例目的：</span>
+									<textarea class="h-block higher" name="caseObjective"></textarea>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property h-block is-required">分析思路：</span>
+									<textarea class="h-block higher" name="mind"></textarea>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property h-block is-required">亮点：</span>
+									<!-- <textarea class="h-block" rows="2" onpropertychange="this.style.posHeight = this.scrollHeight+5" onscroll="this.rows++;"></textarea> -->
+									<textarea class="h-block higher" name="keyPoint"></textarea>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property h-block is-required">效果：</span>
+									<!-- <textarea class="h-block" rows="2" onpropertychange="this.style.posHeight = this.scrollHeight+5" onscroll="this.rows++;"></textarea> -->
+									<textarea class="h-block higher" name="kpi"></textarea>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property h-block is-required">结论：</span>
+									<!-- <textarea class="h-block" rows="2" onpropertychange="this.style.posHeight = this.scrollHeight+5" onscroll="this.rows++;"></textarea> -->
+									<textarea class="h-block higher" name="result"></textarea>
+								</div>
+							</div>
+						</form>
+						<form id="attachment">
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property h-block">附件上传：</span>
+									<!-- <textarea class="h-block" rows="2" onpropertychange="this.style.posHeight = this.scrollHeight+5" onscroll="this.rows++;"></textarea> -->
+									<!--<a href="##">上传</a>-->
+
+									<div class="file-box">
+										<label for="uploadFile1">文件：</label>
+										<div class="userdefined-file">
+											　　<input type="text" name="attachmentName" data-attachmentId="" id="fileName1" value="点击此处选取上传文件">
+											　　<button type="button" class="default-btn blue j-upload-file-btn">上传</button>
+											<button type="button" class="default-btn ">取消</button>
+										</div>
+										<input type="file" name="file" id="uploadFile1">
+										<i class="upload-hint-msg">已上传</i>
+									</div>
+								</div>
+							</div>
+							<!--<div class="row">
+								<div class="col-3">
+									<span class="item-property h-block">附件上传：</span>
+									&lt;!&ndash; <textarea class="h-block" rows="2" onpropertychange="this.style.posHeight = this.scrollHeight+5" onscroll="this.rows++;"></textarea> &ndash;&gt;
+									&lt;!&ndash;<a href="##">上传</a>&ndash;&gt;
+
+									<div class="file-box">
+										<label for="uploadFile">文件：</label>
+										<div class="userdefined-file">
+											　　<input type="text" name="attachmentName" id="userdefinedFile" value="点击此处选取上传文件">
+											　　<button type="button" class="default-btn blue j-upload-file">上传</button>
+											<button type="button" class="default-btn ">取消</button>
+										</div>
+										<input type="file" name="file" id="uploadFile">
+									</div>
+								</div>
+							</div>-->
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	<!--end新建模态框-->
+	<!--start详情模态框-->
+	<div class="modal-wrap modal-wrap-detail">
+		<div class="modal-box">
+			<div class="modal-box-title">
+				<h3>案例详情</h3>
+				<a href="javascript: void(0);" class="modal-box-close">×</a>
+			</div>
+			<div class="modal-box-content">
+				<div  class="content-item content-item-new-modal">
+					<div class="row">
+						<div class="col-2">
+							<span class="item-property">上报人：</span>
+							<span data-name="uploadName" >无</span>
+						</div>
+						<div class="col-2">
+							<span class="item-property">省份：</span>
+							<span data-name="proName" >无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property col-long">上报时间：</span>
+							<span class="col-long-value" data-name="upDateTime" >无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property col-long">标题：</span>
+							<span class="col-long-value" data-name="title" >无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property col-long">关键字：</span>
+							<span class="col-long-value" data-name="keyword" >无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property col-long">案例描述：</span>
+							<span class="col-long-value" data-name="desc" >无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property col-long">目的：</span>
+							<span class="col-long-value" data-name="caseObjective" >无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property col-long">分析思路：</span>
+							<span class="col-long-value" data-name="mind" >无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property col-long">亮点：</span>
+							<span class="col-long-value" data-name="keyPoint" >无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property col-long">效果：</span>
+							<span class="col-long-value" data-name="kpi" >无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property col-long">结论：</span>
+							<span class="col-long-value" data-name="result" >无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property col-long">附件：</span>
+							<span data-name="attachmentName" class="attachment-box">
+							</span>
+						</div>
+					</div>
+			  </div>
+			</div>
+		</div>
+	</div>	
+	<!--end详情模态框-->
+<script type="text/javascript" src="./js/dataTest.js"></script>
+<script type="text/javascript" src="./lib/public/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.tagsinput.js"></script>
+<script type="text/javascript" src="./lib/DatePicker/WdatePicker.js"></script>
+<script type="text/javascript"  src="./lib/public/jquery.slimscroll.min.js"></script>
+<script type="text/javascript" src="./lib/public/ajaxfileupload.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.blockUI.js"></script>
+<script type="text/javascript" src="./js/pager.js"></script>
+<script type="text/javascript" src="./js/topNav.js"></script>
+<script type="text/javascript" src="./js/iopSideNav.js"></script>
+<script type="text/javascript" src="./js/generalFunc.js"></script>
+<script type="text/javascript" src="./js/iopPublicFuns.js"></script>
+<script type="text/javascript" src="js/iopCase.js"></script>
+<script type="text/javascript" src="./js/iopModalDetails.js"></script>
+<script src="js/contentTab.js"></script>
+</body>
+</html>

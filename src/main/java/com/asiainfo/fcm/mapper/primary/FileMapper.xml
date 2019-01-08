@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asiainfo.fcm.mapper.primary.FileMapper">
+    <insert id="saveUploadFile" parameterType="com.asiainfo.fcm.entity.UploadFile">
+      INSERT INTO upload_file (
+        file_name,
+        img_base64,
+        original_file_name,
+        uploader_id,
+        uploader_name,
+        upload_time,
+        use_type
+      ) VALUES (
+        #{fileName},
+        #{imgBase64},
+        #{originalFileName},
+        #{uploaderId},
+        #{uploaderName},
+        CURRENT_TIMESTAMP,
+        #{useType}
+      )
+    </insert>
+    <select id="getUploadFile" parameterType="string" resultType="com.asiainfo.fcm.entity.UploadFile">
+      select
+          file_name,
+          img_base64,
+          original_file_name,
+          uploader_id,
+          uploader_name,
+          upload_time,
+          use_type
+      from upload_file
+      where file_name=#{fileName}
+    </select>
+    <insert id="addActivityImgRel" parameterType="map">
+        insert into qcd.marking_chnl_img_rel (camp_id,img_path) values (#{activityId},#{imgName})
+    </insert>
+    <insert id="addActivityImg" parameterType="map">
+        insert into qcd.marking_activity_img (camp_id,img_name,zt_img,old_name,create_time,status) values (#{activityId},#{imgName},#{ztImg},#{imgName},CURRENT_TIMESTAMP,0)
+    </insert>
+</mapper>

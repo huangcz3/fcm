@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>运营场景</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<style>
+		.bg-yellow {
+			background-color: yellow;
+		}
+		table, tr, td,.table-bordered tbody tr td  {
+			border: 1px solid black;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="container">
+		<table class="table table-bordered">
+			<caption class="text-center">运营场景</caption>
+			<tbody>
+				<tr class="bg-yellow">
+					<td colspan="4">营销活动对象属性</td>
+				</tr>
+				<tr>
+					<td width="25%">营销活动策划模板编号</td>
+					<td name="markingActTemplateNo" id="markingActTemplateNo"></td>
+					<td width="25%">营销活动编号</td>
+					<td name="markingActNo" id="markingActNo"></td>
+				</tr>
+				<tr>
+					<td>营销活动名称</td>
+					<td name="markingActName" id="markingActName"></td>
+					<td>营销活动状态</td>
+					<td name="markingActStatue" id="markingActStatue"></td>
+				</tr>
+				<tr>
+					<td>活动开始时间</td>
+					<td name="markingActStartTime" id="markingActStartTime"></td>
+					<td>活动结束时间</td>
+					<td name="markingActEndTime" id="markingActEndTime"></td>
+				</tr>
+				<tr>
+					<td>二次策划完成时间</td>
+					<td name="markingActsecondPlanEndTime" id="markingActsecondPlanEndTime"></td>
+					<td>省份</td>
+					<td name="markingActprovice" id="markingActprovice"></td>
+				</tr>
+
+				<tr>
+					<td>营销活动类型</td>
+					<td name="markingActType" id="markingActType"></td>
+					<td>营销活动目的</td>
+					<td name="markingActGoal" id="markingActGoal"></td>
+				</tr>
+				<tr>
+					<td>营销活动描述</td>
+					<td name="markingActDesc" id="markingActDesc"></td>
+					<td name="" id=""></td>
+					<td name="" id=""></td>
+				</tr>
+				<tr>
+					<td>营销子活动</td>
+					<td name="markingChildAct" id="markingChildAct"></td>
+					<td>pcc策略</td>
+					<td name="markingActPCCstrategy" id="markingActPCCstrategy"></td>
+				</tr>
+				<tr>
+					<td>活动效果评估指标</td>
+					<td name="markingActEffectEvalution" id="markingActEffectEvalution"></td>
+					<td>活动基本信息可扩展属性</td>
+					<td name="markingActBaseInfoExpand" id="markingActBaseInfoExpand"></td>
+				</tr>
+				<tr class="bg-yellow">
+					<td colspan="4">子活动对象属性</td>
+
+				</tr>
+				<tr>
+					<td>子活动编号</td>
+					<td name="childActNo" id="childActNo"></td>
+					<td>子活动名称</td>
+					<td name="childActName" id="childActName"></td>
+				</tr>
+				<tr>
+					<td>子活动开始时间</td>
+					<td name="childActStartTime" id="childActStartTime"></td>
+					<td>子活动结束时间</td>
+					<td name="childActEndTime" id="childActEndTime"></td>
+				</tr>
+				<tr>
+					<td>子活动可扩展属性</td>
+					<td name="childActExpand" id="childActExpand"></td>
+					<td>时机策略</td>
+					<td name="childActOpportunityStrategy" id="childActOpportunityStrategy"></td>
+				</tr>
+				<tr>
+					<td>目标客户群</td>
+					<td name="childActTargetCustomers" id="childActTargetCustomers"></td>
+					<td>产品</td>
+					<td name="childActProduct" id="childActProduct"></td>
+				</tr>
+				<tr>
+					<td>渠道</td>
+					<td name="childActChannel" id="childActChannel"></td>
+					<td name="" id=""></td>
+					<td name="" id=""></td>
+				</tr>
+				<tr class="bg-yellow">
+					<td colspan="4">时机策略对象属性</td>
+				</tr>
+				<tr>
+					<td>时机(即时机ID)</td>
+					<td name="opportunityId" id="opportunityId"></td>
+					<td>时机描述</td>
+					<td name="opportunityDesc" id="opportunityDesc"></td>
+				</tr>
+
+				<tr>
+					<td>时间规则</td>
+					<td name="opportunityRule" id="opportunityRule"></td>
+					<td>渠道接触规则</td>
+					<td name="opportunityChannelRule" id="opportunityChannelRule"></td>
+				</tr>
+				<tr>
+					<td>是否多波次</td>
+					<td name="opportunityIsWaves" id="opportunityIsWaves"></td>
+					<td>时机对象的扩展内容</td>
+					<td name="opportunityObjExpandDesc" id="opportunityObjExpandDesc"></td>
+				</tr>
+				<tr class="bg-yellow">
+					<td colspan="4">目标客户群对象属性</td>
+
+				</tr>
+				<tr>
+					<td>目标客户群编号</td>
+					<td name="targetCustomerNo" id="targetCustomerNo"></td>
+					<td>目标客户群名称</td>
+					<td name="targetCustomerName" id="targetCustomerName"></td>
+				</tr>
+				<tr>
+					<td>客户群规模</td>
+					<td name="targetCustomerSize" id="targetCustomerSize"></td>
+					<td>目标客户群筛选规则</td>
+					<td name="targetCustomerFilterRule" id="targetCustomerFilterRule"></td>
+				</tr>
+				<tr>
+					<td>目标客户群描述</td>
+					<td name="targetCustomerDesc" id="targetCustomerDesc"></td>
+					<td>是否下发客户明细</td>
+					<td name="isSendDetail" id="isSendDetail"></td>
+				</tr>
+				<tr>
+					<td>客户明细附件对象</td>
+					<td name="targetCustomerDetail" id="targetCustomerDetail"></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr class="bg-yellow">
+					<td colspan="4">客户明细附件对象</td>
+
+				</tr>
+				<tr>
+					<td>客户明细附件文件名称</td>
+					<td name="targetCustomerDetailName" id="targetCustomerDetailName"></td>
+					<td>客户明细附件所在FTP的地址URL</td>
+					<td name="targetCustomerDetailUrl" id="targetCustomerDetailUrl"></td>
+				</tr>
+				<tr class="bg-yellow">
+					<td colspan="4">产品对象属性</td>
+				</tr>
+				<tr>
+					<td>产品编码</td>
+					<td name="productCode" id="productCode"></td>
+					<td>产品名称</td>
+					<td name="productName" id="productName"></td>
+				</tr>
+				<tr>
+					<td>产品分类</td>
+					<td name="productType" id="productType"></td>
+					<td>产品来源</td>
+					<td name="productSource" id="productSource"></td>
+				</tr>
+				<tr>
+					<td>产品描述</td>
+					<td name="productDesc" id="productDesc"></td>
+					<td>产品图片</td>
+					<td name="productPic" id="productPic"></td>
+				</tr>
+				<tr>
+					<td>产品链接地址</td>
+					<td name="productLinkUrl" id="productLinkUrl"></td>
+					<td>计费方式</td>
+					<td name="productCountType" id="productCountType"></td>
+				</tr>
+				<tr>
+					<td>广告语</td>
+					<td name="productAdvertisement" id="productAdvertisement"></td>
+					<td>产品可扩展信息</td>
+					<td name="productExpandInfo" id="productExpandInfo"></td>
+				</tr>
+				<tr class="bg-yellow">
+					<td colspan="4">渠道对象</td>
+
+				</tr>
+				<tr>
+					<td>渠道编码</td>
+					<td name="channelCode" id="channelCode"></td>
+					<td>营销用语</td>
+					<td name="channelMarkingWords" id="channelMarkingWords"></td>
+				</tr>
+				<tr>
+					<td>渠道名称</td>
+					<td name="channelName" id="channelName"></td>
+					<td>渠道触发规则说明</td>
+					<td name="channelRuleProduce" id="channelRuleProduce"></td>
+				</tr>
+				<tr>
+					<td>渠道类型</td>
+					<td name="channelType" id="channelType"></td>
+					<td>渠道扩展信息</td>
+					<td name="channelExpandInfo" id="channelExpandInfo"></td>
+				</tr>
+				<tr>
+					<td>运营位信息</td>
+					<td name="channelPosition" id="channelPosition"></td>
+					<td name="" id=""></td>
+					<td name="" id=""></td>
+				</tr>
+				<tr class="bg-yellow">
+					<td colspan="4">运营位对象属性（运营位 ）</td>
+
+				</tr>
+				<tr>
+					<td>运营位编码</td>
+					<td name="" id=""></td>
+					<td>运营位名称</td>
+					<td name="" id=""></td>
+				</tr>
+				<tr>
+					<td>排期开始时间</td>
+					<td name="" id=""></td>
+					<td>排期结束时间</td>
+					<td name="" id=""></td>
+				</tr>
+				<tr>
+					<td>运营位扩展信息</td>
+					<td name="" id=""></td>
+					<td name="" id=""></td>
+					<td name="" id=""></td>
+				</tr>
+				<tr>
+					<td colspan="4">PCC策略对象属性</td>
+
+				</tr>
+				<tr>
+					<td>策略名称</td>
+					<td name="" id=""></td>
+					<td>策略编码</td>
+					<td name="" id=""></td>
+				</tr>
+				<tr>
+					<td colspan="4">策略描述</td>
+
+				</tr>
+				<tr>
+					<td>策略生命周期</td>
+					<td name="" id=""></td>
+					<td>策略分类</td>
+					<td name="" id=""></td>
+				</tr>
+				<tr>
+					<td>适用网络</td>
+					<td name="" id=""></td>
+					<td>目标业务</td>
+					<td name="" id=""></td>
+				</tr>
+				<tr>
+					<td>适用区域</td>
+					<td name="" id=""></td>
+					<td>配额状态</td>
+					<td name="" id=""></td>
+				</tr>
+				<tr>
+					<td>终端类型</td>
+					<td name="" id=""></td>
+					<td>执行动作对象</td>
+					<td name="" id=""></td>
+				</tr>
+				<tr class="bg-yellow">
+					<td colspan="4">执行动作对象属性</td>
+
+				</tr>
+				<tr>
+					<td>限速</td>
+					<td name="" id=""></td>
+					<td>速率保障</td>
+					<td name="" id=""></td>
+				</tr>
+				<tr>
+					<td>降优先级</td>
+					<td name="" id=""></td>
+					<td>提优先级</td>
+					<td name="" id=""></td>
+				</tr>
+				<tr>
+					<td>提醒对象</td>
+					<td name="" id=""></td>
+					<td>策略计费</td>
+					<td name="" id=""></td>
+				</tr>
+				<tr>
+					<td>提醒对象</td>
+					<td name="" id=""></td>
+					<td name="" id=""></td>
+					<td name="" id=""></td>
+				</tr>
+				<tr>
+					<td>提醒方式</td>
+					<td name="" id=""></td>
+					<td>提醒周期</td>
+					<td name="" id=""></td>
+				</tr>
+				<tr class="bg-yellow">
+					<td colspan="4">效果评估指标类对象</td>
+				</tr>
+				<tr>
+					<td>通用类指标</td>
+					<td name="" id=""></td>
+					<td>PCC策略指标</td>
+					<td name="" id=""></td>
+				</tr>
+				<tr>
+					<td>其他业务类指标</td>
+					<td name="" id=""></td>
+					<td>周期类型</td>
+					<td name="" id=""></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

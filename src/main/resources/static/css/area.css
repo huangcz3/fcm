@@ -1,0 +1,12 @@
+/**
+*  不需引用，样式已合并至generalStyle.css中
+*/
+.main .panel-title a {
+    color: #788898;
+    padding-bottom: 10px;
+}
+.main .panel-title .selected a {
+    color: #000;
+    padding-bottom:17px;
+    border-bottom: 3px solid #267bda;
+}

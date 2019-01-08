@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>营销活动-任务管理</title>
+
+	<link rel="stylesheet" type="text/css" href="./css/public/bootstrap-fileinput.css">
+	<link rel="stylesheet" type="text/css" href="./css/public/bootstrap-tagsinput.css">
+	<link rel="stylesheet" type="text/css" href="css/generalStyle.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/vicActManage.css">
+	<link rel="stylesheet" type="text/css" href="css/vicPopupStyle.css">
+	<link rel="stylesheet" type="text/css" href="css/vicTaskManage.css">
+	
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="./lib/public/html5shiv.min.js"></script>
+	<script type="text/javascript" src="./lib/public/respond.min.js"></script>
+	<script type="text/javascript" src="./lib/public/excanvas.compiled.js"></script>
+	<![endif]-->
+</head>
+<body>
+
+	<!--start 开始顶部导航 -->
+	<div class="nav-wrap">
+		<div class="logo lt">
+			<img src="./img/logo.png" alt="全触点"/>
+		</div>
+		<ul class="nav clearfix lt" id="headerNav">
+
+		</ul>
+		<div class="user rt clearfix">
+			<i class="user-icon"></i>
+			<span>您好，</span>
+			<span id="user"></span>
+			<b title="退出">
+				<i class="exit"></i>
+			</b>
+		</div>
+	</div>
+	<!--end 顶部导航 -->
+	<!--左侧导航和主体内容-->
+	<div class="content-wrap">
+		<!--start 左侧导航 -->
+		<div class="side-nav">
+			<ul id="sideNav">
+
+			</ul>
+		</div>
+		<!--end 左侧导航 -->
+
+		<!--start主体内容-->
+		<div class="main">
+			<div class="content">
+				<div class="inner-content">
+					<div class="panel-title clearfix">
+						<span class="title lt">
+							任务列表
+							<span id="activities_num" class="color-grey">(0)</span>
+						</span>
+						<div class="rt clearfix">
+							<div class="lt search-box">
+								<input type="text" id="search" class="search" placeholder="支持任务名查询"/>
+								<i></i>
+							</div>
+							<span id="filter-btn" class="filter-btn lt border_radius">筛选<i></i></span>
+							<a href="##" class="create-new lt">新建任务	</a>
+							<span class="load-btn border_radius lt" id="download">
+								<i></i>
+								<span>数据下载</span>
+							</span>
+						</div>
+					</div>
+
+					<div class="content-tab">
+						<div id="activities" class="selected">
+							<!--<div class="panel-mid-s">
+	     						<p class="searchResult"></p>
+	     					</div>-->
+							<div class="panel-bottom">
+								<table cellspacing="0" id="table" class="table">
+									<thead>
+										<tr>
+											<td class="width-5">&nbsp;</td>
+											<td class="text-left">任务名称</td>
+											<td >任务ID</td>
+											<td >地市</td>
+											<td>创建人</td>
+											<td>创建时间</td>
+											<td >已关联活动个数</td>
+											<td class="width-5" style="width: 10%">操作</td>
+										</tr>
+									</thead>
+									<tbody>
+
+									</tbody>
+								</table>
+							</div>
+							<div class="page-wrap clearfix" id="page"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--end主体内容-->
+	</div>
+
+	<!--start筛选弹框-->
+	<div class="filter-panel">
+		<div class="inner-filter-panel">
+			<div class="row">
+				<p>地市：</p>
+				<select id="area"  class="bg-border">
+					<option value="1">成都</option>
+				</select>
+			</div>
+			<div class="row">
+				<p class="clearfix">
+					创建时间区间：
+				</p>
+				<input type="text" class="Wdate" id="startDate" onFocus="WdatePicker({maxDate:'%y-%M-%d'})"/>
+				-
+				<input type="text" class="Wdate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}' })"/>
+			</div>
+			<div class="row btns">
+				<button id="ensure" class="ensure border_radius">确定</button>
+				<button id="cancel" class="cancel border_radius">取消</button>
+			</div>
+		</div>
+	</div>
+	<!--end筛选弹框-->
+
+	<!--start新建任务模态框-->
+	<div class="modal-wrap modal-wrap-new">
+		<div class="modal-box">
+			<div class="modal-box-title">
+				<h3 style="display: inline-block;" id="windowName">新建任务</h3>
+				<a href="javascript: void(0);" class="modal-box-cancel">取消</a>
+				<a href="javascript: void(0);" id="saveModel" class="modal-box-save disabled">保存</a>
+			</div>
+			<div class="modal-box-content">
+				<div class="content-item content-item-new-modal">
+					<!--<div class="row">
+						<span class="item-property">任务编号：</span>
+						<span name="" id="taskId">12345678</span>
+					</div>-->
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property h-block is-required">任务名称：</span>
+							<input class="h-block j-input-clear" id="taskName" />
+						</div>
+					</div>
+				<!--	<div class="row">
+						<div class="col-1">
+							<span class="item-property is-required">任务定义：</span>
+						</div>
+						<ul class="h-tab">
+							<li><label><span class="selected"></span>自定义</label></li>
+							&lt;!&ndash;<li><label><span></span>模板名称</label></li>&ndash;&gt;
+						</ul>
+						<ul class="content">
+							<li class="selected">
+								<input type="text" class="h-block j-input-clear">
+							</li>
+							<li>
+								<select class="h-block g-height" name="" id="taskTemplate">
+									<option value="111">111</option>
+									<option value="222">222</option>
+									<option value="333">333</option>
+									<option value="444">444</option>
+								</select>
+							</li>
+						</ul>
+					</div>-->
+
+					<div class="row" id="taskRelativeAct">
+						<span class="item-property col-1 is-required" style="margin-bottom: 10px;">活动关联：</span>
+						<div class="choose-buse j-iscreated-clear" id="chooseActivity">
+							<div class="li-wrap">
+								<span class="user-group-icon number-icon"></span>
+								<p>
+									选择活动 <i></i>
+								</p>
+							</div>
+							<div class="bottom-shadow-cover"></div>
+							<!-- 关联活动-->
+							<div id="activitiesPopup" class="popup-box reco-popup modal-item" style="width: 500px;">
+								<ul class="tab-nav clearfix">
+									<li class="selected">
+										<a href="##">待选活动</a>
+									</li>
+								</ul>
+								<div class="tab-content selected" id="activityTableBox">
+									<div class="row wrap-border">
+										<div class="lable-table-wrap">
+											<div class="search-box">
+												<input id="relative-search" type="text" class="search j-rel-search j-input-clear" style="width: 100%;">
+												<i></i>
+											</div>
+											<table id="relativeTable">
+												<tbody>
+												</tbody>
+											</table>
+										</div>
+										<div id="relativeTablePage" class="popup-page">
+											<div class="pager-box">
+												<div class="pager clearfix" id="pager">
+
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row btns">
+										<button class="ensure border_radius j-tab-ensure">确定</button>
+										<button class="cancel border_radius j-tab-cancel">取消</button>
+									</div>
+								</div>
+							</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							已选活动：
+						</div>
+						<div class="row" id="tagsinput">
+							<div class="data-list h-110">
+								<input id="chosedTasks" class="j-tags-clear"/>
+							</div>
+							<!--<div class="col-3">
+								<a href="##" class="a-underline expand-all" data-bindtab="tagsinput">展开全部</a>
+							</div>-->
+						</div>
+					</div>
+				</div>
+
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property is-required">业务类型：</span>
+						</div>
+						<div class="col-2-6">
+							<select class="h-iblock select-s-style" id="bussinessType">
+								<option value=""></option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property is-required">营销目的：</span>
+						</div>s
+						<div class="col-2-6">
+							<select class="h-iblock select-s-style" id="marketingPurpose">
+								<option value=""></option>
+							</select>
+						</div>
+					</div>
+			</div>
+		</div>
+		</div>
+	</div>
+	<!--end新建任务模态框-->
+	<!--start任务详情模态框-->
+	<div class="modal-wrap modal-wrap-detail">
+		<div class="modal-box">
+			<div class="modal-box-title">
+				<h3 style="display: inline-block;">任务详情</h3>
+				<a href="javascript: void(0);" class="modal-box-cancel">取消</a>
+			</div>
+			<div class="modal-box-content">
+				<div class="content-item content-item-new-modal">
+					<div class="row">
+						<span class="item-property col-long">任务编号：</span>
+						<span class="col-long-value" name id="taskId_d">无</span>
+					</div>
+					<div class="row">
+						<span class="item-property col-long">任务名称：</span>
+						<span class="col-long-value" name id="taskName_d">无</span>
+					</div>
+					<div class="row">
+						<span class="item-property col-long">关联活动：</span>
+						<span class="col-long-value" name id="relativeActs">无</span>
+					</div>
+					<div class="row">
+						<span class="item-property col-long">业务类型：</span>
+						<span class="col-long-value" name id="businessTypeName_d">无</span>
+					</div>
+					<div class="row">
+						<span class="item-property col-long">营销目的：</span>
+						<span class="col-long-value" name id="marketingPurposeName_d">无</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--end任务详情模态框-->
+<script type="text/javascript" src="./lib/public/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./lib/public/bootstrap-tagsinput.js"></script>
+<script type="text/javascript" src="./lib/DatePicker/WdatePicker.js"></script>
+<script type="text/javascript"  src="./lib/public/jquery.slimscroll.min.js"></script>
+<script type="text/javascript" src="./lib/public/bootstrap-fileinput.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.blockUI.js"></script>
+<script type="text/javascript" src="./js/pager.js"></script>
+<script type="text/javascript" src="./js/topNav.js"></script>
+<script type="text/javascript" src="./js/vicSideNav.js"></script>
+<script type="text/javascript" src="./js/generalFunc.js"></script>
+<script type="text/javascript" src="./js/vicPopup.js"></script>
+<script type="text/javascript" src="./js/vicTaskManage.js"></script>
+<script type="text/javascript" src="./js/iopModalDetails.js"></script>
+</body>
+</html>

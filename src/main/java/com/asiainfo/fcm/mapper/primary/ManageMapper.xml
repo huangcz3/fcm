@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asiainfo.fcm.mapper.primary.ManageMapper">
+    <!--
+    <insert id="addApprover" parameterType="com.asiainfo.fcm.entity.ApproverInfo">
+        INSERT INTO approver (
+        channel_id,
+        channel_name,
+        city_id,
+        city_name,
+        approver_id,
+        approver_name,
+        approver_phone,
+        approver_level,
+        effective
+        ) VALUES (
+        #{channelId},
+        #{channelName},
+        <choose>
+            <when test=" approverLevel == 1">
+                #{cityId},
+                #{cityName},
+            </when>
+            <otherwise>
+                NULL,
+                NULL,
+            </otherwise>
+        </choose>
+        #{approverId},
+        #{approverName},
+        #{approverPhone},
+        #{approverLevel},
+        1
+        )
+    </insert>-->
+    <insert id="addApprover" parameterType="com.asiainfo.fcm.entity.ApproverInfo">
+        INSERT INTO approver_info (
+        approver_id,
+        approver_name,
+        approver_phone,
+        approver_level,
+        approval_group,
+        approval_role,
+        effective
+        )
+        VALUES
+        (
+        #{approverId},
+        #{approverName},
+        #{approverPhone},
+        #{approverLevel},
+        #{approvalGroup},
+        #{approvalRole},
+        1
+        )
+    </insert>
+
+    <select id="queryCustomerType" resultType="map">
+        select phone_no phoneNo,user_type userType from aiapp.rebuild_black_red_white_user where phone_no in
+        <foreach collection="array" item="phoneNo" index="index" open="(" close=")" separator=",">
+            #{phoneNo}
+        </foreach>
+    </select>
+
+    <insert id="addBlackWhiteRedUser" parameterType="com.asiainfo.fcm.entity.BlackWhiteRedUserInfo">
+        insert into aiapp.rebuild_black_red_white_user(
+        phone_no,
+        user_type,
+        user_source
+        )values(
+        #{phoneNo},
+        #{userType},
+        #{userSource}
+        )
+    </insert>
+
+    <select id="isExsitByPhoneNo" parameterType="com.asiainfo.fcm.entity.BlackWhiteRedUserInfo" resultType="int">
+        select count(1) from aiapp.rebuild_black_red_white_user where phone_no = #{phoneNo} and user_type = #{userType}
+    </select>
+
+    <select id="queryAllApprover" resultType="com.asiainfo.fcm.entity.ApproverInfo">
+        select * from approver
+    </select>
+
+    <!--获取审批人列表-->
+    <select id="getApproverInfoList" parameterType="java.util.Map" resultType="com.asiainfo.fcm.entity.ApproverInfo">
+        select
+        *
+        from (
+        select
+        row_number() over(order by ai.uuid asc) row_number,
+        ai.uuid,
+        cas.channel_name,
+        cas.channel_id,
+        cas.city_name,
+        cas.city_id,
+        ai.approver_level,
+        ai.approver_id,
+        ai.approver_name,
+        ai.approver_phone
+        FROM
+        approver_info ai
+        LEFT JOIN channel_approval_setting cas ON ai.approval_group = cas.approval_group
+        AND ai.approval_role = cas.approval_role
+        WHERE cas.effective = 1 AND ai.effective = 1
+        <if test='channelId != "@" '>
+            and cas.channel_id = #{channelId}
+        </if>
+        <if test="cityId != 0">
+            and cas.city_id = #{cityId}
+        </if>
+        <if test="approverLevel != 0">
+            and ai.approver_level = #{approverLevel}
+        </if>
+        <if test="searchVal != null || searchVal != '' ">
+            and (
+            ai.approver_id like CONCAT(CONCAT('%',#{searchVal}),'%')
+            or ai.approver_name like CONCAT(CONCAT('%',#{searchVal}),'%')
+            or ai.approver_phone like CONCAT(CONCAT('%',#{searchVal}),'%')
+            )
+        </if>
+        )t
+        where t.row_number between #{startRow}+1 and #{startRow}+#{lengthRow} order by t.uuid asc
+    </select>
+
+    <!--获取审批人总人数-->
+    <select id="getApproverTotalRecords" parameterType="java.util.Map" resultType="int">
+        SELECT
+        COUNT (1)
+        FROM
+        approver_info ai
+        LEFT JOIN channel_approval_setting cas ON ai.approval_group = cas.approval_group
+        AND ai.approval_role = cas.approval_role
+        WHERE cas.effective = 1 AND ai.effective = 1
+        <if test='channelId != "@" '>
+            and cas.channel_id = #{channelId}
+        </if>
+        <if test="cityId != 0">
+            and cas.city_id = #{cityId}
+        </if>
+        <if test="approverLevel != 0">
+            and ai.approver_level = #{approverLevel}
+        </if>
+        <if test="searchVal != null || searchVal != '' ">
+            and (
+            ai.approver_id like CONCAT(CONCAT('%',#{searchVal}),'%')
+            or ai.approver_name like CONCAT(CONCAT('%',#{searchVal}),'%')
+            or ai.approver_phone like CONCAT(CONCAT('%',#{searchVal}),'%')
+            )
+        </if>
+    </select>
+
+    <!--更改审批人信息-->
+    <select id="setApprover" parameterType="com.asiainfo.fcm.entity.ApproverInfo">
+        update
+        approver_info
+        set
+        approver_id = #{approverId},
+        approver_name = #{approverName},
+        approver_phone = #{approverPhone},
+        approver_level = #{approverLevel},
+        approval_group = #{approvalGroup},
+        approval_role=#{approvalRole}
+        where effective = 1 and uuid = #{uuid}
+    </select>
+
+    <update id="deleteApprover" parameterType="java.util.Map">
+        update approver_info set effective = 0
+        where
+        effective = 1 and uuid = #{uuid}
+    </update>
+
+    <!--<select id="approverIsUnique" parameterType="com.asiainfo.fcm.entity.ApproverInfo" resultType="int">
+        select count(1) from approver where effective = 1
+
+        <if test="approverLevel != null ">
+            and approver_level = #{approverLevel}
+        </if>
+        <if test="channelId != null ">
+            and channel_id = #{channelId}
+        </if>
+        <if test="approverLevel ==1 ">
+            and city_id=#{cityId}
+        </if>
+        <if test="approverId != null ">
+            and approver_id = #{approverId}
+        </if>
+    </select>-->
+    <select id="approverIsUnique" parameterType="com.asiainfo.fcm.entity.ApproverInfo" resultType="int">
+        select count(1) from approver_info where effective = 1
+            and approver_id = #{approverId}
+            and approver_name = #{approverName}
+            and approver_phone = #{approverPhone}
+            and approver_level = #{approverLevel}
+            and approval_Group = #{approvalGroup}
+            and approval_Role = #{approvalRole}
+    </select>
+
+    <select id="approverUpadateIsUnique" parameterType="com.asiainfo.fcm.entity.ApproverInfo" resultType="int">
+        select count(1) from approver where effective = 1
+        <if test="channelId != null ">
+            and channel_id = #{channelId}
+        </if>
+        <if test="approverLevel != null ">
+            and approver_level = #{approverLevel}
+        </if>
+        <if test="approverLevel ==1 ">
+            and city_id=#{cityId}
+        </if>
+        <if test="approverId != null ">
+            and approver_id = #{approverId}
+        </if>
+        <if test="approverName != null ">
+            and approver_name = #{approverName}
+        </if>
+        <if test="approverPhone != null ">
+            and approver_phone = #{approverPhone}
+        </if>
+    </select>
+
+    <!--获取渠道短信审批列表-->
+    <select id="getChannelInfoList" parameterType="java.util.Map" resultType="com.asiainfo.fcm.entity.ChannelInfo">
+        select
+        *
+        from (
+        select
+        row_number() over(order by channel_id asc) row_number,
+        channel_id,
+        channel_name,
+        channel_type_id,
+        channel_type_name,
+        need_content_approval,
+        need_channel_approval,
+        need_leader_approval,
+        is_can_sms_approval
+        from channel
+        where effective = 1
+        <if test="searchVal != null || searchVal != '' ">
+            and (
+            channel_id like CONCAT(CONCAT('%',#{searchVal}),'%')
+            or channel_name like CONCAT(CONCAT('%',#{searchVal}),'%')
+            )
+        </if>
+        )t
+        where t.row_number between #{startRow}+1 and #{startRow}+#{lengthRow} order by t.channel_id asc
+    </select>
+
+    <select id="getChannelRecords" parameterType="map" resultType="int">
+        select count(1) from channel where effective = 1
+        <if test="searchVal != null || searchVal != '' ">
+            and (
+            channel_id like CONCAT(CONCAT('%',#{searchVal}),'%')
+            or channel_name like CONCAT(CONCAT('%',#{searchVal}),'%')
+            )
+        </if>
+    </select>
+
+    <!--更改渠道短信审批信息-->
+    <select id="setChannelInfo" parameterType="com.asiainfo.fcm.entity.ChannelInfo">
+        update
+        channel
+        set
+        is_can_sms_approval = #{isCanSmsApproval}
+        where channel_id = #{channelId}
+    </select>
+
+    <insert id="saveOperationLog">
+        insert into operation_log_${currentMonthYYYYMM} (
+            user_id,
+            url,
+            http_method,
+            class_method,
+            parameters,
+            response,
+            op_time
+        ) values (
+            #{operationLog.userId},
+            #{operationLog.url},
+            #{operationLog.httpMethod},
+            #{operationLog.classMethod},
+            #{operationLog.parameters},
+            #{operationLog.response},
+            CURRENT_TIMESTAMP
+        )
+    </insert>
+
+    <select id="isLogTableExists" parameterType="string" resultType="int">
+        select count(1) from syscat.tables where tabname = upper('OPERATION_LOG_'||#{nextMonthYYYYMM})
+    </select>
+
+    <update id="createLogTable">
+        create table operation_log_${nextMonthYYYYMM}
+        (
+           log_id             INT                    not null GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1 ),
+           user_id            VARCHAR(100),
+           url                VARCHAR(200),
+           http_method        VARCHAR(10),
+           class_method      VARCHAR(200),
+           parameters         LONG VARCHAR,
+           response           CLOB(1048576),
+           op_time            TIMESTAMP,
+           constraint P_Key_1 primary key (log_id)
+        ) compress yes distribute by hash(log_id) in ${tableSpace}
+    </update>
+
+    <select id="getLevelList" parameterType="string" resultType="java.lang.String">
+        SELECT DISTINCT
+	      approval_level
+        FROM
+	      channel_approval_setting
+        WHERE
+	      channel_id = #{channelId}
+        AND IS_NEED_APPROVAL = 1
+    </select>
+
+    <select id="getCityList" parameterType="string" resultType="java.util.Map">
+        SELECT
+	    INT (city_id) cityId,
+	      city_name cityName
+        FROM
+	      channel_approval_setting
+        WHERE
+	      channel_id = #{channelId}
+        AND IS_NEED_APPROVAL = 1
+        AND approval_level = #{level}
+        ORDER BY
+	      cityId
+    </select>
+
+    <update id="createCustomerGroupTable">
+        create table ${tableName}
+        (
+         phone_no VARCHAR (11),
+         rule_code VARCHAR (20),
+         camp_id VARCHAR (20),
+         city_id VARCHAR (20)
+        )distribute by hash(phone_no) in ${tableSpace}
+    </update>
+
+
+</mapper>

@@ -1,0 +1,38 @@
+.panel-title {
+	padding-top: 14px;
+}
+
+.panel-title .search-box .search {
+	box-shadow: 0 2px 5px #cccccc inset;
+}
+.panel-title .title {
+	margin-left: 20px;
+	border-left: 2px solid #eeac4d;
+}
+.rt .create-btn {
+	margin-left: 20px;
+	margin-right: 20px;
+	padding-right: 10px;
+	line-height: 26px;
+	border: 1px solid #c8c8c8;
+	border-radius: 2px 2px;
+	background-color: #f7f8fa;
+}
+.rt .create-btn i {
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	vertical-align: middle;
+	background: url(../img/add.png) no-repeat left;
+}
+.rt .create-btn a {
+	color: #000;
+}
+.table thead td {
+	background: #fff;
+}
+.container-fluid {
+	border-bottom: 1px solid #e0e0e0;
+}
+
+

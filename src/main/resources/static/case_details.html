@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>新建案例</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<style>
+		.bg-yellow {
+			background-color: yellow;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<table class="table table-bordered">
+			<caption class="text-center">案例详情</caption>
+			<tbody>
+				<tr class="bg-yellow">
+					<td colspan="4">案例库属性</td>
+				</tr>
+				<tr>
+					<td width="25%">案例编号</td>
+					<td name="caseNo" id="caseNo"></td>
+					<td width="25%">省份</td>
+					<td name="caseProvice" id="caseProvice"></td>
+				</tr>
+				<tr>
+					<td>上报时间</td>
+					<td name="reportTime" id="reportTime"></td>
+					<td>标题</td>
+					<td name="caseTitle" id="caseTitle"></td>
+				</tr>
+				<tr>
+					<td>关键字</td>
+					<td name="caseKeyWords" id="caseKeyWords"></td>
+					<td>目的</td>
+					<td name="caseGoal" id="caseGoal"></td>
+				</tr>
+				<tr>
+					<td>描述</td>
+					<td name="caseDesc" id="caseDesc"></td>
+					<td>亮点</td>
+					<td name="caseHighlights" id="caseHighlights"></td>
+				</tr>
+
+				<tr>
+					<td>分析思路</td>
+					<td name="caseAnalysisIdea" id="caseAnalysisIdea"></td>
+					<td>效果</td>
+					<td name="caseEffect" id="caseEffect"></td>
+				</tr>
+				<tr>
+					<td>结论</td>
+					<td name="caseConclusion" id="caseConclusion"></td>
+					<td>扩展Map</td>
+					<td name="caseExpandMaps" id="caseExpandMaps"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<script src="js/jquery.js"></script>
+	<script>
+		!function (){
+			var tds = $("td[name]");
+			var json = {};
+			$.ajax({ 
+				type: "post", 
+				url: "http://10.108.226.169:8888/getOperationalDetail", 
+				dataType: "json", 
+				success: function (data) { 
+					json= data;
+					console.log(json);
+					for (var i = 0, len = tds.length; i < len; ++i ){
+						$temp = $(tds[i]);
+						$temp.text(json[$temp.attr("name")]);
+			}
+				}, 
+				error: function (XMLHttpRequest, textStatus, errorThrown) { 
+					console.log("failed!");
+				} 
+			});
+			
+			
+
+		}();
+	</script>
+</body>
+</html>

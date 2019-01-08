@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>系统管理-渠道设置</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/public/bootstrap-switch.min.css">
+    <link rel="stylesheet" type="text/css" href="css/generalStyle.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/sysManage10086.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="./lib/public/html5shiv.min.js"></script>
+    <script type="text/javascript" src="./lib/public/excanvas.compiled.js"></script>
+    <![endif]-->
+</head>
+<body>
+<!--start 开始顶部导航 -->
+<div class="nav-wrap">
+    <div class="logo lt">
+        <img src="./img/logo.png" alt="全触点"/>
+    </div>
+    <ul class="nav clearfix lt" id="headerNav">
+
+    </ul>
+    <div class="user rt clearfix">
+        <i class="user-icon"></i>
+        <span>您好，</span>
+        <span id="user">请登录</span>
+        <b title="退出">
+            <i class="exit"></i>
+        </b>
+    </div>
+</div>
+<!--end 顶部导航 -->
+<!--左侧导航和主体内容-->
+<div class="content-wrap">
+    <!--start 左侧导航 -->
+    <div class="side-nav">
+        <ul id="sideNav">
+
+        </ul>
+    </div>
+    <!--end 左侧导航 -->
+
+    <!--start主体内容-->
+    <div class="main">
+        <div class="content">
+            <div class="inner-content">
+                <div class="panel-title clearfix">
+                    <div class="lt j-channels-nav">
+                         <span class="title" data-channelid="d02">
+                             <a href="##">10086被动挂尾</a>
+                         </span>
+
+                    </div>
+                    <button class="ensure border_radius rt">保存</button>
+                </div>
+
+                <div class="content-tab j-content-tab">
+                    <div data-bindtab="d02">
+                        <div class="row">
+                            <div class="g-left-part">
+                                <div class="col-3">
+                                    <span class="is-required">1008611:</span>
+                                </div>
+                                <div id="1008611">
+                                    <input type="checkbox" name="1008611" checked />
+                                </div>
+                            </div>
+                            <div class="g-right-part">
+                                <p class="is-required">录入默认短信：</p>
+                                <textarea class="h-block higher default-msg" placeholder="请填写短信内容"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="g-left-part">
+                                <div class="col-3">
+                                    <span class="is-required">1008632:</span>
+                                </div>
+                                <div id="1008632">
+                                    <input type="checkbox" name="1008632" checked />
+                                </div>
+                            </div>
+                            <div class="g-right-part">
+                                <p class="is-required">录入默认短信：</p>
+                                <textarea class="h-block higher default-msg" placeholder="请填写短信内容"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="g-left-part">
+                                <div class="col-3">
+                                    <span class="is-required">CXLL:</span>
+                                </div>
+                                <div id="CXLL">
+                                    <input type="checkbox" name="CXLL" checked />
+                                </div>
+                            </div>
+                            <div class="g-right-part">
+                                <p class="is-required">录入默认短信：</p>
+                                <textarea class="h-block higher default-msg" placeholder="请填写短信内容"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end主体内容-->
+    <!--start渠道暂停/启动 html模板-->
+    <div class="j-html-template hidden">
+        <div data-bindtab="">
+            <div class="row">
+                <div class="g-left-part">
+                    <div class="col-3">
+                        <span class="is-required s-channel-name"></span>
+                    </div>
+                    <div class="switch">
+                        <input type="checkbox" name="" checked />
+                    </div>
+                </div>
+                <!--<div class="g-right-part">
+                    <p class="is-required">录入默认短信：</p>
+                    <textarea class="h-block higher default-msg" placeholder="请填写短信内容"></textarea>
+                </div>-->
+            </div>
+        </div>
+    </div>
+    <!--end渠道暂停/启动 html模板-->
+</div>
+<script type="text/javascript" src="./lib/public/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.blockUI.js"></script>
+<script type="text/javascript" src="./lib/public/bootstrap-switch.js"></script>
+<script type="text/javascript" src="./js/topNav.js"></script>
+<script type="text/javascript" src="./js/sysManageSideNav.js"></script>
+<script type="text/javascript" src="./js/generalFunc.js"></script>
+<script type="text/javascript" src="./js/sysManage10086.js"></script>
+</body>
+</html>

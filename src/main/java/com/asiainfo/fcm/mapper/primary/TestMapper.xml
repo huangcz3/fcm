@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asiainfo.fcm.mapper.primary.TestMapper">
+    <select id="getValue" resultType="com.asiainfo.fcm.entity.Test">
+		select test_id,test_name from db2inst1.test
+	</select>
+    <insert id="addValue" parameterType="map">
+		insert into db2inst1.test(test_id,test_name) values (#{id},#{name})
+	</insert>
+
+	<insert id="insertTestData" parameterType="map">
+		insert into DIM_QCD_PRODUCT_INFO
+		(CITY_ID,PRC_TYPE,PRC_ID,PRC_NAME,OP_CODE,OP_NAME,BUSI_TYPE,PARENT_BUSI_TYPE)
+		VALUES
+		(#{CITY_ID},#{PRC_TYPE},#{PRC_ID},#{PRC_NAME},#{OP_CODE},#{OP_NAME},#{BUSI_TYPE},#{PARENT_BUSI_TYPE})
+	</insert>
+
+	<update id="updateState" parameterType="string">
+		update activity_info set activity_state = 1 where activity_id = #{id}
+	</update>
+</mapper>

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>营销活动-全网活动</title>
+
+	<link rel="stylesheet" type="text/css" href="./css/public/bootstrap-fileinput.css">
+	<link rel="stylesheet" type="text/css" href="./css/public/bootstrap-tagsinput.css">
+	<link rel="stylesheet" type="text/css" href="css/generalStyle.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/vicActManage.css">
+	<link rel="stylesheet" type="text/css" href="css/vicPopupStyle.css">
+	<link rel="stylesheet" type="text/css" href="css/vicAllNetActivity.css">
+	<!-- <link rel="stylesheet" type="text/css" href="css/vicPopupStyle.css"> -->
+	
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="./lib/public/html5shiv.min.js"></script>
+	<script type="text/javascript" src="./lib/public/respond.min.js"></script>
+	<script type="text/javascript" src="./lib/public/excanvas.compiled.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<input type="hidden" value="" id="tempActiviyId" class="input-clear">
+	<!--start 开始顶部导航 -->
+	<div class="nav-wrap">
+		<div class="logo lt">
+			<img src="./img/logo.png" alt="全触点"/>
+		</div>
+		<ul class="nav clearfix lt" id="headerNav">
+
+		</ul>
+		<div class="user rt clearfix">
+			<i class="user-icon"></i>
+			<span>您好，</span>
+			<span id="user"></span>
+			<b title="退出">
+				<i class="exit"></i>
+			</b>
+		</div>
+	</div>
+	<!--end 顶部导航 -->
+	<!--左侧导航和主体内容-->
+	<div class="content-wrap">
+		<!--start 左侧导航 -->
+		<div class="side-nav">
+			<ul id="sideNav">
+
+			</ul>
+		</div>
+		<!--end 左侧导航 -->
+		<!--start主体内容-->
+		<div class="main">
+			<div class="content">
+				<div class="inner-content">
+					<div class="panel-title clearfix">
+						<span class="title lt">
+							集团活动派单
+							<span id="activities_num" class="color-grey"></span>
+						</span>
+						<div class="rt clearfix">
+							<div class="lt search-box">
+								<input type="text" id="search" class="search" placeholder="支持活动名称搜索"/>
+								<i></i>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="content-tab">
+						<div id="activities" class="selected">
+						<!-- 	<div class="panel-mid-s">
+								<p class="searchResult">"全省" "2016-03-01~2016-06-01"相关搜索结果25455个</p>
+							</div> -->
+							<div class="panel-bottom">
+								<table cellspacing="0" id="table" class="table">
+									<thead>
+										<tr>
+											<td class="width-5">&nbsp;</td>
+											<td class="text-align-left">活动名称</td>
+											<td >编号</td>
+											<td >类型</td>
+											<td >开始时间</td>
+											<td >结束时间</td>
+											<td >要求完成时间</td>
+											<!--<td class="width-8">PCC策略</td>-->
+											<td class="text-align-left">描述</td>
+											<td class="width-5">操作</td>
+										</tr>
+									</thead>
+									<tbody>
+
+									</tbody>
+								</table>
+							</div>
+							<div class="page-wrap clearfix" id="page"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--end主体内容-->
+	</div>
+	<!--start详情模态框-->
+	<div class="modal-wrap modal-wrap-detail">
+		<div class="modal-box">
+			<div class="modal-box-title">
+				<ul class="g-title-nav clearfix j-campain-nav">
+					<!--<li class="selected">
+						<span>子活动1</span>
+					</li>-->
+				</ul>
+
+				<a href="javascript: void(0);" class="modal-box-close">×</a>
+			</div>
+			<div class="modal-box-mid j-authority">
+				<p>
+					<span>当前活动所属 ：</span>
+					<span id="pdUserName" class="text-clear"></span>
+				</p>
+				<div class="user-tab j-admin-tab clearfix hide">
+					<p>
+						<span class="lt label-txt">派单管理：转派负责人</span>
+					</p>
+					<p>
+						<select name="" id="phoneList" class="select-s-style">
+
+						</select>
+					</p>
+					<p>
+						<button class="default-btn blue j-submit">提交转派</button>
+					</p>
+				</div>
+				<div class="user-tab j-user-tab hide">
+					<div class="relate-act-box j-relate-activity" id="chooseActivity">
+						<span>关联活动</span>
+						<i></i>
+						<div class="table-box modal-item hide" >
+							<div class="tab-content selected" id="activityTableBox">
+								<div class="row wrap-border">
+									<div class="lable-table-wrap">
+										<div class="search-box">
+											<input type="text" class="search j-rel-search" style="width: 100%;">
+											<i></i>
+										</div>
+										<table id="relativeActivity">
+
+										</table>
+									</div>
+									<div id="pager" class="popup-page">
+
+									</div>
+								</div>
+								<div class="row btns">
+									<button class="ensure border_radius" data-type="4">确定</button>
+									<button class="cancel border_radius">取消</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tags-box">
+						<input type="text" id="chosedActivities">
+					</div>
+					<button class="default-btn blue g-submit j-submit-relate-activity">提交</button>
+				</div>
+			</div>
+			<div class="modal-box-nav">
+				<ul>
+					<li class="on"><a href="#baseInfo">基础信息</a></li>
+					<li><a href="#extendInfo">扩展信息</a></li>
+					<li><a href="#customerGroupPolicy">客户群策略</a></li>
+					<li><a href="#productPolicy">产品策略</a></li>
+					<li><a href="#channelPolicy">渠道策略</a></li>
+					<li><a href="#operatePosInfo">运营位信息</a></li>
+					<li><a href="#pccPolicy">PCC策略</a></li>
+					<li><a href="#effectAssess">效果评估</a></li>
+				</ul>
+			</div>
+			<div class="modal-box-content">
+				<div id="baseInfo" class="content-item">
+					<h3><span>基础信息</span></h3>
+
+					<div class="row">
+						<div class="col-half">
+							<span class="item-property">活动编号：</span>
+							<span name="" id="campaignId">无</span>
+						</div>
+						<div class="col-half">
+							<span class="item-property">活动名称：</span>
+							<span name="" id="campaignName">无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-half">
+							<span class="item-property">开始时间：</span>
+							<span name="" id="campaignStartTime">无</span>
+						</div>
+						<div class="col-half">
+							<span class="item-property">结束时间：</span>
+							<span name="" id="campaignEndTime">无</span>
+						</div>
+					</div>
+				</div>
+				<div id="extendInfo" class="content-item">
+					<h3><span>扩展信息</span></h3>
+					<div class="row">
+						<span class="item-property">可扩展属性：</span>
+						<span  name="" >无</span>
+					</div>
+				</div>
+				<div id="customerGroupPolicy" class="content-item">
+					<h3><span>客户群策略</span></h3>
+					<div class="row">
+						<div class="col-half">
+							<span class="item-property">目标客户群编号：</span>
+							<span name="" id="sgmtId">无</span>
+						</div>
+						<div class="col-half">
+							<span class="item-property">目标客户群名称：</span>
+							<span name="" id="sgmtName">无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-half">
+							<span class="item-property">客户群规模：</span>
+							<span name="" id="sgmtNum">无</span>
+						</div>
+						<div class="col-half">
+							<span class="item-property">是否下发客户明细：</span>
+							<span name="" id="dwnClietBigFine">无</span>
+						</div>
+					</div>
+					<div class="row">
+						<span class="item-property">目标可混群筛选规则：</span>
+						<span name="" id="sgmtsiftrule">无</span>
+
+					</div>
+					<div class="row">
+						<span class="item-property">目标客户群描述：</span>
+						<span name="" id="sgmtDesc">无</span>
+
+					</div>
+					<div class="row">
+						<span class="item-property">客户明细附件文件名称：</span>
+						<span name="" id="sgmtAttrUrlName">无</span>
+					</div>
+					<div class="row">
+						<span class="item-property">客户明细附件所在FTP地址：</span>
+						<span name="" id="sgmtAttrUrlUrl">无</span>
+					</div>
+				</div>
+				<div id="productPolicy" class="content-item">
+					<h3><span>产品策略</span></h3>
+					<div class="row">
+						<div class="col-half">
+							<span class="item-property">产品编码：</span>
+							<span name="" id="offerCode">无</span>
+						</div>
+						<div class="col-half">
+							<span class="item-property">产品名称：</span>
+							<span name="" id="offerName">无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-half">
+							<span class="item-property">产品分类：</span>
+							<span name="" id="offerType">无</span>
+						</div>
+						<div class="col-half">
+							<span class="item-property">产品来源：</span>
+							<span name="" id="offerSource">无</span>
+						</div>
+					</div>
+					<div class="row">
+						<span class="item-property">计费方式：</span>
+						<span name="" id="feeModel">无</span>
+					</div>
+					<div class="row">
+						<span class="item-property">产品描述：</span>
+						<span name="" id="offerDesc">无</span>
+					</div>
+					<div class="row">
+						<span class="item-property">产品图片：</span>
+						<span name="" id="offerImg">无</span>
+					</div>
+					<div class="row">
+						<span class="item-property">产品链接地址：</span>
+						<span name="" id="offerUrl">无</span>
+					</div>
+					<div class="row">
+						<span class="item-property">广告语：</span>
+						<span name="" id="GgMarketInfo">无</span>
+					</div>
+				</div>
+				<div id="channelPolicy" class="content-item">
+					<h3><span>渠道策略</span></h3>
+					<div class="row">
+						<div class="col-half">
+							<span class="item-property">渠道编码：</span>
+							<span name="" id="channelId">无</span>
+						</div>
+						<div class="col-half">
+							<span class="item-property">渠道名称：</span>
+							<span name="" id="channelName">无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-half">
+							<span class="item-property">渠道类型：</span>
+							<span name="" id="channeType">无</span>
+						</div>
+						<div class="col-half">
+							<span class="item-property">渠道触发规则申明：</span>
+							<span name="" id="chanelTrigGerulExpl">无</span>
+						</div>
+					</div>
+					<div class="row">
+						<span class="item-property">营销用语：</span>
+						<span name="" id="marketInfo">无</span>
+					</div>
+					<div class="row">
+						<span class="item-property">扩展信息：</span>
+						<span name="" id="channelAttrMap">无</span>
+					</div>
+				</div>
+				<div id="operatePosInfo" class="content-item">
+					<h3><span>运营位信息</span></h3>
+					<div class="row">
+						<div class="col-half">
+							<span class="item-property">运营位编码：</span>
+							<span name="" id="positionId">无</span>
+						</div>
+						<div class="col-half">
+							<span class="item-property">运营位名称：</span>
+							<span name="" id="positionName">无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-half">
+							<span class="item-property">排期开始时间：</span>
+							<span name="" id="scheStartTime">无</span>
+						</div>
+						<div class="col-half">
+							<span class="item-property">排期结束时间：</span>
+							<span name="" id="scheEndTime">无</span>
+						</div>
+					</div>
+					<div class="row">
+						<span class="item-property">扩展信息：</span>
+						<span name="" id="positionLinkAddr">无</span>
+					</div>
+				</div>
+				<div id="pccPolicy" class="content-item">
+					<h3><span>PCC策略</span></h3>
+
+					<div class="row">
+						<div class="col-half">
+							<span class="item-property">策略编码：</span>
+							<span name="" id="pccid">无</span>
+						</div>
+						<div class="col-half">
+							<span class="item-property">策略名称：</span>
+							<span name="" id="pccname">无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-half">
+							<span class="item-property">生命周期：</span>
+							<span name="" id="pcclifecycle">无</span>
+						</div>
+						<div class="col-half">
+							<span class="item-property">策略分类：</span>
+							<span name="" id="pccclass">无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-half">
+							<span class="item-property">适用网络：</span>
+							<span name="" id="suitnetwork">无</span>
+						</div>
+						<div class="col-half">
+							<span class="item-property">目标用户：</span>
+							<span name="" id="goalbusi">无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-half">
+							<span class="item-property">适用区域：</span>
+							<span name="" id="suitarea">无</span>
+						</div>
+						<div class="col-half">
+							<span class="item-property">配额状态：</span>
+							<span name="" id="quotastatus">无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-half">
+							<span class="item-property">终端类型：</span>
+							<span name="" id="tenltype">无</span>
+						</div>
+						<div class="col-half">
+							<span class="item-property">执行手段：</span>
+							<span name="" id="pefrmeans">无</span>
+						</div>
+					</div>
+					<div class="row">
+						<span class="item-property">策略描述：</span>
+						<span name="" id="pccdesc"></span>
+					</div>
+				</div>
+				<div id="effectAssess" class="content-item">
+					<h3><span>效果评估</span></h3>
+
+					<div class="row">
+						<div class="col-half">
+							<span class="item-property">周期类型：</span>
+							<span name="" id="cycletype">无</span>
+						</div>
+						<div class="col-half">
+							<span class="item-property">排期时间：</span>
+							<span name="" id="">无</span>
+						</div>
+					</div>
+					<div class="row">
+						<span class="item-property">通用指标：</span>
+						<span name="" id="commonKpiList">无</span>
+					</div>
+					<div class="row">
+						<span class="item-property">PCC指标：</span>
+						<span name="" id="strPcckpilist">无</span>
+					</div>
+					<div class="row">
+						<span class="item-property">其他指标：</span>
+						<span name="" id="strOtherkpilist">无</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--end详情模态框-->
+
+<script type="text/javascript" src="./lib/public/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./lib/public/bootstrap-tagsinput.js"></script>
+<script type="text/javascript" src="./lib/DatePicker/WdatePicker.js"></script>
+<script type="text/javascript"  src="./lib/public/jquery.slimscroll.min.js"></script>
+<script type="text/javascript" src="./lib/public/bootstrap-fileinput.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.blockUI.js"></script>
+<script type="text/javascript" src="./js/pager.js"></script>
+<script type="text/javascript" src="./js/topNav.js"></script>
+<script type="text/javascript" src="./js/vicSideNav.js"></script>
+<script type="text/javascript" src="./js/generalFunc.js"></script>
+<script type="text/javascript" src="./js/vicAllNetActivity.js"></script>
+<script type="text/javascript" src="./js/iopModalDetails.js"></script>
+<!-- <script src="js/contentTab.js"></script> -->
+</body>
+</html>

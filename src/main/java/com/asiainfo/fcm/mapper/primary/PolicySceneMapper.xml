@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asiainfo.fcm.mapper.primary.PolicySceneMapper">
+    <insert id="savePolicySceneBasicInfo" parameterType="com.asiainfo.fcm.entity.PolicySceneActivity">
+        insert into policy_secene_activity(
+            activityId,
+            activityName,
+            activityStartTime,
+            activityEndTime,
+            activityType,
+            activityObjective,
+            activityDescribe,
+            proId,
+            attachmentId,
+            actAttrExtMap,
+            twicePlanRequestAcctime,
+            createId,
+            createName,
+            createTime,
+            secenetype,
+            flag,
+            isok
+        ) values (
+            #{activityId},
+            #{activityName},
+            #{activityStartTime},
+            #{activityEndTime},
+            #{activityType},
+            #{activityObjective},
+            #{activityDescribe},
+            #{proId},
+            #{attachmentId},
+            #{actAttrExtMap},
+            #{twicePlanRequestAcctime},
+            #{createId},
+            #{createName},
+            to_char(CURRENT_TIMESTAMP,'yyyy/mm/dd HH24:MI:SS'),
+            '1',
+            '1',
+            '1'
+        )
+    </insert>
+
+    <insert id="savePolicySceneKpiBO" parameterType="com.asiainfo.fcm.entity.PolicySceneKpiBO">
+        insert into policy_secene_activity_kpi(
+            activityId,
+            commonKpiMap
+        ) values (
+            #{activityId},
+            #{commonKpiMap}
+        )
+    </insert>
+
+    <insert id="savePolicySceneCamBasicInfo" parameterType="com.asiainfo.fcm.entity.PolicySceneCampaignBO">
+        insert into policy_secene_campaign(
+            activityId,
+            campaignId,
+            campaignName,
+            campaignStartTime,
+            campaignEndTime
+        ) values (
+            #{activityId},
+            #{campaignId},
+            #{campaignName},
+            #{campaignStartTime},
+            #{campaignEndTime}
+        )
+    </insert>
+
+    <insert id="savePolicySceneCamChannelBO" parameterType="com.asiainfo.fcm.entity.PolicySceneChannelBO">
+         insert into policy_secene_campaign_channel(
+            campaignId,
+            channelName,
+            marketInfo
+        ) values (
+            #{campaignId},
+            #{channelName},
+            #{marketInfo}
+        )
+    </insert>
+
+    <insert id="savePolicySceneCamsegmentBO" parameterType="com.asiainfo.fcm.entity.PolicySceneSegmentBO">
+        insert into policy_secene_campaign_segment(
+            campaignId,
+            sgmtId,
+            sgmtName,
+            sgmtSiftRule,
+            sgmtDesc
+        ) values (
+            #{campaignId},
+            #{sgmtId},
+            #{sgmtName},
+            #{sgmtSiftRule},
+            #{sgmtDesc}
+        )
+    </insert>
+
+    <insert id="savePolicySceneTimeBO" parameterType="com.asiainfo.fcm.entity.PolicySceneTimeBO">
+        insert into policy_secene_campaign_time(
+            campaignId,
+            timeId,
+            timeRule,
+            channelRule,
+            timeDistindes
+        ) values (
+            #{campaignId},
+            #{timeId},
+            #{timeRule},
+            #{channelRule},
+            #{timeDistindes}
+        )
+    </insert>
+
+    <insert id="savePolicySceneOfferBO" parameterType="com.asiainfo.fcm.entity.PolicySceneOffer">
+        insert into policy_secene_campaign_offer(
+            campaignId,
+            offerCode,
+            offerName,
+            offerType,
+            offerDesc
+        ) values (
+            #{campaignId},
+            #{offerCode},
+            #{offerName},
+            #{offerType},
+            #{offerDesc}
+        )
+    </insert>
+
+    <select id="getPolicySceneList" parameterType="java.util.Map" resultType="com.asiainfo.fcm.entity.PolicySceneActivity">
+        select
+        *
+        from (
+            select
+                row_number() over( order by a.createTime desc ) nrows,
+                a.activityId,
+                a.activityName,
+                a.createId,
+                a.createName,
+                a.createTime,
+                a.uploadId,
+                a.uploadName,
+                a.proId,
+                a.uploadTime,
+                a.activityType,
+                a.activityDescribe,
+                a.flag,
+                a.isCanUpload,
+                b.proName
+            from policy_secene_activity a
+            left join province b on a.proId = b.proId
+            where a.isok = '1'
+            <if test=" sceneType != '' ">
+                and a.seceneType = #{sceneType}
+            </if>
+            <if test="searchVal != '' ">
+                and a.activityName like CONCAT(CONCAT('%',#{searchVal}),'%')
+            </if>
+            <if test="activityType != '' ">
+                and a.activityType = #{activityType}
+            </if>
+            <if test='startTime !=null and  startTime !="" and endTime !="" and endTime !=null'>
+                and a.createTime between #{startTime} and #{endTime}
+            </if>
+        ) t
+        where t.nrows BETWEEN cast(#{startRow} as integer)+1 AND cast(#{startRow} as integer) + #{lengthRow} order by t.createTime DESC
+    </select>
+
+    <select id="getPolicySceneListTotals" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select
+            count(1)
+        from policy_secene_activity
+        where isok = '1'
+        <if test=" sceneType != '' ">
+            and seceneType = #{sceneType}
+        </if>
+        <if test="searchVal != '' ">
+            and activityName like CONCAT(CONCAT('%',#{searchVal}),'%')
+        </if>
+        <if test="activityType != '' ">
+            and activityType = #{activityType}
+        </if>
+        <if test='startTime !=null and  startTime !="" and endTime !="" and endTime !=null'>
+            and createTime between #{startTime} and #{endTime}
+        </if>
+    </select>
+
+    <select id="getPolicyUploaders" resultType="string">
+        select
+            uppersonId
+        from policy_upperson_info
+        where type = #{type}
+    </select>
+
+    <select id="isCanUp" parameterType="map" resultType="int">
+        select
+            count(1)
+        from (
+            select distinct (upPersonId) as op_id from policy_upperson_info where type = '1'
+            union all
+            select distinct (createId) as op_id from policy_secene_activity where activityId = #{activityId}
+        ) t
+        where t.op_id = #{userId}
+    </select>
+
+    <update id="uploadActivity" parameterType="map">
+        update policy_secene_activity set
+            flag = '2',
+            uploadId = #{userId},
+            uploadName = #{uploadName},
+            uploadTime = to_char(CURRENT_TIMESTAMP,'yyyy/mm/dd HH24:MI:SS'),
+            isCanUpload = '0'
+        where activityId = #{activityId}
+    </update>
+
+    <update id="deleteSceneActivity" parameterType="map">
+        update policy_secene_activity set isok = '0' where activityId = #{activityId}
+    </update>
+
+    <select id="getActivityDetail" parameterType="string" resultType="com.asiainfo.fcm.entity.PolicySceneActivity">
+        select
+            a.uploadId,
+            a.uploadName,
+            a.uploadTime,
+            a.createId,
+            a.createName,
+            a.createTime,
+            a.activityTemplateId,
+            a.activityId,
+            a.activityName,
+            a.activityStatus,
+            a.activityStartTime,
+            a.activityEndTime,
+            a.twicePlanRequestAcctime,
+            a.activityType,
+            a.activityObjective,
+            a.activityDescribe,
+            a.proId,
+            a.attachmentId,
+            a.actAttrExtMap,
+            b.proName
+        from policy_secene_activity a
+        left join province b on a.proId = b.proId
+        where activityId = #{activityId}
+    </select>
+
+    <select id="getPolicySceneKpiBO" parameterType="string" resultType="com.asiainfo.fcm.entity.PolicySceneKpiBO">
+        select
+            *
+        from policy_secene_activity_kpi
+        where activityId = #{activityId}
+    </select>
+
+    <select id="getPolicySceneCampaignBO" parameterType="string" resultType="com.asiainfo.fcm.entity.PolicySceneCampaignBO">
+        select
+            *
+        from policy_secene_campaign
+        where activityId = #{activityId}
+    </select>
+
+    <select id="getPolicySceneCamChannelBO" parameterType="string" resultType="com.asiainfo.fcm.entity.PolicySceneChannelBO">
+        select
+            *
+        from policy_secene_campaign_channel
+        where campaignId = #{campaignId}
+    </select>
+
+    <select id="getPolicySceneCamsegmentBO" parameterType="string" resultType="com.asiainfo.fcm.entity.PolicySceneSegmentBO">
+        select
+            *
+        from policy_secene_campaign_segment
+        where campaignId = #{campaignId}
+    </select>
+
+    <select id="getPolicySceneCamTimeBO" parameterType="string" resultType="com.asiainfo.fcm.entity.PolicySceneTimeBO">
+        select
+            *
+        from policy_secene_campaign_time
+        where campaignId = #{campaignId}
+    </select>
+
+    <select id="getPolicySceneCamOffer" parameterType="string" resultType="com.asiainfo.fcm.entity.PolicySceneOffer">
+         select
+            *
+        from policy_secene_campaign_offer
+        where campaignId = #{campaignId}
+    </select>
+
+    <select id="getAllPolicySceneList" parameterType="map" resultType="map">
+        select
+            a.uploadId,
+            a.uploadName,
+            a.uploadTime,
+            a.createId,
+            a.createName,
+            a.createTime,
+            a.activityTemplateId,
+            a.activityId,
+            a.activityName,
+            a.activityStatus,
+            a.activityStartTime,
+            a.activityEndTime,
+            a.twicePlanRequestAcctime,
+            a.activityType,
+            a.activityObjective,
+            a.activityDescribe,
+            a.proId,
+            a.attachmentId,
+            a.actAttrExtMap,
+            a.flag,
+            b.proName
+        from policy_secene_activity a
+        left join province b on a.proId = b.proId
+        where a.isok = '1'
+        <if test=" sceneType != '' ">
+            and a.seceneType = #{sceneType}
+        </if>
+        <if test="searchVal != '' ">
+            and a.activityName like CONCAT(CONCAT('%',#{searchVal}),'%')
+        </if>
+        <if test="activityType != '' ">
+            and a.activityType = #{activityType}
+        </if>
+        <if test='startTime !=null and  startTime !="" and endTime !="" and endTime !=null'>
+            and a.createTime between #{startTime} and #{endTime}
+        </if>
+        order by a.createTime desc
+    </select>
+
+    <select id="getActivityEvalutionIndexs" parameterType="string" resultType="map">
+        select
+            touch_num,
+            touch_rate,
+            vic_num,
+            vic_rate
+        from qcd.marking_activity_mx_pg_activity_zonghe
+        where camp_id = #{activityId}
+    </select>
+</mapper>

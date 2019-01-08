@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asiainfo.fcm.mapper.primary.BaseInitMapper">
+
+	<resultMap id="adPositionBean" type="com.asiainfo.fcm.model.AdPosition">
+		<result column="page_id" property="pageId"/>
+		<result column="page_name" property="pageName"/>
+		<result column="adsense_id" property="adsenseId"/>
+		<result column="adsense_name" property="adsenseName"/>
+		<result column="title" property="title"/>
+		<result column="context" property="context"/>
+		<result column="status" property="status"/>
+		<collection property="imgInfoList" ofType="com.asiainfo.fcm.model.ImgInfo" column="adsense_id">
+			<result column="img_id" property="imgId"/>
+			<result column="img_desc" property="imgDesc"/>
+			<result column="img_size" property="imgSize"/>
+		</collection>
+	</resultMap>
+
+    <select id="getScene" parameterType="java.lang.String" resultType="com.asiainfo.fcm.entity.SceneInfo">
+		select
+		  scene_id,
+		  scene_name,
+		  effective
+		from city_scene_info
+		where city_id = #{cityId} and effective = 1
+		order by scene_id ASC
+    </select>
+
+	<select id="getChanelInitByCityId" parameterType="java.lang.String" resultType="com.asiainfo.fcm.entity.ChannelInfo">
+		SELECT
+			a.channel_id,
+			a.channel_name,
+			a.need_content_approval,
+			a.need_channel_approval
+		FROM channel a
+		LEFT JOIN city_channel_info b on a.channel_id = b.channel_id
+		WHERE b.city_id = #{cityId} and a.effective = 1 and b.effective = 1
+		ORDER BY a.order_id ASC
+	</select>
+
+    <select id="getApproverInfo"  resultType="com.asiainfo.fcm.entity.ApproverInfo">
+		select
+			a.approval_level approver_level,
+			a.approval_group,
+			a.approval_role,
+			b.approver_id,
+			b.approver_name,
+			b.approver_phone
+		from channel_approval_setting a
+		left join approver_info b on a.approval_group = b.approval_group and a.approval_role = b.approval_role
+		where a.channel_id =  #{channelId} and a.city_id = #{cityId} and a.is_need_approval = 1 and b.effective = 1
+
+    </select>
+
+	<select id="getChannelApproverInfo" resultType="com.asiainfo.fcm.entity.ApproverInfo">
+		SELECT * FROM approver where channel_id = #{channelId} and approver_level = 2 and effective = 1
+	</select>
+
+
+	<select id="getReconmondList" parameterType="java.util.Map" resultType="java.util.Map">
+			select * from (
+				select
+					t.*,rownumber() over() as rowid,
+					count(prc_id) over() as num
+				from dim_qcd_product_info t
+				where prc_type=#{prcType} and city_id=#{cityId}
+				<if test="queryStr != null">
+					  and (prc_name like '%${queryStr}%' or prc_id like '%${queryStr}%')
+				</if>
+				order by prc_id
+				) where rowid between #{start} and #{end}
+
+	</select>
+	<select id="getReconmondListAllTotal" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select
+			count(1)
+		from dim_qcd_product_info t
+		where prc_type=#{prcType} and city_id=#{cityId}
+		<if test="queryStr != null">
+			and (prc_name like '%${queryStr}%' or prc_id like '%${queryStr}%')
+		</if>
+	</select>
+
+	<select id="getReconmondSecondList" parameterType="map" resultType="map">
+		select
+			a.active_id as way_id,
+			a.active_name as way_name,
+			a.WT,a.ZT from dim_qcd_mkt_way a
+		where a.way_id=#{prcId} and a.region_code=#{cityId}
+		<if test="queryStr != null">
+			and (active_name like '%${queryStr}%' or active_id like '%${queryStr}%')
+		</if>
+		order by way_id
+	</select>
+
+	<select id="getReconmondSecondListTotal" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select
+		count(1)
+		from dim_qcd_mkt_way a
+		where a.way_id=#{prcId} and a.region_code=#{cityId}
+		<if test="queryStr != null">
+			and (active_name like '%${queryStr}%' or active_id like '%${queryStr}%')
+		</if>
+	</select>
+
+	<select id="getMarketingPurposes" resultType="com.asiainfo.fcm.entity.MarketingPurpose">
+		SELECT * FROM marketing_purpose WHERE effective = 1 order by marketing_purpose_id
+	</select>
+
+	<select id="getBusinessList" resultType="com.asiainfo.fcm.entity.BusinessType">
+		SELECT * FROM business_type WHERE effective = 1 order by business_type_id
+	</select>
+
+	<select id="getCityList" parameterType="java.lang.String" resultType="com.asiainfo.fcm.entity.City">
+		SELECT int(city_id) city_id,city_name FROM city
+		WHERE 1=1
+		<if test='cityId !=1 '>
+			and city_id = #{cityId}
+		</if>
+		ORDER BY city_id ASC
+	</select>
+
+	<select id="getAdPosition" resultMap="adPositionBean" >
+		select * from qcd.marking_chnl_img_cfg order by page_name asc
+	</select>
+
+	<select id="getLinkCode" resultType="map">
+		select * from qcd.marking_chnl_code_tab order by c_name asc
+	</select>
+
+	<select id="getIopDropInfo" resultType="com.asiainfo.fcm.model.IopInfo">
+		select * from qcd.marking_activity_iop_info
+	</select>
+
+	<select id="getRearEndType" resultType="map">
+		select remind_code remind,remind_name remindName from bossflow_remind_type where effective = 1
+	</select>
+
+	<select id="getPayType" resultType="map">
+		select
+			type_code typeCode,
+			type_name typeName
+		from payment_type where effective = 1
+		order by order_id asc
+	</select>
+
+	<select id="getAppTypeInfo" resultType="com.asiainfo.fcm.entity.AppTypeDefine">
+		select * from app_type_define where effective = 1 order by int(app_type_id) asc
+	</select>
+
+	<select id="getAppInfoList" parameterType="map" resultType="map">
+		select
+			big_class_id bigClassId,
+			big_class_desc bigClassDesc,
+			apply_id applyId,
+			apply_name2 applyName
+		from qcd.app
+		<where>
+			<choose>
+				<when test="searchVal == ''">
+					 big_class_id = #{typeId}
+				</when>
+				<otherwise>
+					apply_name2 like CONCAT(CONCAT('%',#{searchVal}),'%')
+					<if test="typeId != ''">
+						and big_class_id = #{typeId}
+					</if>
+				</otherwise>
+			</choose>
+		</where>
+
+	</select>
+
+	<select id="getChanelsBySceneId" parameterType="string" resultType="com.asiainfo.fcm.entity.ChannelInfo">
+		select
+  			  b.channel_id,
+			  b.channel_name,
+			  b.need_content_approval,
+			  b.need_channel_approval
+		from SCENE_CHANNEL_INFO a
+		left join channel b on a.channel_id = b.channel_id
+		where a.scene_id = #{sceneId} and a.effective = 1 and b.effective = 1
+	</select>
+
+	<select id="getEvaCityList" resultType="java.util.Map">
+		select int(city_id) cityId,city_name cityName from city order by cityId asc
+	</select>
+
+	<select id="getChannelList" resultType="java.util.Map">
+		select channel_id channelId,channel_name channelName from channel
+	</select>
+
+	<select id="getIndexList" resultType="java.util.Map">
+		select index_no indexNo,index_name indexName from qcd.evalution_index_dict where index_isEnable=1 order by index_order ASC
+	</select>
+
+	<select id="getSceneSmsTemplate" parameterType="string" resultType="string">
+		select template_content from sms_template where  template_type = 4 and relate_id = #{sceneId}
+	</select>
+
+	<select id="getTop15Product" parameterType="java.lang.String" resultType="map">
+		select
+			prc_id prcId,
+			prc_name prcName,
+			usage_count usageCount
+		from top_15_product where city_id = #{cityId} order by usage_count desc
+		fetch first 15 rows only
+	</select>
+
+	<select id="getRealTimePositionType" resultType="map">
+		select * from area_type_info where effective = 1 order by area_id asc
+	</select>
+
+	<select id="getRealTimePositionInfos" parameterType="map" resultType="map">
+		select
+			b.*
+		from area_type_info a
+		left join area_detail_info b on a.area_id = b.area_id
+		where b.city_id = #{cityId}
+		and b.effective = 1
+		<choose>
+			<when test="searchVal == ''">
+				and a.tag_code = #{tagCode}
+			</when>
+			<otherwise>
+				and position_name like CONCAT(CONCAT('%',#{searchVal}),'%')
+				<if test="tagCode != ''">
+					and a.tag_code = #{tagCode}
+				</if>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="getAllLevel" resultType="java.lang.String">
+		select distinct approval_level from channel_approval_setting
+	</select>
+
+
+	<select id="getProductTop20" resultType="java.util.Map">
+		select
+			c.product_id prc_id,
+			c.product_name prc_name,
+			4 prc_type,
+			c.cou
+		from
+			(
+				select
+					b.product_id,
+					b.product_name,
+					count(b.product_id) cou
+				from
+					activity_info a
+				left join activity_recommend_product b on a.activity_id = b.activity_id
+				where
+					b.product_type in (1, 4)
+				and a.city_id = #{cityId}
+				and a.business_type_id = #{bussinessType}
+				and a.marketing_purpose_id = #{marketingPurpose}
+				<if test="queryStr != null">
+					and (b.product_id like '%${queryStr}%' or b.product_name like '%${queryStr}%')
+				</if>
+				group by
+					b.product_id,
+					b.product_name
+			) c
+		left join dim_qcd_product_info d on c.product_id = d.prc_id
+		and d.city_id = #{cityId}
+		where
+			d.prc_id is not null
+		order by
+			c.cou desc fetch first 20 rows only
+	</select>
+
+	<select id="getCustomerList" parameterType="map" resultType="map">
+		select customer_id from city_customer_info where city_id = #{cityId} and dept_id = #{deptId} and effective = 1
+	</select>
+
+</mapper>

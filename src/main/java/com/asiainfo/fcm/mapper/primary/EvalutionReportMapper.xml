@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asiainfo.fcm.mapper.primary.EvalutionReportMapper">
+	
+	<select id="getIndicatorDataByMonth" parameterType="java.util.Map" resultType="java.util.Map">
+		select * from qcd.marking_activity_mx_pg_city_zonghe
+		where parent_id ='#' and city_id = '@' and channel_id ='@' and op_time = #{date} and type = #{isFiltered}
+	</select>
+	
+	<select id="getActivityTopByMonth" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+			a.act_num, 
+			b.city_name
+		from qcd.marking_activity_mx_pg_city_zonghe a
+		left join city b on a.city_id = b.city_id
+		where a.parent_id = '#' and a.channel_id = '@' and a.type = 0 and a.city_id not in('@','1')
+		and a.op_time = #{date}
+		order by a.act_num desc
+		fetch first 3 rows only
+	</select>
+	
+	<select id="getExcellentCase" parameterType="java.util.Map" resultType="java.util.Map">
+		select 
+			camp_id,
+			camp_name,
+			touch_num,
+			touch_num*1.00/obj_num as touch_rate,
+			vic_num,
+			vic_rate,
+			b.city_name
+		from qcd.marking_activity_mx_pg_activity_zonghe a
+		left join city b on a.city_id = b.city_id
+		where op_time = #{date}
+		order by vic_rate DESC 
+		fetch first 5 rows only
+	</select>
+	
+	
+	<select id="getavtEvalution" parameterType="java.util.Map" resultType="java.util.Map">
+		select * from (
+			select 
+				row_number() over( order by a.create_time desc ) rows
+				a.camp_id camp_id,
+				a.camp_name camp_name,
+				a.city_id city_id,
+				a.channel_id channel_id,
+				a.create_time create_time,
+				a.start_time start_time,
+				a.end_time end_time,
+				c.city_name city_name,
+				b.channel_name, 
+				#{indexItem}
+			from qcd.marking_activity_mx_pg_activity_zonghe a
+			left join channel b on a.channel_id = b.channel_id
+			left join city c on t.city_id = c.city_id
+			where a.create_time between #{startTime} and #{endTime}
+				<if test='areaId != "@" '>
+					and a.city_id = #{areaId}
+				</if>
+				<if test='channelId != "@" '>
+					and a.channel_id = #{channelId}
+				</if>
+			<if test="searchVal !='' ">
+				and (a.camp_id like CONCAT(CONCAT('%',#{searchVal}),'%') 
+					or a.camp_name like CONCAT(CONCAT('%',#{searchVal}),'%') 
+					or 
+					)
+			</if>
+		) d 
+		where d.rows between BETWEEN #{startRow}+1 AND #{startRow} + 10 order by create_time
+	</select>
+	
+	
+	<select id="getActEvalutionTotals" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select
+			count(1)
+		from qcd.marking_activity_mx_pg_activity_zonghe a
+		left join channel b on a.channel_id = b.channel_id
+		left join city c on t.city_id = c.city_id
+		where a.create_time between #{startTime} and #{endTime}
+		<if test='areaId != "@" '>
+			and a.city_id = #{areaId}
+		</if>
+		<if test='channelId != "@" '>
+			and a.channel_id = #{channelId}
+		</if>
+		<if test="searchVal !='' ">
+			and (a.camp_id like CONCAT(CONCAT('%',#{searchVal}),'%') 
+				or a.camp_name like CONCAT(CONCAT('%',#{searchVal}),'%') 
+				or 
+			)
+		</if>
+	</select>
+	
+</mapper>

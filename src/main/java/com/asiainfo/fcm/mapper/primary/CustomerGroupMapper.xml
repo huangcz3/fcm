@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asiainfo.fcm.mapper.primary.CustomerGroupMapper">
+    <insert id="saveCustomerGroupInfo" parameterType="com.asiainfo.fcm.entity.CustomerGroupInfo">
+        insert into customer_group_info (
+        CUSTOMER_GROUP_ID,
+        CUSTOMER_GROUP_NAME,
+        GROUP_TABLE_NAME,
+        CREATOR_ID,
+        CREATOR_NAME,
+        CREATE_TIME,
+        CREATE_TYPE,
+        AMOUNT,
+        CUSTOMIZE_FLAG,
+        EFFECTIVE,
+        REMOVE_FLAG,
+        COC_GROUP_ID,
+        COC_GROUP_NAME,
+        COC_TABLE_NAME,
+        COC_GROUP_CYCLE,
+        MPP_DB_NAME,
+        MPP_SCHEMA,
+        MPP_TABLE_NAME,
+        MPP_PHONE_COLUMN,
+        MPP_MARKETING_COLUMN,
+        FILE_NAME,
+        ORIGINAL_FILE_NAME,
+        FILE_LINE_COUNT,
+        MIGU_CONTENT_ID,
+        MIGU_CONTENT_NAME,
+        MIGU_CONTENT_TYPE,
+        MIGU_CONTENT_MARKETING,
+        MIGU_CONTENT_SHORTURL,
+        MIGU_CONTENT_COMPLETED,
+        MIGU_CONTENT_OUTPUTPATH,
+        DATA_TIME,
+        DATA_STATE
+        ) values (
+        #{customerGroupId},
+        #{customerGroupName},
+        #{groupTableName},
+        #{creatorId},
+        #{creatorName},
+        CURRENT_TIMESTAMP,
+        #{createType},
+        #{amount},
+        #{customizeFlag},
+        #{effective},
+        #{removeFlag},
+        #{cocGroupId},
+        #{cocGroupName},
+        #{cocTableName},
+        #{cocGroupCycle},
+        #{mppDbName},
+        #{mppSchema},
+        #{mppTableName},
+        #{mppPhoneColumn},
+        #{mppMarketingColumn},
+        #{fileName},
+        #{originalFileName},
+        #{fileLineCount},
+        #{miguContentId},
+        #{miguContentName},
+        #{miguContentType},
+        #{miguContentMarketing},
+        #{miguContentShorturl},
+        #{miguContentCompleted},
+        #{miguContentOutputpath},
+        #{dataTime},
+        #{dataState}
+        )
+    </insert>
+    <update id="updateActivityCustomerGroupInfo">
+        update activity_customer_group_info
+        set customer_group_id=#{customerGroupId}
+        where activity_id=#{activityId}
+        and customer_group_id=#{cocGroupId}
+    </update>
+    <update id="createCustomerGroupTable" parameterType="map">
+        create table ${customerGroupInfo.groupTableName} (
+        phone_no varchar(20)
+        <if test="customerGroupInfo.customizeFlag==1">
+            ,marketing varchar(2000)
+        </if>
+        ,effective smallint DEFAULT 1
+        ,update_date date DEFAULT CURRENT_DATE
+        ) compress yes distribute by hash(phone_no) in ${tableSpace}
+    </update>
+    <insert id="saveCustomerGroupDetail" parameterType="map">
+        insert into ${customerGroupInfo.groupTableName} (
+        phone_no
+        <if test="customerGroupInfo.customizeFlag==1">
+            ,marketing
+        </if>
+        ) values
+        <foreach collection="customerGroupDetailList" item="customerGroupDetail" index="index" open="" close=""
+                 separator=",">
+            (#{customerGroupDetail.phoneNo}
+            <if test="customerGroupInfo.customizeFlag==1">
+                ,#{customerGroupDetail.marketing}
+            </if>
+            )
+        </foreach>
+    </insert>
+    <insert id="distinctCustomerGroupDetail" parameterType="map">
+        insert into ${distinctCustomerGroupInfo.groupTableName} (
+        phone_no
+        <if test="distinctCustomerGroupInfo.customizeFlag==1">
+            ,marketing
+        </if>
+        ) select
+        phone_no
+        <if test="distinctCustomerGroupInfo.customizeFlag==1">
+            ,marketing
+        </if>
+        from (
+        select
+        phone_no
+        <if test="distinctCustomerGroupInfo.customizeFlag==1">
+            ,marketing
+        </if>
+        ,row_number() over(partition by phone_no) row_number
+        from ${customerGroupInfo.groupTableName}
+        )
+        where row_number=1
+    </insert>
+    <select id="getCustomerGroupsTotalRecord" parameterType="map" resultType="long">
+        select count(1)
+        from customer_group_info where creator_id=#{creatorId} and create_type=#{createType} and remove_flag=0 and
+        effective=1
+    </select>
+    <select id="getCustomerGroups" parameterType="map" resultType="com.asiainfo.fcm.entity.CustomerGroupInfo">
+        select customer_group_id,customer_group_name,create_time,amount,customize_flag from
+        (select customer_group_id,customer_group_name,create_time,amount,customize_flag,
+        row_number() over(order by create_time desc) row_number
+        from customer_group_info where creator_id=#{creatorId} and create_type=#{createType} and remove_flag=0 and
+        effective=1)
+        where row_number between #{page.startPosition} and #{page.endPosition}
+    </select>
+    <select id="getCustomerGroup" parameterType="com.asiainfo.fcm.entity.ActivityCustomerGroupInfo"
+            resultType="com.asiainfo.fcm.entity.CustomerGroupInfo">
+        select
+        customer_group_id,
+        customer_group_name,
+        group_table_name,
+        creator_id,
+        creator_name,
+        create_time,
+        create_type,
+        amount,
+        customize_flag,
+        effective,
+        remove_flag,
+        coc_group_id,
+        coc_group_name,
+        coc_table_name,
+        coc_group_cycle,
+        mpp_db_name,
+        mpp_schema,
+        mpp_table_name,
+        mpp_phone_column,
+        mpp_marketing_column,
+        file_name,
+        original_file_name,
+        file_line_count,
+        migu_content_id,
+        migu_content_name,
+        migu_content_type,
+        migu_content_marketing,
+        migu_content_completed,
+        migu_content_outputpath,
+        data_time,
+        data_state
+        from customer_group_info
+        where
+        <choose>
+            <when test='createType==4 and customerGroupId!="2" and customerGroupId!="3"'>
+                migu_content_id=#{customerGroupId}
+            </when>
+            <when test='createType==4 and (customerGroupId=="2" or customerGroupId=="3")'>
+                migu_content_id=#{activityId}
+            </when>
+            <otherwise>
+                customer_group_id=#{customerGroupId}
+            </otherwise>
+        </choose>
+    </select>
+    <insert id="unionCustomerGroups" parameterType="map">
+        insert into ${unionGroupTableName} (
+        phone_no
+        <if test="customizeFlag==1">
+            ,marketing
+        </if>
+        )
+        <foreach collection="customerGroupInfoList" item="customerGroupInfo" index="index" open="" close=""
+                 separator=" union ">
+            select phone_no
+            <if test="customizeFlag==1 and customerGroupInfo.customizeFlag==1">
+                ,marketing
+            </if>
+            <if test="customizeFlag==1 and customerGroupInfo.customizeFlag==0">
+                ,'' marketing
+            </if>
+            from ${customerGroupInfo.groupTableName}
+        </foreach>
+    </insert>
+    <insert id="saveCustomerRemoveInfo" parameterType="com.asiainfo.fcm.entity.CustomerRemoveInfo">
+        insert into activity_customer_remove_info (
+            activity_id,
+            activity_name,
+            original_amount,
+            remove_employee,
+            remove_red_list,
+            remove_sensitive,
+            remove_cancel_10086,
+            remove_group_user,
+            remove_upload,
+            state
+        ) values (
+            #{activityId},
+            #{activityName},
+            #{originalAmount},
+            #{removeEmployee},
+            #{removeRedList},
+            #{removeSensitive},
+            #{removeCancel10086},
+            #{removeGroupUser},
+            #{removeUpload},
+            #{state}
+        )
+    </insert>
+    <insert id="removeCustomers" parameterType="map">
+        insert into ${validCustomerGroupInfo.groupTableName} (
+        phone_no
+        <if test="validCustomerGroupInfo.customizeFlag==1">
+            ,marketing
+        </if>
+        ,effective
+        ,update_date
+        )
+        select
+        distinct a.phone_no
+        <if test="customerGroupInfo.customizeFlag==1">
+            ,a.marketing
+        </if>
+        ,a.effective
+        ,a.update_date
+        from ${customerGroupInfo.groupTableName} a
+        where not exists
+        <choose>
+            <when test="removeUploadCustomerGroupTableName!=null and removeUploadCustomerGroupTableName!=''">
+                (select 1 from ${removeUploadCustomerGroupTableName} b where a.phone_no=b.phone_no)
+            </when>
+            <otherwise>
+                (select 1 from aiapp.rebuild_black_red_white_user b where a.phone_no=b.phone_no and
+                b.user_type=#{userType})
+            </otherwise>
+        </choose>
+        <if test="cycleUpdateFlag==1">
+            and ((a.effective=1 and a.update_date=CURRENT_DATE) or a.effective=0 or a.update_date!=CURRENT_DATE)
+        </if>
+    </insert>
+    <update id="updateCustomerRemoveInfo" parameterType="com.asiainfo.fcm.entity.CustomerRemoveInfo">
+        update activity_customer_remove_info
+        set
+        original_amount=#{originalAmount},
+        remove_employee_amount=#{removeEmployeeAmount},
+        remove_red_list_amount=#{removeRedListAmount},
+        remove_sensitive_amount=#{removeSensitiveAmount},
+        remove_cancel_10086_amount=#{removeCancel10086Amount},
+        remove_group_user_amount=#{removeGroupUserAmount},
+        remove_upload_amount=#{removeUploadAmount},
+        customize_flag=#{customizeFlag},
+        final_group_table_name=#{finalGroupTableName},
+        final_amount=#{finalAmount},
+        state=#{state},
+        exception_info=#{exceptionInfo}
+        where activity_id=#{activityId}
+    </update>
+    <update id="dropTmpTable" parameterType="string">
+        drop table ${_parameter}
+    </update>
+
+    <resultMap id="activityCustomerUpdateInfo" type="com.asiainfo.fcm.model.ActivityCustomerUpdateInfo">
+        <id property="activityId" column="activity_id"></id>
+        <result property="creatorId" column="creator_id"></result>
+        <result property="creatorName" column="creator_name"></result>
+        <result property="removeEmployee" column="remove_employee"></result>
+        <result property="removeRedList" column="remove_red_list"></result>
+        <result property="removeSensitive" column="remove_sensitive"></result>
+        <result property="removeCancel10086" column="remove_cancel_10086"></result>
+        <result property="removeGroupUser" column="remove_group_user"></result>
+        <result property="removeUpload" column="remove_upload"></result>
+        <result property="removeCustomerGroupId" column="remove_customer_group_id"></result>
+        <result property="customizeFlag" column="customize_flag"></result>
+        <result property="finalGroupTableName" column="final_group_table_name"></result>
+        <collection property="customerGroupInfoList" ofType="com.asiainfo.fcm.entity.CustomerGroupInfo"
+                    column="activity_id">
+            <id property="customerGroupId" column="customer_group_id"></id>
+            <result property="cocGroupId" column="coc_group_id"></result>
+            <result property="dataTime" column="data_time"></result>
+        </collection>
+    </resultMap>
+
+    <select id="getCustomerGroupForUpdateByCycle" resultMap="activityCustomerUpdateInfo">
+        select
+        a.activity_id,
+        a.creator_id,
+        a.creator_name,
+        a.remove_employee,
+        a.remove_red_list,
+        a.remove_sensitive,
+        a.remove_cancel_10086,
+        a.remove_group_user,
+        a.remove_upload,
+        a.remove_customer_group_id,
+        d.customize_flag,
+        d.final_group_table_name,
+        b.customer_group_id,
+        c.coc_group_id,
+        c.data_time
+        from activity_info a
+        left join activity_customer_group_info b on a.activity_id=b.activity_id
+        left join customer_group_info c on b.customer_group_id=c.customer_group_id
+        left join activity_customer_remove_info d on a.activity_id=d.activity_id
+        where a.activity_state in (1,4,6,8)
+        and end_time>=CURRENT_DATE
+        and a.customer_update_cycle=3
+        and a.deleted=0
+        and c.create_type=1
+        and c.coc_group_cycle=3
+    </select>
+    <insert id="diffCustomerGroup" parameterType="map">
+        insert into ${diffCustomerGroupInfo.groupTableName} (
+        phone_no
+        <if test="diffCustomerGroupInfo.customizeFlag==1">
+            ,marketing
+        </if>
+        ,effective
+        ,update_date
+        )
+        select
+        nvl(a.phone_no,b.phone_no) phone_no,
+        <if test="diffCustomerGroupInfo.customizeFlag==1">
+            nvl(a.marketing,'') marketing,
+        </if>
+        case when b.phone_no is null then 0 else 1 end as effective,
+        case when a.phone_no is not null and b.phone_no is not null and a.effective=1 then a.update_date else
+        current date end as
+        update_date
+        from ${preFinalGroupTableName} a full join ${newGroupTableName} b on a.phone_no=b.phone_no
+    </insert>
+    <select id="getNotCompletedMiguContent" resultType="com.asiainfo.fcm.entity.Activity">
+        select
+            a.activity_id,
+            a.creator_id
+        from activity_info a
+        inner join customer_group_info b
+        on a.activity_id=b.migu_content_id
+        where a.deleted=0
+        and a.end_time>=current date
+        and b.migu_content_completed=0
+    </select>
+    <update id="updateMiguContent" parameterType="com.asiainfo.fcm.entity.CustomerGroupInfo">
+        update customer_group_info
+        set
+            migu_content_completed=1,
+            amount=#{amount},
+            migu_content_marketing=#{miguContentMarketing},
+            migu_content_shorturl=#{miguContentShorturl},
+            migu_content_outputpath=#{miguContentOutputpath}
+        where migu_content_id=#{miguContentId}
+    </update>
+    <update id="cycleUpdateCustomerRemoveInfo" parameterType="com.asiainfo.fcm.entity.CustomerRemoveInfo">
+        UPDATE activity_customer_remove_info
+        SET
+            original_amount=#{originalAmount},
+            remove_employee_amount=remove_employee_amount+#{removeEmployeeAmount},
+            remove_red_list_amount=remove_red_list_amount+#{removeRedListAmount},
+            remove_sensitive_amount=remove_sensitive_amount+#{removeSensitiveAmount},
+            remove_cancel_10086_amount=remove_cancel_10086_amount+#{removeCancel10086Amount},
+            remove_group_user_amount=remove_group_user_amount+#{removeGroupUserAmount},
+            remove_upload_amount=remove_upload_amount+#{removeUploadAmount},
+            final_group_table_name=#{finalGroupTableName},
+            final_amount=#{finalAmount},
+            cycle_update_completed=0
+        WHERE activity_id=#{activityId}
+    </update>
+    <update id="updateCocGroupDateTime">
+        update customer_group_info
+        set data_time=#{dataTime}
+        where customer_group_id=#{customerGroupId}
+    </update>
+    <insert id="insertCustomerGroupTable" parameterType="map">
+        insert into ${tableName} (
+        phone_no
+        ,rule_code
+        ,camp_id,
+        city_id
+        )
+        select
+        phone_no,
+        #{channelId} rule_code,
+        #{activityId} camp_id,
+        #{cityId} city_id
+        from ${finalGroupTableName} where effective=1 and update_date=CURRENT_DATE
+    </insert>
+    <insert id="insertRediskmUserList" parameterType="map">
+        insert into qcd.rediskm_data_write_record(key_group,table_name,push_condition,push_status)
+        values('SET-USERLIST',#{tableName},#{pushCondition},0)
+    </insert>
+    <insert id="insertRediskmActiveList" parameterType="map">
+        insert into qcd.rediskm_data_write_record(key_group,table_name,push_condition,push_status)
+        values('ACTIVELIST',#{tableName},#{pushCondition},0)
+    </insert>
+
+    <!--更新智能地图活动客户群信息表的客户群id-->
+    <update id="updateActCustomerGroupInfo">
+        update activity_customer_group_info
+        set customer_group_id=#{customerGroupId}
+        where activity_id=#{activityId}
+    </update>
+
+    <select id="getNotCompletedCustomerInsightActivity" resultType="com.asiainfo.fcm.entity.Activity">
+        select
+          a.activity_id
+        from activity_info a left join activity_customer_group_info b
+        on a.activity_id = b.activity_id
+        where a.activity_state = 0 and b.create_type = 6 and a.deleted=0
+    </select>
+
+
+    <insert id="saveChannelSuggestBaseInfo" parameterType="map">
+        insert into channel_suggest_record(customer_group_id,creater_id,creater_name,creater_phone,start_time,original_file_name,file_name,status)
+        values(#{coustomerGroupId},#{createrId},#{createrName},#{createrPhone},#{startTime},#{originalFileName},#{fileName},0)
+
+    </insert>
+
+
+    <select id="getChannelSuggestListByCreateIdAndQueryStr" resultType="java.util.Map" parameterType="map">
+        select
+            *
+        from
+            (
+                select
+                    row_number () over (order by start_time desc) nrows,
+                    customer_group_id,
+                    VARCHAR_FORMAT(start_time,'yyyy-mm-dd hh24:mi:ss') start_time,
+                    VARCHAR_FORMAT(complete_time,'yyyy-mm-dd hh24:mi:ss') complete_time,
+                    original_file_name,
+                    all_amcount,
+                    effective_amcount,
+                    status
+                from
+                    channel_suggest_record
+                where
+                    original_file_name like '%${queryStr}%'
+                    and creater_id = #{createrId}
+            ) t
+        where
+            t.nrows between  #{startRow}+1
+        and #{startRow} + #{lengthRow}
+        order by
+            t.start_time desc
+
+
+    </select>
+
+    <select id="getChannelSuggestListTotalsByCreateIdAndQueryStr" resultType="java.lang.Integer" parameterType="map">
+        select
+            count(1)
+        from
+            channel_suggest_record
+        where
+            original_file_name like '%${queryStr}%'
+            and creater_id = #{createrId}
+    </select>
+    <select id="getChannelSuggestById" parameterType="string" resultType="java.util.Map">
+        select * FROM channel_suggest_record where customer_group_id = #{customerGroupId}
+    </select>
+
+    <select id="getChannelSuggestCountByTableName" resultType="java.util.Map">
+        select count(distinct phone_no) cou, marketing channel from ${value} group by marketing
+    </select>
+    <select id="getChannelSuggestByChannel" resultType="java.util.Map">
+        select distinct phone_no from ${tableName} where marketing=#{channel}
+    </select>
+
+
+    <update id="updateChanelSuggestRecord" parameterType="map">
+        update channel_suggest_record
+        <set >
+            <if test="allAmcount != null" >
+                all_amcount = #{allAmcount},
+            </if>
+            <if test="effectiveAmcount!= null" >
+                effective_amcount = #{effectiveAmcount},
+            </if>
+            <if test="status != null" >
+                status = #{status},
+            </if>
+            <if test="customerGroupTableName != null" >
+                customer_group_table_name = #{customerGroupTableName},
+            </if>
+            <if test="completeTime != null" >
+                complete_time = #{completeTime},
+            </if>
+        </set>
+        where customer_group_id = #{customerGroupId}
+    </update>
+
+    <insert id="calculateChannelSuggestCustomer" parameterType="map">
+        insert into ${customerGroupTableName} (
+        phone_no
+        ,marketing
+        ,effective
+        )
+        select
+        a.phone_no,
+        case when b.phone_no is null then 'other' else b.channel_name end marketing,
+        1 effective
+        from ${tmpCustomerGroupTableName} a left join channel_suggest_base_phone b on a.phone_no = b.phone_no
+    </insert>
+</mapper>

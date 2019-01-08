@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>details</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<style>
+		.bg-yellow {
+			background-color: yellow;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<table class="table table-bordered">
+			<caption class="text-center">模型详情</caption>
+			<tbody>
+				<tr class="bg-yellow">
+					<td colspan="4">模型库属性</td>
+				</tr>
+				<tr>
+					<td width="25%">模型编号</td>
+					<td name="templateCode" id="templateCode"></td>
+					<td width="25%">省份</td>
+					<td name="templateProvice" id="templateProvice"></td>
+				</tr>
+				<tr>
+					<td>上报时间</td>
+					<td name="templateSubmitTime" id="templateSubmitTime"></td>
+					<td>模型名称</td>
+					<td name="templateName" id="templateName"></td>
+				</tr>
+				<tr>
+					<td>模型分类</td>
+					<td name="templateType" id="templateType"></td>
+					<td>模型简述</td>
+					<td name="templateDesc" id="templateDesc"></td>
+				</tr>
+				<tr>
+					<td>创建时间</td>
+					<td name="templateCreateTime" id="templateCreateTime"></td>
+					<td>更新时间</td>
+					<td name="templateUpdateTime" id="templateUpdateTime"></td>
+				</tr>
+
+				<tr>
+					<td>模型目标</td>
+					<td name="templateGoal" id="templateGoal"></td>
+					<td>业务需求</td>
+					<td name="templateBusinesRequest" id="templateBusinesRequest"></td>
+				</tr>
+				<tr>
+					<td>需求提出方</td>
+					<td name="templateDemandProvider" id="templateDemandProvider"></td>
+					<td>目标用户量</td>
+					<td name="templateCustomers" id="templateCustomers"></td>
+				</tr>
+				<tr>
+					<td>结果输出方式</td>
+					<td name="templateOutputType" id="templateOutputType"></td>
+					<td>需求应用场景</td>
+					<td name="templateApplySence" id="templateApplySence"></td>
+				</tr>
+				<tr>
+					<td>建模工具</td>
+					<td name="templateBuileTools" id="templateBuileTools"></td>
+					<td>硬件要求</td>
+					<td name="templateHardwareRequire" id="templateHardwareRequire"></td>
+				</tr>
+				<tr>
+					<td>软件运行环境</td>
+					<td name="runningEnviroment" id="runningEnviroment"></td>
+					<td>数据描述对象</td>
+					<td name="dataDescObj" id="dataDescObj"></td>
+				</tr>
+				<tr>
+					<td>数据预处理对象</td>
+					<td name="dataPreDealObj" id="dataPreDealObj"></td>
+					<td>输出数据格式</td>
+					<td name="dataOutputFormat" id="dataOutputFormat"></td>
+				</tr>
+				<tr>
+					<td>样本数据</td>
+					<td name="exampleData" id="exampleData"></td>
+					<td>核心算法</td>
+					<td name="coreAlgorithm" id="coreAlgorithm"></td>
+				</tr>
+				<tr>
+					<td>参数设定</td>
+					<td name="parameterSetting" id="parameterSetting"></td>
+					<td>模型输出</td>
+					<td name="outPutModel" id="outPutModel"></td>
+				</tr>
+				<tr>
+					<td>模型描述</td>
+					<td name="modelDesc" id="modelDesc"></td>
+					<td name="" id=""></td>
+					<td name="" id=""></td>
+				</tr>
+				<tr>
+					<td>模型工程文件</td>
+					<td name="modelProjectFile" id="modelProjectFile"></td>
+					<td>模型评估指标对象</td>
+					<td name="modelEvalutionObj" id="modelEvalutionObj"></td>
+				</tr>
+				<tr>
+					<td>业务效果评估对象</td>
+					<td name="businessEvalutionObj" id="businessEvalutionObj"></td>
+					<td>扩展内容</td>
+					<td name="expandContent" id="expandContent"></td>
+				</tr>
+				<tr class="bg-yellow">
+					<td colspan="4">数据描述属性</td>
+					
+				</tr>
+
+				<tr>
+					<td>数据量</td>
+					<td name="dataSize" id="dataSize"></td>
+					<td>时间范围</td>
+					<td name="dataTimeRange" id="dataTimeRange"></td>
+				</tr>
+				<tr>
+					<td>来源</td>
+					<td name="dataSource" id="dataSource"></td>
+					<td>字段说明</td>
+					<td name="filedDesc" id="filedDesc"></td>
+				</tr>
+				<tr>
+					<td>变量列表</td>
+					<td name="itermList" id="itermList"></td>
+					<td>变量选取依据</td>
+					<td name="itermSelectCondition" id="itermSelectCondition"></td>
+				</tr>
+				<tr class="bg-yellow">
+					<td colspan="4">数据预处理属性</td>
+					
+				</tr>
+				
+				<tr>
+					<td>缺失处理</td>
+					<td name="processDeal" id="processDeal"></td>
+					<td>异常值处理</td>
+					<td name="exceptionDeal" id="exceptionDeal"></td>
+				</tr>
+				<tr>
+					<td>数据标准化处理</td>
+					<td name="dataFomalDeal" id="dataFomalDeal"></td>
+					<td>其他处理</td>
+					<td name="otherDeal" id="otherDeal"></td>
+				</tr>
+				
+				<tr class="bg-yellow">
+					<td colspan="4">模型评估指标</td>
+				</tr>
+				<tr>
+					<td>覆盖率</td>
+					<td name="coverageRate" id="coverageRate"></td>
+					<td>命中率</td>
+					<td name="hitRate" id="hitRate"></td>
+				</tr>
+				
+				<tr>
+					<td>准确率</td>
+					<td name="accuracyRate" id="accuracyRate"></td>
+					<td>其他自定义指标</td>
+					<td name="modelOtherDefinedIndex" id="modelOtherDefinedIndex"></td>
+				</tr>
+				<tr class="bg-yellow">
+					<td colspan="4">业务效果评估</td>
+					
+				</tr>
+				<tr>
+					<td>转化率</td>
+					<td name="conversionRate" id="conversionRate"></td>
+					<td>其他自定义指标</td>
+					<td name="businessOtherDefinedIndex" id="businessOtherDefinedIndex"></td>
+				</tr>
+				<tr>
+					<td>提升度</td>
+					<td name="liftingDegree" id="liftingDegree"></td>
+					<td name="" id=""></td>
+					<td name="" id=""></td>
+				</tr>
+				
+				
+			</tbody>
+		</table>
+	</div>
+	<script src="js/jquery.js"></script>
+	<script>
+		!function (){
+			var tds = $("td[name]");
+			var json = {};
+			$.ajax({ 
+				type: "post", 
+				url: "http://10.108.226.169:8888/getOperationalDetail", 
+				dataType: "json", 
+				success: function (data) { 
+					json= data;
+					console.log(json);
+					for (var i = 0, len = tds.length; i < len; ++i ){
+						$temp = $(tds[i]);
+						$temp.text(json[$temp.attr("name")]);
+					}
+				}, 
+				error: function (XMLHttpRequest, textStatus, errorThrown) { 
+					console.log("failed!");
+				} 
+			});
+			
+
+		}();
+	</script>
+</body>
+</html>

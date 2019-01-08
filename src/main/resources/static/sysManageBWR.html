@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>系统管理-黑白红电话查询</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/generalStyle.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/sysManageBWR.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="./lib/public/html5shiv.min.js"></script>
+    <script type="text/javascript" src="./lib/public/excanvas.compiled.js"></script>
+    <![endif]-->
+</head>
+<body>
+<!--start 开始顶部导航 -->
+<div class="nav-wrap">
+    <div class="logo lt">
+        <img src="./img/logo.png" alt="全触点"/>
+    </div>
+    <ul class="nav clearfix lt" id="headerNav">
+
+    </ul>
+    <div class="user rt clearfix">
+        <i class="user-icon"></i>
+        <span>您好，</span>
+        <span id="user"></span>
+        <b title="退出">
+            <i class="exit"></i>
+        </b>
+    </div>
+</div>
+<!--end 顶部导航 -->
+<!--左侧导航和主体内容-->
+<div class="content-wrap">
+    <!--start 左侧导航 -->
+    <div class="side-nav">
+        <ul id="sideNav">
+
+        </ul>
+    </div>
+    <!--end 左侧导航 -->
+
+    <!--start主体内容-->
+    <div class="main">
+        <div class="content">
+            <div class="inner-content">
+                <div class="panel-title clearfix">
+						<span class="title lt">
+							黑白红电话查询
+							<span id="activities_num" class="color-grey"></span>
+						</span>
+                </div>
+
+                <div class="content-tab">
+                    <h3 class="g-contennt-title"><b class="b-icon b-icon-tel01"></b>输入电话号码</h3>
+                    <div class="b-search-box">
+                        <input id="phoneNum" type="text" class="b-search-input border_radius">
+                        <button class="search-btn gradient-btn">查询</button>
+                        <button class="new-btn">添加</button>
+                    </div>
+                    <div class="g-result-box">
+                        <p>查询结果：</p>
+                        <div class="g-result-content">
+                            <div class="g-row">
+                                <div class="g-left-mark width-mark-152">
+                                    <i class="icon icon-tel02"></i>
+                                    <span class="mark">内部号码</span>
+                                    <span class="color-grey">（ 0 ）：</span>
+                                </div>
+                                <ul class="phone-numbers margin-left-152 clearfix" data-id="employee">
+                                   <li>无</li>
+                                </ul>
+                            </div>
+                            <div class="g-row">
+                                <div class="g-left-mark width-mark-152">
+                                    <i class="icon icon-tel03"></i>
+                                    <span  class="mark">红名单</span>
+                                    <span class="color-grey">（ 0 ）：</span>
+                                </div>
+                                <ul class="phone-numbers margin-left-152 clearfix" data-id="redList">
+                                    <li>无</li>
+                                </ul>
+                            </div>
+                            <div class="g-row">
+                                <div class="g-left-mark width-mark-152">
+                                    <i class="icon icon-tel04"></i>
+                                    <span  class="mark">敏感客户</span>
+                                    <span class="color-grey">（ 0 ）：</span>
+                                </div>
+                                <ul class="phone-numbers margin-left-152 clearfix" data-id="sensitive">
+                                    <li>无</li>
+                                </ul>
+                            </div>
+                            <div class="g-row clearfix">
+                                <div class="g-left-mark width-mark-260">
+                                    <i class="icon icon-tel05"></i>
+                                    <span  class="mark">取消10086流量提醒客户</span>
+                                    <span class="color-grey">（ 0 ）：</span>
+                                </div>
+                                <ul class="phone-numbers margin-left-260 clearfix" data-id="cancel10086">
+                                    <li>无</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end主体内容-->
+    <div class="modal-wrap modal-wrap-add">
+        <div class="modal-box">
+            <div class="modal-box-title">
+                <h3>添加黑名单</h3>
+                <a href="javascript: void(0);" class="modal-box-cancel">取消</a>
+                <a href="javascript: void(0);" class="modal-box-save disabled">保存</a>
+            </div>
+            <div class="modal-box-content">
+                <div class="inner-content">
+                    <div class="radio-box clearfix">
+                        <p class="selected">
+                            <input class="radio-input" type="radio" name="black" value="1" checked="checked">
+                            <label>
+                                <span class=""></span>
+                                敏感客户
+                            </label>
+                        </p>
+                    </div>
+                    <div class="content-item">
+                        <div class="row">
+                            <input type="text" class="h-block j-blackPhone" name="blackPhone" placeholder="请输入号码">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="./lib/public/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.blockUI.js"></script>
+<script type="text/javascript" src="./js/topNav.js"></script>
+<script type="text/javascript" src="./js/sysManageSideNav.js"></script>
+<script type="text/javascript" src="./js/generalFunc.js"></script>
+<script type="text/javascript" src="./js/sysManageBWR.js"></script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>系统管理-渠道配额</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="./css/public/bootstrap-fileinput.css">
+    <link rel="stylesheet" type="text/css" href="./css/public/bootstrap-tagsinput.css">
+    <link rel="stylesheet" type="text/css" href="css/generalStyle.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="./css/sysManageQuota.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="./lib/public/html5shiv.min.js"></script>
+    <script type="text/javascript" src="./lib/public/respond.min.js"></script>
+    <script type="text/javascript" src="./lib/public/excanvas.compiled.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+<!--start 开始顶部导航 -->
+<div class="nav-wrap">
+    <div class="logo lt">
+        <img src="./img/logo.png" alt="全触点"/>
+    </div>
+    <ul class="nav clearfix lt" id="headerNav">
+
+    </ul>
+    <div class="user rt clearfix">
+        <i class="user-icon"></i>
+        <span>您好，</span>
+        <span id="user"></span>
+        <b title="退出">
+            <i class="exit"></i>
+        </b>
+    </div>
+</div>
+<!--end 顶部导航 -->
+<!--左侧导航和主体内容-->
+<div class="content-wrap">
+    <!--start 左侧导航 -->
+    <div class="side-nav">
+        <ul id="sideNav">
+
+        </ul>
+    </div>
+    <!--end 左侧导航 -->
+
+    <!--start主体内容-->
+    <div class="main">
+        <div class="content">
+            <div class="inner-content">
+                <div class="panel-title clearfix">
+                    <div id="channels" class="lt">
+                        <!--<span class="title selected" data-type="1">
+                            <a href="##">1008群发</a>
+                        </span>
+                        <span class="titl" data-type="2">
+                            <a href="##">优惠提醒</a>
+                        </span>-->
+                    </div>
+                    <div class="rt">
+                       <!--<div class="lt search-box hidden">-->
+                            <!--<input type="text" id="search" class="search " placeholder=""/>-->
+                            <!--<i></i>-->
+                        <!--</div>-->
+                        <span id="filter-btn" class="filter-btn lt border_radius">筛选<i></i></span>
+                        <a href="##" class="create-new u-create-btn hidden">新增配额</a>
+                    </div>
+                </div>
+                <div class="content-tab">
+                    <div id="activities" class="selected">
+                        <div class="panel-bottom">
+                            <table cellspacing="0" id="table" class="table">
+                                <thead>
+                                <tr>
+                                    <td style="width: 5%;" >&nbsp;</td>
+                                    <td >地市</td>
+                                    <td>配额量</td>
+                                    <td>生效时间</td>
+                                  <!--  <td>操作</td>-->
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="page-wrap clearfix" id="page"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end主体内容-->
+
+    <!--start筛选弹框-->
+    <div class="filter-panel">
+        <div class="inner-filter-panel">
+            <div class="row">
+                <p class="clearfix">
+                   生效时间：
+                </p>
+                <input type="text" class="Wdate" id="effectiveDate" onClick="WdatePicker({dateFmt:'yyyy-MM',minDate:'%y-{%M-2}',maxDate:'%y-{%M+2}'})"/>
+            </div>
+            <div class="row btns">
+                <button id="ensure" class="ensure border_radius">确定</button>
+                <button id="cancel" class="cancel border_radius">取消</button>
+            </div>
+        </div>
+    </div>
+    <!--end筛选弹框-->
+    <!--start修改配额-->
+    <div class="modal-wrap modal-wrap-edit">
+        <div class="modal-box">
+            <div class="modal-box-title">
+                <h3>修改配额</h3>
+                <a href="javascript: void(0);" class="modal-box-cancel">取消</a>
+                <a href="javascript: void(0);" class="modal-box-save disabled">保存</a>
+            </div>
+            <div class="modal-box-content">
+                <div class="inner-content">
+                    <div class="row">
+                        <div class="col-3">
+                            <span class="item-property">地市：</span>
+                            <span id="curCityName"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <span class="item-property">生效时间：</span>
+                            <!--<input id="effectTime" class="Wdate h-block select-m-style" readonly onfocus="WdatePicker({dateFmt:'yyyy-MM',minDate:'%y-%M',maxDate:'%y-{%M+2}'})">-->
+                            <span id="effectTime"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <span class="item-property h-block is-required">配额量：</span>
+                            <input class="h-block select-m-style j-number" id="quotaQ">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end修改配额-->
+    <!--start新增配额-->
+    <div class="modal-wrap modal-wrap-new">
+        <div class="modal-box">
+            <div class="modal-box-title">
+                <h3>新增配额</h3>
+                <a href="javascript: void(0);" class="modal-box-cancel">取消</a>
+                <a href="javascript: void(0);" class="modal-box-save">保存</a>
+            </div>
+            <div class="modal-box-content">
+                <div class="inner-content">
+                    <form action="" id="addNewCityQuota" method="post">
+                        <div class="row">
+                            <div class="col-3">
+                                <span class="item-property is-required">地&nbsp;&nbsp;&nbsp;市：</span>
+                                <select class="h-block select-m-style" name="cityId" id="cityList">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-3">
+                               <span class="item-property is-required">生效时间：</span>
+                               <input class="Wdate h-block select-m-style" name="effectTime" readonly onfocus="WdatePicker({dateFmt:'yyyy-MM',minDate:'%y-%M',maxDate:'%y-{%M+2}'})">
+                           </div>
+                       </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <span class="item-property is-required">配额量：</span>
+                                <input class="h-block select-m-style j-number" name="sendLimit">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end新增配额-->
+</div>
+<script type="text/javascript" src="./lib/public/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.blockUI.js"></script>
+<script type="text/javascript" src="./lib/DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.slimscroll.min.js"></script>
+<script type="text/javascript" src="./js/pager.js"></script>
+<script type="text/javascript" src="./js/topNav.js"></script>
+<script type="text/javascript" src="./js/sysManageSideNav.js"></script>
+<script type="text/javascript" src="./js/generalFunc.js"></script>
+<script type="text/javascript" src="./js/sysManageQuota.js"></script>
+</body>
+</html>

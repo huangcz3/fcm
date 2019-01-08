@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>index</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<style>
+		table {
+			border-collapse:collapse;
+		}
+		table, td, th{
+			border:1px solid black;
+		}
+	</style>
+</head>
+<body>
+	<div class="tool-bar container">
+		<a href="##" class="btn btn-primary col-md-1">本省待上传</a>
+		<a href="##" class="btn col-md-1">本省上传</a>
+		<a href="##" class="btn col-md-1">集团下发</a>
+		<span class="col-md-1 text-muted	" style="line-height: 34px;" >活动类型</span>
+		<select name="activity-type" id="activity-type" class="col-md-1" style="margin-top: 10px;" >
+			<option value="4G产品类">4G产品类</option>
+			<option value="终端类">终端类</option>
+			<option value="流量类">流量类</option>
+			<option value="数字化服务类" selected>数字化服务类</option>
+			<option value="基础服务类">基础服务类</option>
+			<option value="PCC类">PCC类</option>
+			<option value="宽带类">宽带类</option>
+			<option value="其他类">其他类</option>
+		</select>
+		<span class="col-md-1 text-muted	" style="line-height: 34px;">传送日期</span>
+		<input id="d121" type="text" onfocus="WdatePicker({isShowWeek:true})" class=" col-md-2" style="margin-top: 10px;"/>
+		<a href="##" class="btn btn-link">查询</a>
+	</div>
+	<div class="container">
+		<table class="table table-bordered">
+			<thead>
+				<td>活动编号</td>
+				<td>活动名称</td>
+				<td>活动类型</td>
+				<td>活动目的</td>
+				<td>PCC策略</td>
+				<td>子活动</td>
+				<td>开始日期</td>
+				<td>结束日期</td>
+				<td>操作</td>
+			</thead>
+			<tbody>
+			<tr>
+				<td>&nbsp;</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+	<script src="js/DatePicker/WdatePicker.js"></script>
+</body>
+</html>

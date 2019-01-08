@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="js/jquery.js"></script>
+</head>
+<body>
+    <button style="height: 120px;width: 120px;" onclick="subData()">测试提交</button>
+<script type="text/javascript">
+    function subData(){
+        //var data = {"activityBean":{"activityId":"","activityName":"testJava对象","creatorId":1,"creatoName":"张三"}};
+        var data ={};
+
+        var actBean = new Object();
+        actBean.activityId="A1498550163164";
+        actBean.activityName = "testJava对象";
+        actBean.activityProdName = "shfkdaskfasdkf";
+
+        var chanelInfoList = [];
+        for(var i=0;i<3;i++){
+            var chanelInfo = new Object();
+            chanelInfo['activityId'] = "A1498550163164";
+            chanelInfo['channelId'] = "f0"+(i+1);
+            chanelInfo['ruleId'] = "R00"+(i+1);
+            //chanelInfo['ruleExtendedValue'] = '';
+            chanelInfo['ruleValue'] = "营销短信输入内容：我是奥特曼"+(i+1)+"号";
+            chanelInfoList.push(chanelInfo);
+        }
+
+
+        actBean.activityChannelInfoList = chanelInfoList;
+                $.ajax({
+            url:'./activities/saveBaseInfo',
+            type:'post',
+            dataType:'json',
+            contentType : 'application/json',
+            data:JSON.stringify(actBean),
+           // data:actBean,
+            success:function(res){
+                console.log(res);
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

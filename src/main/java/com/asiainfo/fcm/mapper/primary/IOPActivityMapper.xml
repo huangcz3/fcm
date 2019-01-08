@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asiainfo.fcm.mapper.primary.IOPActivityMapper">
+    <select id="getActivityList" parameterType="java.util.Map" resultType="com.asiainfo.fcm.entity.IOPActivityInfo">
+        select * from (
+            select distinct
+                row_number() over( order by a.activitystarttime desc ) nrows,
+                a.activityTemplateId,
+                a.activityId,
+                a.activityName,
+                a.activityStatus,
+                substr(a.activityStartTime,1,10) activityStartTime,
+                substr(a.activityEndTime,1,10) activityEndTime,
+                a.activityType,
+                a.activityObjective,
+                a.activityDescribe,
+                a.twicePlanRequestAcctime,
+                a.pccname
+            from qcd.marking_activity_info a where 1=1
+            <if test="searchVal !='' ">
+                and ( a.activityName like CONCAT(CONCAT('%',#{searchVal}),'%') or a.activityId LIKE CONCAT(CONCAT('%',#{searchVal}),'%') )
+            </if>
+          ) t
+          where t.nrows between #{startRow}+1 and #{startRow} + #{lengthRow} order by t.activityStartTime DESC
+    </select>
+
+    <select id="getActivityListTotals" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select
+            count(1)
+        from qcd.marking_activity_info a where 1=1
+        <if test="searchVal !='' ">
+            and ( a.activityName like CONCAT(CONCAT('%',#{searchVal}),'%') or a.activityId like CONCAT(CONCAT('%',#{searchVal}),'%') )
+        </if>
+    </select>
+
+    <select id="getUserAuthority" parameterType="java.lang.String" resultType="java.lang.String">
+        select permition_code from qcd.iop_user_info where phone_no = #{userPhoneNo}
+    </select>
+
+    <select id="getPublicAttrInfo" parameterType="java.lang.String" resultType="com.asiainfo.fcm.entity.IOPActivityInfo">
+       select * from  qcd.marking_activity_info where activityid = #{activityid} fetch first 1 rows only
+    </select>
+
+    <select id="getCampaginInfo" parameterType="java.lang.String" resultType="com.asiainfo.fcm.entity.IOPCampaginInfo">
+        select * from qcd.marking_campaign_info where activityid = #{activityid}
+    </select>
+
+    <select id="getBelongerInfo" parameterType="java.util.Map" resultType="java.util.Map">
+        select * from qcd.iop_g2pactdown_rel a,qcd.iop_user_info b where a.activity_id = #{activityId} and a.campaign_id = #{campaignId} and a.executor_phone = b.phone_no
+    </select>
+
+    <select id="getAllUserList" resultType="com.asiainfo.fcm.entity.IOPUserInfo">
+        select * from qcd.iop_user_info where permition_code = '0'
+    </select>
+
+    <select id="checkSendOrderInfo" parameterType="com.asiainfo.fcm.entity.IopSendOrder" resultType="com.asiainfo.fcm.entity.IopSendOrder" >
+        select * from  qcd.iop_g2pactdown_rel where  activity_id = #{activityId} and campaign_id = #{campaignId}
+    </select>
+
+    <select id="insertIntoG2PActDownRel" parameterType="com.asiainfo.fcm.entity.IopSendOrder">
+        insert into qcd.iop_g2pactdown_rel (activity_id,campaign_id,camp_id,executor_phone,commander_phone)
+        values (#{activityId}, #{campaignId},#{campId},#{executorPhone}, #{commanderPhone})
+    </select>
+
+    <select id="checkRepeatInfo" parameterType="com.asiainfo.fcm.entity.IOPRelateCampagin" resultType="com.asiainfo.fcm.entity.IOPRelateCampagin">
+        select * from qcd.iop_campaign_and_camp_rel where campaignid = #{campaignId} and camp_id = #{campId}
+    </select>
+
+    <select id="deleteCampsByCampaignId" parameterType="java.lang.String">
+        delete from qcd.iop_campaign_and_camp_rel where campaignid = #{campaignId}
+    </select>
+
+    <select id="insertIntoCampaginAndCampRel" parameterType="com.asiainfo.fcm.entity.IOPRelateCampagin">
+        insert into qcd.iop_campaign_and_camp_rel (campaignid,camp_id,camp_name)
+        values (#{campaignId},#{campId},#{campName})
+    </select>
+
+    <select id="getRelateCampaginAndCamp" parameterType="java.lang.String" resultType="com.asiainfo.fcm.entity.IOPRelateCampagin">
+        select * from qcd.iop_campaign_and_camp_rel where campaignid = #{campaignId}
+    </select>
+</mapper>

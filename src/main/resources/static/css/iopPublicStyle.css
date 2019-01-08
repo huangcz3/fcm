@@ -1,0 +1,111 @@
+
+.checxbox-list li{
+    float: left;
+    margin-right:20px;
+}
+.checxbox-list input {
+    display: none;
+}
+.checxbox-list label{
+    display: inline-block;
+    height: 21px;
+    line-height: 21px;
+    vertical-align: top;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #758494;
+    cursor: pointer;
+}
+.checxbox-list li label span {
+    display: inline-block;
+    width: 21px;
+    height: 21px;
+    margin-right: 8px;
+    background: url(../img/check_unselected.png) no-repeat left center;
+    vertical-align: top;
+    cursor: pointer;
+}
+.checxbox-list li.selected label span {
+    display: inline-block;
+    width: 21px;
+    height: 21px;
+    background: url(../img/check_selected.png) no-repeat left center;
+    vertical-align: top;
+}
+/*.table td{
+    text-align: left;
+}*/
+.table td.text-align-center{
+    text-align: center;
+}
+.file-box{
+    position: relative;
+    height: 30px;
+    line-height: 30px;
+}
+.file-box input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 60px;
+    z-index: 3;
+    opacity: 0;
+    width: 220px;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+}
+.file-box i.upload-hint-msg{
+    margin-left:450px;
+    color: #788898;
+    display: none;
+}
+.userdefined-file {
+    position: absolute;
+    top: 0;
+    left: 60px;
+    z-index: 2;
+    width: 380px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 0;  /*应对子元素为 inline-block 引起的外边距*/
+}
+.userdefined-file input[type="text"] {
+    display: inline-block;
+    vertical-align: middle;
+    padding-right: 14px;
+    padding-left: 14px;
+    width: 220px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.modal-box-content .content-item span[data-name]{
+    color: #919eac;
+}
+.default-btn{
+    display: inline-block;
+    vertical-align: middle;
+    width: 80px;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    background: #D0D4DA;
+    border: none;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    /* color: #fff; */
+    cursor: pointer;
+}
+.default-btn.blue {
+    background: #85B1E3;
+}
+.attachment-box a{
+    margin: 0 10px;
+}

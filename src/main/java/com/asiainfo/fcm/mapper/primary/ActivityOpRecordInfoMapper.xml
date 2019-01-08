@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asiainfo.fcm.mapper.primary.ActivityOpRecordInfoMapper">
+    <select id="getAllSmsOperate" parameterType="java.lang.String" resultType="com.asiainfo.fcm.entity.ActivityOpRecordInfo">
+        SELECT
+          activity_id,
+          user_id,
+          user_name,
+          user_phone,
+          op_type,
+          op_code,
+          op_name,
+          op_desc,
+          op_result,
+          VARCHAR_FORMAT(op_time,'yyyy-mm-dd hh24:mi:ss') AS op_time
+         FROM activity_op_record_info
+         WHERE  activity_id = #{activityId} AND op_code in ('S001','S002','S003','S004','S005')
+         ORDER BY op_time DESC
+    </select>
+    
+    <insert id="saveOperateInfo" parameterType="com.asiainfo.fcm.entity.ActivityOpRecordInfo">
+        INSERT INTO activity_op_record_info
+        (activity_id,user_id,user_name,user_phone,op_type,op_code,op_name,op_desc,op_result,op_time)
+        VALUES
+        (#{activityId,jdbcType=VARCHAR},
+        #{userId,jdbcType=VARCHAR},
+        #{userName,jdbcType=VARCHAR},
+        #{userPhone,jdbcType=VARCHAR},
+        #{opType,jdbcType=SMALLINT},
+        #{opCode,jdbcType=VARCHAR},
+        #{opName,jdbcType=VARCHAR},
+        #{opDesc,jdbcType=VARCHAR},
+        #{opResult,jdbcType=SMALLINT},
+        CURRENT_TIMESTAMP)
+    </insert>
+</mapper>

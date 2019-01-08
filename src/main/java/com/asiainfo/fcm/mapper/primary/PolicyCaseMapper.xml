@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asiainfo.fcm.mapper.primary.PolicyCaseMapper">
+    <insert id="saveNewPolicyCase" parameterType="com.asiainfo.fcm.entity.PolicyCaseActivity">
+        insert into policy_case (
+            caseId,
+            proId,
+            title,
+            keyword,
+            desc,
+            caseObjective,
+            mind,
+            keyPoint,
+            kpi,
+            result,
+            caseAttrMap,
+            attachmentId,
+            createId,
+            createName,
+            createTime,
+            caseType,
+            flag,
+            isOK
+        ) values (
+            #{caseId},
+            #{proId},
+            #{title},
+            #{keyword},
+            #{desc},
+            #{caseObjective},
+            #{mind},
+            #{keyPoint},
+            #{kpi},
+            #{result},
+            #{caseAttrMap},
+            #{attachmentId},
+            #{createId},
+            #{createName},
+            to_char(CURRENT_TIMESTAMP, 'yyyymmddHHMMSS'),
+            '1',
+            '1',
+            '1'
+        )
+    </insert>
+
+    <select id="getPolicyCaseList" parameterType="map" resultType="com.asiainfo.fcm.entity.PolicyCaseActivity">
+        select
+          *
+        from (
+            select
+                row_number() over( order by a.createTime desc ) nrows,
+                a.caseId,
+                a.proId,
+                a.title,
+                a.keyword,
+                a.desc,
+                a.caseObjective,
+                a.mind,
+                a.keyPoint,
+                a.kpi,
+                a.result,
+                a.caseAttrMap,
+                a.createId,
+                a.createName,
+                a.createTime,
+                a.uploadId,
+                a.uploadName,
+                a.upDateTime,
+                a.flag,
+                a.isCanUpload,
+                b.proName
+            from policy_case a
+            left join province b on a.proId = b.proId
+            where a.isok = '1'
+            <if test=" caseType != '' ">
+                and a.caseType = #{caseType}
+            </if>
+            <if test="searchVal != '' ">
+                and a.title like CONCAT(CONCAT('%',#{searchVal}),'%')
+            </if>
+            <if test='startTime !=null and  startTime !="" and endTime !="" and endTime !=null'>
+                and a.createTime between #{startTime} and #{endTime}
+            </if>
+        ) t
+        where t.nrows BETWEEN cast(#{startRow} as integer)+1 AND cast(#{startRow} as integer) + #{lengthRow} order by t.createTime DESC
+    </select>
+
+    <select id="getPolicyCaseListTotals" parameterType="map" resultType="int">
+         select
+            count(1)
+        from policy_case
+        where isok = '1'
+        <if test=" caseType != '' ">
+            and caseType = #{caseType}
+        </if>
+        <if test="searchVal != '' ">
+            and title like CONCAT(CONCAT('%',#{searchVal}),'%')
+        </if>
+        <if test='startTime !=null and  startTime !="" and endTime !="" and endTime !=null'>
+            and createTime between #{startTime} and #{endTime}
+        </if>
+    </select>
+
+    <select id="isCanUp" parameterType="map" resultType="int">
+        select
+        count(1)
+        from (
+        select distinct (upPersonId) as op_id from policy_upperson_info where type = '3'
+        union all
+        select distinct (createId) as op_id from policy_case where caseId = #{activityId}
+        ) t
+        where t.op_id = #{userId}
+    </select>
+
+    <update id="uploadActivity" parameterType="map">
+        update policy_case set
+            flag = '2',
+            uploadId = #{userId},
+            uploadName = #{uploadName},
+            upDateTime = to_char(CURRENT_TIMESTAMP,'yyyymmddHHMMSS'),
+            isCanUpload = '0'
+        where caseId = #{activityId}
+    </update>
+
+    <update id="deletePolicyCase" parameterType="map">
+        update policy_case set isok = '0' where caseId = #{activityId}
+    </update>
+
+    <select id="getPolicyCaseDetail" parameterType="string" resultType="com.asiainfo.fcm.entity.PolicyCaseActivity">
+        select
+                a.caseId,
+                a.proId,
+                a.title,
+                a.keyword,
+                a.desc,
+                a.caseObjective,
+                a.mind,
+                a.keyPoint,
+                a.kpi,
+                a.result,
+                a.caseAttrMap,
+                a.attachmentId,
+                a.createId,
+                a.createName,
+                a.createTime,
+                a.uploadId,
+                a.uploadName,
+                a.upDateTime,
+                b.proName
+            from policy_case a
+            left join province b on a.proId = b.proId
+            where caseId = #{caseId}
+    </select>
+
+    <select id="getAllPolicyCaseList" parameterType="map" resultType="map">
+        select
+            a.caseId,
+            a.proId,
+            a.title,
+            a.keyword,
+            a.desc,
+            a.caseObjective,
+            a.mind,
+            a.keyPoint,
+            a.kpi,
+            a.result,
+            a.caseAttrMap,
+            a.createId,
+            a.createName,
+            a.createTime,
+            a.uploadId,
+            a.uploadName,
+            a.upDateTime,
+            a.flag,
+            b.proName
+        from policy_case a
+        left join province b on a.proId = b.proId
+        where a.isok = '1'
+        <if test=" caseType != '' ">
+            and a.caseType = #{caseType}
+        </if>
+        <if test="searchVal != '' ">
+            and a.title like CONCAT(CONCAT('%',#{searchVal}),'%')
+        </if>
+        <if test='startTime !=null and  startTime !="" and endTime !="" and endTime !=null'>
+            and a.createTime between #{startTime} and #{endTime}
+        </if>
+        order by a.createTime desc
+    </select>
+</mapper>

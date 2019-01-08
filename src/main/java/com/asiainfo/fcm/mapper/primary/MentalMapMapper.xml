@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asiainfo.fcm.mapper.primary.MentalMapMapper">
+
+    <insert id="saveCustomerBuildInfo" parameterType="map">
+        insert into activity_customers_build_state(
+          activity_id,
+          activity_name,
+          source_is_complete,
+          is_complete
+        )values(
+          #{taskId},
+          #{taskName},
+          #{sourceIsComplete},
+          #{isComplete}
+        )
+    </insert>
+
+    <select id="getCustomerNotBuildInfo" resultType="string">
+        select
+          a.activity_id
+        from activity_customers_build_state a
+        left join activity_info b on a.activity_id = b.activity_id
+        where b.activity_state = 8 and b.stopped != 1 and b.deleted != 1
+        and a.is_complete = 0
+    </select>
+
+    <update id="updateCustomerBuildInfo" parameterType="map">
+        update activity_customers_build_state set user_file_dir = #{filePath},is_complete = 1
+        where activity_id = #{taskId}
+    </update>
+
+    <select id="getActivityBaseInfo" parameterType="string" resultType="map">
+        select
+          b.activity_id,
+          b.activity_name,
+          b.start_time,
+          b.end_time,
+          case when c.scene_rule_value is null then 0 else c.scene_rule_value end passbyLimitTime
+        from activity_customers_build_state a
+        left join activity_info b on a.activity_id = b.activity_id
+        left join activity_scene_info c on a.activity_id = c.activity_id and c.scene_rule_id = 'SR013'
+        where b.stopped = 0 and b.deleted = 0
+    </select>
+
+    <update id="updateSourceCustomerBuildState" parameterType="string">
+        update activity_customers_build_state set source_is_complete = 1 where activity_id = #{activityId}
+    </update>
+
+    <insert id="saveMentalMapTaskId" parameterType="map">
+        insert into mental_map_task_info(
+          activity_id,
+          activity_name,
+          task_id,
+          customer_group_name,
+          flag
+        )values(
+          #{activityId},
+          #{activityName},
+          #{taskId},
+          #{customerGroupName},
+          0
+        )
+    </insert>
+
+    <select id="getMentalMapTaskInfo" resultType="map">
+        select * from mental_map_task_info where flag=0
+    </select>
+
+    <update id="updateMentalMapTaskInfo" parameterType="map">
+        update mental_map_task_info set flag=1 where task_id=#{taskId}
+    </update>
+
+</mapper>

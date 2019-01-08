@@ -1,0 +1,80 @@
+@charset "utf-8";
+.text-left {
+	text-align: left !important;
+}
+.table tbody td>p {
+	margin-left: 10px;
+}
+.table tbody td i.icon {
+	 
+}
+.modal-box {
+	width: 60%;
+	min-width: 700px;
+	margin-left:-30%;
+}
+/*.h-block {
+	display: block;
+	width: 100%;
+	height: 30px;
+  border: 1px solid #d4d9e4;
+  border-radius: 2px;
+  background: #FBFCFE;
+  padding-left: 10px;
+}*/
+#task_ass {
+	width: 480px;
+	position: absolute;
+}
+.h-tab {
+	margin: 20px 0;
+	padding-bottom:20px;
+}
+#task_ass .pager-box .number,
+#task_ass .pager-box .start,
+#task_ass .pager-box .end {
+	display: none;
+}
+#task_ass .pager-box .prev,
+#task_ass .pager-box .next {
+	float: left;
+}
+#table td>p>input[type=checkbox] {
+	display: none;
+}
+
+.table tbody td>p {
+	width: 100%;
+}
+#table .checkbox-icon {
+	top: 2px;
+}
+#task_ass .pager-box .pager {
+	float: none;
+	text-align: right;
+}
+#task_ass .pager a,#task_ass .pager span {
+	float: none;
+	display: inline-block;
+}
+.modal-box-content .row span[name] {
+	color: #919eac;
+}
+.filter-panel{
+	top:113px;
+}
+.g-height{
+	display: block;
+	height: 32px;
+	width: 100%;
+	border: 1px solid #d4d9e4;
+	border-radius: 2px;
+	background: #FBFCFE;
+	padding-left: 10px;
+}
+.modal-wrap-new .modal-box-content{
+	padding-bottom: 40px;
+}
+.popup-box table td{
+	padding:0 8px;
+}

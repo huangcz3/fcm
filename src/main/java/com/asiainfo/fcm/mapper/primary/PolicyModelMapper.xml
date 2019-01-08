@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asiainfo.fcm.mapper.primary.PolicyModelMapper">
+    <select id="getPolicyModelList" parameterType="map" resultType="com.asiainfo.fcm.entity.PolicyModelActivity">
+        select
+        *
+        from (
+        select
+        row_number() over( order by a.createTime desc ) nrows,
+        a.modelId,
+        a.uploadDateTime,
+        a.modelName,
+        a.modelType,
+        a.modelSimpleDesc,
+        a.updateTime,
+        a.createId,
+        a.createName,
+        a.createTime,
+        a.uploadId,
+        a.uploadName,
+        a.uploadDateTime,
+        a.flag,
+        a.isCanUpload,
+        b.proName
+        from policy_model a
+        left join province b on a.proId = b.proId
+        where a.isok = '1'
+        <if test=" type != '' ">
+            and a.type = #{type}
+        </if>
+        <if test=" modelType != '' ">
+            and a.modelType = #{modelType}
+        </if>
+        <if test="searchVal != '' ">
+            and ( a.modelName like CONCAT(CONCAT('%',#{searchVal}),'%')
+            or a.modelSimpleDesc like CONCAT(CONCAT('%',#{searchVal}),'%')
+            or a.modelObjective like CONCAT(CONCAT('%',#{searchVal}),'%')
+            or a.uploadName like CONCAT(CONCAT('%',#{searchVal}),'%')
+            )
+        </if>
+        <if test='startTime !=null and  startTime !="" and endTime !="" and endTime !=null'>
+            and a.createTime between #{startTime} and #{endTime}
+        </if>
+        ) t
+        where t.nrows BETWEEN cast(#{startRow} as integer)+1 AND cast(#{startRow} as integer) + #{lengthRow} order by t.createTime DESC
+    </select>
+
+    <select id="getPolicyModelListTotals" parameterType="map" resultType="int">
+        select
+            count(1)
+        from policy_model
+        where isok = '1'
+        <if test=" type != '' ">
+            and type = #{type}
+        </if>
+        <if test=" modelType != '' ">
+            and modelType = #{modelType}
+        </if>
+        <if test="searchVal != '' ">
+            and ( modelName like CONCAT(CONCAT('%',#{searchVal}),'%')
+            or modelSimpleDesc like CONCAT(CONCAT('%',#{searchVal}),'%')
+            or modelObjective like CONCAT(CONCAT('%',#{searchVal}),'%')
+            or uploadName like CONCAT(CONCAT('%',#{searchVal}),'%')
+            )
+        </if>
+        <if test='startTime !=null and  startTime !="" and endTime !="" and endTime !=null'>
+            and createTime between #{startTime} and #{endTime}
+        </if>
+    </select>
+
+    <insert id="savePolicyModelActivity" parameterType="com.asiainfo.fcm.entity.PolicyModelActivity">
+        insert into policy_model(
+            modelId,
+            proId,
+            modelName,
+            modelType,
+            modelSimpleDesc,
+            createTime,
+            updateTime,
+            modelObjective,
+            businessDesc,
+            businessPerson,
+            objectiveUserNum,
+            resultType,
+            caseSence,
+            modelTool,
+            handwareReq,
+            softRun,
+            outputFormat,
+            exampleData,
+            coreMethod,
+            paramPersume,
+            modelDesc,
+            modelOutput,
+            modelFile,
+            createId,
+            createName,
+            type,
+            flag,
+            isOk
+        ) values (
+            #{modelId},
+            #{proId},
+            #{modelName},
+            #{modelType},
+            #{modelSimpleDesc},
+            to_char(CURRENT_TIMESTAMP ,'yyyymmddHHMMSS'),
+            #{updateTime},
+            #{modelObjective},
+            #{businessDesc},
+            #{businessPerson},
+            #{objectiveUserNum},
+            #{resultType},
+            #{caseSence},
+            #{modelTool},
+            #{handwareReq},
+            #{softRun},
+            #{outputFormat},
+            #{exampleData},
+            #{coreMethod},
+            #{paramPersume},
+            #{modelDesc},
+            #{modelOutput},
+            #{modelFile},
+            #{createId},
+            #{createName},
+            '1',
+            '1',
+            '1'
+        )
+    </insert>
+
+    <insert id="savePolicyModelDataDescBO" parameterType="com.asiainfo.fcm.entity.PolicyModelDataDescBO">
+        insert into policy_model_datadesc (
+            modelId,
+            dataNum,
+            dateArrange,
+            filedDesc,
+            source,
+            varList,
+            varReason
+        ) values (
+            #{modelId},
+            #{dataNum},
+            #{dateArrange},
+            #{filedDesc},
+            #{source},
+            #{varList},
+            #{varReason}
+        )
+    </insert>
+
+    <insert id="savePolicyModeDataHandleBO" parameterType="com.asiainfo.fcm.entity.PolicyModelDataHandleBO">
+        insert into policy_model_datahandel (
+            modelId,
+            defaultHandle,
+            dataUniHandle,
+            errorHandle,
+            otherHandle
+        ) values (
+            #{modelId},
+            #{defaultHandle},
+            #{dataUniHandle},
+            #{errorHandle},
+            #{otherHandle}
+        )
+    </insert>
+
+    <insert id="savePolicyModelModeEvaBO" parameterType="com.asiainfo.fcm.entity.PolicyModelModeEvaBO">
+        insert into policy_model_modeeva (
+            modelId,
+            coverageRatio,
+            accuracyRatio,
+            goalRatio,
+            otherSelfEva
+        ) values (
+            #{modelId},
+            #{coverageRatio},
+            #{accuracyRatio},
+            #{goalRatio},
+            #{otherSelfEva}
+        )
+    </insert>
+
+    <insert id="savePolicyModelKpiBO" parameterType="com.asiainfo.fcm.entity.PolicyModelKpiBO">
+        insert into policy_model_modelkpi (
+            modelId,
+            transformRatio,
+            increaseRatio,
+            otherSelfKpi
+        ) values (
+            #{modelId},
+            #{transformRatio},
+            #{increaseRatio},
+            #{otherSelfKpi}
+        )
+    </insert>
+
+    <select id="getPolicyModelDetail" parameterType="string" resultType="com.asiainfo.fcm.entity.PolicyModelActivity">
+        select
+            *
+        from policy_model a
+        left join province b on a.proId = b.proId
+        where a.modelId = #{modelId}
+    </select>
+
+    <select id="getPolicyModelDataDescBO" parameterType="string" resultType="com.asiainfo.fcm.entity.PolicyModelDataDescBO">
+        select
+            *
+        from policy_model_datadesc
+        where modelId = #{modelId}
+    </select>
+
+    <select id="getPolicyModelDataHandleBO" parameterType="string" resultType="com.asiainfo.fcm.entity.PolicyModelDataHandleBO">
+         select
+            *
+        from policy_model_datahandel
+        where modelId = #{modelId}
+    </select>
+
+    <select id="getPolicyModelModeEvaBO" parameterType="string" resultType="com.asiainfo.fcm.entity.PolicyModelModeEvaBO">
+         select
+            *
+        from policy_model_modeeva
+        where modelId = #{modelId}
+    </select>
+
+    <select id="getPolicyModelKpiBO" parameterType="string" resultType="com.asiainfo.fcm.entity.PolicyModelKpiBO">
+        select
+        *
+        from policy_model_modelkpi
+        where modelId = #{modelId}
+    </select>
+
+    <select id="isCanUp" parameterType="map" resultType="int">
+        select
+          count(1)
+        from (
+            select distinct (upPersonId) as op_id from policy_upperson_info where type = '2'
+            union all
+            select distinct (createId) as op_id from policy_model where modelId = #{modelId}
+        ) t
+        where t.op_id = #{userId}
+    </select>
+
+    <update id="uploadActivity" parameterType="map">
+        update policy_model set
+        flag = '2',
+        uploadId = #{userId},
+        uploadName = #{uploadName},
+        uploadDateTime = to_char(CURRENT_TIMESTAMP,'yyyymmddHHMMSS'),
+        isCanUpload = '0'
+        where modelId = #{modelId}
+    </update>
+
+    <update id="deleteActivity" parameterType="map">
+        update policy_model set isok = '0' where modelId = #{modelId}
+    </update>
+
+    <select id="getAllPolicyModelList" parameterType="map" resultType="map">
+        select
+            a.*,
+            b.proName
+        from policy_model a
+        left join province b on a.proId = b.proId
+        where a.isok = '1'
+        <if test=" type != '' ">
+            and a.type = #{type}
+        </if>
+        <if test=" modelType != '' ">
+            and a.modelType = #{modelType}
+        </if>
+        <if test="searchVal != '' ">
+            and ( a.modelName like CONCAT(CONCAT('%',#{searchVal}),'%')
+            or a.modelSimpleDesc like CONCAT(CONCAT('%',#{searchVal}),'%')
+            or a.modelObjective like CONCAT(CONCAT('%',#{searchVal}),'%')
+            or a.uploadName like CONCAT(CONCAT('%',#{searchVal}),'%')
+            )
+        </if>
+        <if test='startTime !=null and  startTime !="" and endTime !="" and endTime !=null'>
+            and a.createTime between #{startTime} and #{endTime}
+        </if>
+        order by a.createTime desc
+    </select>
+</mapper>

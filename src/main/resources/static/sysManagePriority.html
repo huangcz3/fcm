@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>系统管理-优先级</title>
+	
+    <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" type="text/css" href="./css/public/bootstrap-fileinput.css">
+	<link rel="stylesheet" type="text/css" href="./css/public/bootstrap-tagsinput.css">
+	<link rel="stylesheet" type="text/css" href="css/generalStyle.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/vicActManage.css">
+	<link rel="stylesheet" type="text/css" href="css/vicPopupStyle.css">
+	
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	  <script type="text/javascript" src="./lib/public/html5shiv.min.js"></script>
+	  <script type="text/javascript" src="./lib/public/excanvas.compiled.js"></script>
+	<![endif]-->
+
+  </head>
+  
+  <body>
+    <!--start 开始顶部导航 -->
+	<div class="nav-wrap">
+		<div class="logo lt">
+			<img src="./img/logo.png" alt="全触点"/>
+		</div>
+		<ul class="nav clearfix lt" id="headerNav">
+
+		</ul>
+		<div class="user rt clearfix">
+			<i class="user-icon"></i>
+			<span>您好，</span>
+			<span id="user"></span>
+			<b title="退出">
+				<i class="exit"></i>
+			</b>
+		</div>
+	</div>
+	<!--end 顶部导航 -->
+	<!--左侧导航和主体内容-->
+	<div class="content-wrap">
+		<!--start 左侧导航 -->
+		<div class="side-nav">
+			<ul id="sideNav">
+
+			</ul>
+		</div>
+		<!--end 左侧导航 -->
+		
+		<!--start主体内容-->
+		<div class="main">
+			<div class="content">
+				<div class="inner-content">
+					<div class="panel-title clearfix">
+						<span class="title lt">						
+							活动列表
+							<span id="activities_num" class="color-grey"></span>
+						</span>
+						<div class="rt clearfix">
+							<div class="lt search-box">
+								<input type="text" id="search" class="search" placeholder=""/>
+								<i></i>
+							</div>
+						</div>
+					</div>
+
+					<div class="content-tab">
+						<div id="activities" class="selected">
+							<div class="panel-bottom">
+								<table cellspacing="0" id="table" class="table">
+									<thead>
+										<tr>				
+											<td style="width: 5%;" >&nbsp;</td>
+											<td class="text-align-left" style="width: 28%;" >活动名称</td>										
+											<td>开始时间</td>
+											<td>结束时间</td>								
+											<td>创建时间</td>
+											<td style="width: 10%;">创建人</td>
+											<td>操作</td>
+										</tr>
+									</thead>
+									<tbody id="tbody" class="markInfoList">
+									</tbody>
+								</table>
+							</div>					
+							<div class="page-wrap clearfix" id="page"></div>						
+						</div>			
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--end主体内容-->	
+	</div>
+	<script type="text/javascript" src="./lib/public/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="./lib/public/jquery.blockUI.js"></script>
+	<script type="text/javascript" src="./js/pager.js"></script>
+	<script type="text/javascript" src="./js/topNav.js"></script>
+	<script type="text/javascript" src="./js/sysManageSideNav.js"></script>
+	<script type="text/javascript" src="./js/generalFunc.js"></script>  
+	<script type="text/javascript" src="./js/sysManagePriority.js"></script>  
+  </body>
+</html>

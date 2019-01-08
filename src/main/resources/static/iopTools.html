@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>营销工具</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="./css/public/bootstrap-fileinput.css">
+    <link rel="stylesheet" type="text/css" href="./css/public/bootstrap-tagsinput.css">
+    <link rel="stylesheet" type="text/css" href="css/generalStyle.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/vicActManage.css">
+    <link rel="stylesheet" type="text/css" href="css/vicPopupStyle.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/iopTools.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="./lib/public/html5shiv.min.js"></script>
+    <script type="text/javascript" src="./lib/public/excanvas.compiled.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+<!--start 开始顶部导航 -->
+<div class="nav-wrap">
+    <div class="logo lt">
+        <img src="./img/logo.png" alt="全触点"/>
+    </div>
+    <ul class="nav clearfix lt" id="headerNav">
+
+    </ul>
+    <div class="user rt clearfix">
+        <i class="user-icon"></i>
+        <span>您好，</span>
+        <span id="user"></span>
+        <b title="退出">
+            <i class="exit"></i>
+        </b>
+    </div>
+</div>
+<!--end 顶部导航 -->
+<!--左侧导航和主体内容-->
+<div class="content-wrap">
+    <!--start 左侧导航 -->
+    <div class="side-nav" style="margin-top:-70px;">
+        <ul id="sideNav">
+
+        </ul>
+    </div>
+    <!--end 左侧导航 -->
+
+    <!--start主体内容-->
+    <div class="tools_modules" id="tools_modules">
+        <ul class="tools_modules_content">
+            <msg-item
+                    v-for="item in groceryList"
+                    v-bind:msg="item"
+                    v-bind:key="item.id">
+            </msg-item>
+        </ul>
+    </div>
+    <!--end主体内容-->
+</div>
+<script type="text/javascript" src="./lib/public/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.blockUI.js"></script>
+<script src="js/vue.min.js"></script>
+<script type="text/javascript" src="./js/topNav.js"></script>
+<script type="text/javascript" src="./js/iopToolsSideNav.js"></script>
+<script type="text/javascript" src="./js/generalFunc.js"></script>
+<script type="text/javascript" src="./js/iopTools.js"></script>
+</body>
+</html>

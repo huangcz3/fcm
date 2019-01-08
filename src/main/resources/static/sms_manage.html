@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>营销活动-发送列表</title>
+    <link rel="stylesheet" type="text/css" href="./css/public/bootstrap-fileinput.css">
+    <link rel="stylesheet" type="text/css" href="./css/public/bootstrap-tagsinput.css">
+    <link rel="stylesheet" type="text/css" href="./css/public/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/public/jquery.autocomplete.css">
+    <link rel="stylesheet" href="./css/public/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="css/generalStyle.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/vicPopupStyle.css">
+    <link rel="stylesheet" type="text/css" href="css/sms_manage.css">
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="./lib/public/html5shiv.min.js"></script>
+    <script type="text/javascript" src="./lib/public/excanvas.compiled.js"></script>
+    <style>
+        .modal-wrap{
+            -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr=#E6ffffff,endColorstr=#E6ffffff)";
+
+        }
+        .full-scr-overlay {
+            -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr=#BEffffff,endColorstr=#BEffffff)";
+        }
+    </style>
+    <![endif]-->
+</head>
+
+<body>
+<input type="hidden" id="curActivityId" />
+<input type="hidden" id="curActivityName" />
+<input type="hidden" id="curActivityState"/>
+<!--start 开始顶部导航 -->
+<div class="nav-wrap">
+    <div class="logo lt">
+        <img src="./img/logo.png" alt="全触点" />
+    </div>
+    <ul class="nav clearfix lt" id="headerNav">
+    </ul>
+    <div class="user rt clearfix">
+        <i class="user-icon"></i>
+        <span>您好，</span>
+        <span id="user">请登录</span>
+        <b title="退出">
+            <i class="exit"></i>
+        </b>
+    </div>
+</div>
+<!--end 顶部导航 -->
+<!--左侧导航和主体内容-->
+<div class="content-wrap">
+    <!--start 左侧导航 -->
+    <div class="side-nav">
+        <ul id="sideNav">
+        </ul>
+    </div>
+    <!--end 左侧导航 -->
+    <!--start主体内容-->
+    <div class="main">
+        <div class="content">
+            <div class="inner-content">
+                <div class="panel-title clearfix">
+            <span class="title lt selected">
+				发送列表
+				<span id="activities_num" class="color-grey"></span>
+            </span>
+                    <div class="rt clearfix">
+                        <div class="lt search-box">
+                            <input type="text" id="search" class="search" placeholder="支持活动名称搜索" />
+                            <i></i>
+                        </div>
+                        <span id="filter-btn" class="filter-btn lt border_radius">筛选<i></i></span>
+                        <span class="load-btn border_radius lt" id="download">
+                <i></i>
+                <span>数据下载</span>
+              </span>
+                    </div>
+                </div>
+                <div class="content-tab">
+                    <div id="activities" class="selected">
+                        <div class="panel-mid-s" style="display:none;">
+                            <!--<p class="searchResult">"全省" "2016-03-01~2016-06-01"相关搜索结果25455个</p>-->
+                        </div>
+                        <div class="panel-bottom">
+                            <table cellspacing="0" id="table" class="table">
+                                <thead>
+                                <tr>
+                                    <td class="width-5">&nbsp;</td>
+                                    <td class="width-10 text-align-left" style="width: 12%;">活动名称</td>
+                                    <td class="text-align-left">渠道名称</td>
+                                    <td style="width: 140px;">活动状态</td>
+                                    <td style="width: 12%;">活动ID</td>
+                                    <td>开始时间</td>
+                                    <td>结束时间</td>
+                                    <td>开始发送时间</td>
+                                    <td>已发送量</td>
+                                    <td>剩余量</td>
+                                    <td>速率</td>
+                                    <td class="width-11">操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="page-wrap clearfix" id="page"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end主体内容-->
+    <!--start筛选弹框-->
+    <div class="filter-panel">
+        <div class="inner-filter-panel">
+            <div class="row">
+                <p>活动状态：</p>
+                <select id="state" class="bg-border elem-s">
+                    <option value="0">全部状态</option>
+                    <option value="1">发送中</option>
+                    <option value="2">待发送</option>
+                    <option value="3">发送完成</option>
+                    <option value="4">活动结束</option>
+                </select>
+            </div>
+            <div class="row">
+                <p>执行渠道：</p>
+                <select id="channel" class="bg-border">
+                    <option value='ALL'>全部渠道</option>
+                    <option value="_10086" selected="selected">10086群发</option>
+                    <option value="SALES">优惠提醒</option>
+                </select>
+            </div>
+            <div class="row" style="width: 260px!important;">
+                <p class="clearfix">
+                    <span>活动执行有效期：</span>
+                </p>
+                <input type="text" readOnly="true" class="Wdate" id="startDate" onFocus="WdatePicker({maxDate:'%y-%M-%d'})" /> -
+                <input type="text" readOnly="true" class="Wdate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}' })" />
+            </div>
+            <div class="row btns">
+                <button id="ensure" class="ensure border_radius">确定</button>
+                <button id="cancel" class="cancel border_radius">取消</button>
+            </div>
+        </div>
+    </div>
+    <!--end筛选弹框-->
+</div>
+
+</div>
+<!-- start速率模态框 -->
+<div class="modal fade speed_model" id="speed_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" id="speedClose" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">修改速率</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input type="hidden" id="speed_actId">
+                    <input type="hidden" id="speed_businessIds">
+                    <div class="col-md-12" style="padding-top: 5px;padding-bottom: 8px;">
+                        活动名称：<span id="activityName_speed"></span>
+                    </div>
+                    <div class="col-md-12" style="padding-top: 5px;padding-bottom: 8px;">
+                        当前速率：<span id="currentSpeed"></span>条/S
+                    </div>
+                    <div class="col-md-12" style="padding-top: 8px">
+                        修改速率(1-<span class="j-deftSpeed">150</span>)：
+                    </div>
+                    <div class="col-md-12" style="padding-top: 5px;padding-bottom: 8px;">
+                        <div class="input-group">
+                            <input id="speed_input" type="text" class="form-control"
+                                   onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                                   onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'0')}else{this.value=this.value.replace(/\D/g,'')}">
+                            <span class="input-group-addon">条/S</span>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="padding-top: 8px;padding-bottom: 5px;">
+                        修改原因：
+                    </div>
+                    <div class="col-md-12" style="padding-top: 5px;">
+                        <textarea id="speedText" class="form-control" rows="4" style="resize: none"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="speedChange()" type="button" class="btn btn-primary">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!-- end速率模态框 -->
+
+<!-- start操作原因模态框 -->
+<div class="modal fade reason_model" style="" id="reason_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" id="reasonClose" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="">操作原因</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input type="hidden" id="reason_actId">
+                    <input type="hidden" id="reason_businessIds">
+                    <input type="hidden" id="kind">
+                    <div class="col-md-12" style="padding-top: 5px;padding-bottom: 8px;">
+                        活动名称：<span id="activityName_reason"></span>
+                    </div>
+                    <div class="col-md-12" style="padding-bottom: 10px;">
+                        修改原因：
+                    </div>
+                    <div class="col-md-12">
+                        <textarea id="reasonArea" class="form-control" rows="4" style="resize: none"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="initReasonModelData()" type="button" class="btn btn-primary">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!-- end操作原因模态框 -->
+
+<!-- start详情模态框 -->
+<div class="modal-wrap modal-wrap-detail" id="infoModal">
+    <div class="modal-box">
+        <div class="modal-box-title">
+            <h6 style="display: inline-block;"> </h6>
+            <a href="javascript: void(0);" class="modal-box-cancel">×</a>
+        </div>
+        <ul id="myTab" class="nav nav-tabs ">
+            <li class="active"><a id="home_tab" href="#home" data-toggle="tab">短信详情</a></li>
+            <li><a id="operation_info" href="#profile" data-toggle="tab">操作记录</a></li>
+            <input type="hidden" id="actId">
+            <input type="hidden" id="actname">
+        </ul>
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade in active" id="home">
+                <div class="col-md-12" style="margin-top:30px;">
+                    <div style="width: 100px;float: left;padding-top:9px;font-weight: 600;text-align:right;">短信内容：</div>
+                    <div class="col-md-10" style="line-height: 40px;" id="smsContent"></div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="profile">
+                <div class="col-md-12" style="overflow-y:auto;max-height: 300px;">
+                    <table cellspacing="0" id="operate_info" class="table">
+                        <thead>
+                        <tr>
+                            <td class="col-md-2">操作人</td>
+                            <td class="col-md-1">操作类型</td>
+                            <td class="col-md-1">操作结果</td>
+                            <td class="col-md-3">操作时间</td>
+                            <td class="col-md-5">操作原因</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end详情模态框 -->
+
+<!-- start活动列表已发送量详情弹框 -->
+<div class="pop-box clearfix">
+    <p class="pop-title">已发送详情</p>
+    <ul class="pop-content">
+        <li data-id="successNum">
+            <span class="pop-left-mark" >发送成功量：</span>
+            <span data-id="successNumAmount"></span>
+        </li>
+        <li data-id="failNum">
+            <span class="pop-left-mark" >发送失败量：</span>
+            <span data-id="failNumAmount"></span>
+        </li>
+    </ul>
+</div>
+<!-- end活动列表目标已发送量详情弹框 -->
+
+<!--start更改发送策略模态框-->
+<form id="resetForm">
+    <div class="modal-wrap modal-wrap-edit">
+        <div class="modal-box">
+            <div class="modal-box-title">
+                <h3 style="display: inline-block;">更改发送策略</h3>
+                <a href="javascript: void(0);" class="modal-box-cancel">取消</a>
+                <a href="javascript: void(0);" id="saveReset" class="modal-box-save disabled">保存</a>
+            </div>
+            <div class="modal-box-content">
+                <div class="content-item content-item-new-modal">
+                    <div class="row clearfix">
+                        <span class="item-property is-required lt">是否过滤策略：</span>
+                        <div class="radio-box lt">
+                            <p>
+                                <input class="radio-input" type="radio" name="isFilter" value="1" checked>
+                                <label><span class="selected"></span>是</label>
+                            </p>
+                            <p>
+                                <input class="radio-input" type="radio" name="isFilter" value="0">
+                                <label><span></span>否</label>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!--end更改发送策略模态框-->
+
+
+<script type="text/javascript" src="./lib/public/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./lib/public/bootstrap.min.js"></script>
+<script type="text/javascript" src="./lib/public/bootstrap-tagsinput.js"></script>
+<script type="text/javascript" src="./lib/DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.slimscroll.min.js"></script>
+<script type="text/javascript" src="./lib/public/bootstrap-fileinput.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.blockUI.js"></script>
+<script type="text/javascript" src="./lib/public/ajaxfileupload.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.autocomplete.js"></script>
+<script type="text/javascript" src="./lib/public/select2.full.min.js"></script>
+<script type="text/javascript" src="./js/pager.js"></script>
+<script type="text/javascript" src="./js/topNav.js"></script>
+<script type="text/javascript" src="./js/vicSideNav.js"></script>
+<script type="text/javascript" src="./js/generalFunc.js"></script>
+<script type="text/javascript" src="./js/sms_manage.js"></script>
+<script type="text/javascript" src="./js/iopModalDetails.js"></script>
+<script type="text/javascript" src="./js/vicPopup.js"></script>
+</body>
+
+</html>

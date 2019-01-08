@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>系统管理-10086群发设置</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/public/bootstrap-switch.min.css">
+    <link rel="stylesheet" type="text/css" href="css/generalStyle.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/sysManage10086.css">
+    <link rel="stylesheet" type="text/css" href="css/sysManage10086GroupSend.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="./lib/public/html5shiv.min.js"></script>
+    <script type="text/javascript" src="./lib/public/excanvas.compiled.js"></script>
+    <![endif]-->
+</head>
+<body>
+<!--start 开始顶部导航 -->
+<div class="nav-wrap">
+    <div class="logo lt">
+        <img src="./img/logo.png" alt="全触点"/>
+    </div>
+    <ul class="nav clearfix lt" id="headerNav">
+
+    </ul>
+    <div class="user rt clearfix">
+        <i class="user-icon"></i>
+        <span>您好，</span>
+        <span id="user">请登录</span>
+        <b title="退出">
+            <i class="exit"></i>
+        </b>
+    </div>
+</div>
+<!--end 顶部导航 -->
+<!--左侧导航和主体内容-->
+<div class="content-wrap">
+    <!--start 左侧导航 -->
+    <div class="side-nav">
+        <ul id="sideNav">
+        </ul>
+    </div>
+    <!--end 左侧导航 -->
+
+    <!--start主体内容-->
+    <div class="main">
+        <div class="content">
+            <div class="inner-content">
+                <div class="panel-title clearfix">
+                    <div class="lt j-channels-nav">
+                         <span class="title" data-channelid="d05">
+                             <a href="##">10086群发</a>
+                         </span>
+
+                    </div>
+                    <button class="ensure border_radius rt">保存</button>
+                </div>
+
+                <div class="content-tab j-content-tab">
+                    <div data-bindtab="d05">
+                        <div class="row">
+                            <div class="g-left-part">
+                                <div class="col-3">
+                                    <span class="is-required-before">渠道状态：</span>
+                                </div>
+                            </div>
+                            <div class="g-right-part">
+                                <input type="checkbox" name="d05" checked />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="g-left-part">
+                                <div class="col-3">
+                                    <span class="is-required-before">链接下发速度：</span>
+                                </div>
+                            </div>
+                            <div class="g-right-part">
+                                <input type="text" class="input-s-style j-number" name="d05ExtrAttr" value="100"/>
+                                <span>条/秒</span>
+                                <span class="hint-msg">(取值范围：0~100，请填写整数；如果不填写，则取默认值100)</span>
+                            </div>
+                        </div>
+                        <div class="row hidden">
+                            <div class="g-left-part">
+                                <div class="col-3">
+                                    <span class="is-required-before">下发数量：</span>
+                                </div>
+                            </div>
+                            <div class="g-right-part">
+                                <input type="text" class="input-s-style j-number" name="sendCount" value="5"/>
+                                <span>条</span>
+                                <span class="hint-msg">(请填写整数；)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end主体内容-->
+</div>
+<script type="text/javascript" src="./lib/public/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.blockUI.js"></script>
+<script type="text/javascript" src="./lib/public/bootstrap-switch.js"></script>
+<script type="text/javascript" src="./js/topNav.js"></script>
+<script type="text/javascript" src="./js/sysManageSideNav.js"></script>
+<script type="text/javascript" src="./js/generalFunc.js"></script>
+<script type="text/javascript" src="./js/sysManage10086GroupSend.js"></script>
+</body>
+</html>

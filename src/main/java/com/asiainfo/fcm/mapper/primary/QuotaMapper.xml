@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asiainfo.fcm.mapper.primary.QuotaMapper">
+    <select id="getChannels" resultType="java.util.Map">
+        select
+          distinct
+            channel_id,
+            channel_name
+        from surfing_send_quota
+        order by channel_id asc
+    </select>
+
+    <select id="getQuotaList" parameterType="java.util.Map" resultType="com.asiainfo.fcm.entity.Quota">
+        select
+          *
+        from(
+            select
+                row_number() over(order by city_id asc) row_number,
+                channel_id,
+                channel_name,
+                city_id,
+                city_name,
+                quota_type,
+                send_limit,
+                effect_time
+            from surfing_send_quota
+            where
+                channel_id = #{channelId}
+            and effect_time = #{effectTime}
+            and effective = 1
+        ) where row_number between #{startRow}+1 and #{startRow} + #{pageSize} order by city_id asc
+    </select>
+
+    <select id="getQuotaListTotalRecords" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select
+            count(1)
+        from surfing_send_quota
+        where
+          channel_id = #{channelId}
+        and effect_time = #{effectTime}
+        and effective = 1
+    </select>
+
+    <select id="setCityQuota" parameterType="com.asiainfo.fcm.entity.Quota">
+        update
+            surfing_send_quota
+        set
+            send_limit = #{sendLimit}
+        where
+            channel_id = #{channelId}
+        and
+            city_id = #{cityId}
+        and
+            effective = 1
+    </select>
+
+    <select id="addCityQuota" parameterType="com.asiainfo.fcm.entity.Quota">
+        insert into surfing_send_quota(
+              city_id,
+              city_name,
+              channel_id,
+              channel_name,
+              send_limit,
+              effect_time,
+              quota_type,
+              effective
+            )
+        values(
+              #{cityId},
+              #{cityName},
+              #{channelId},
+              #{channelName},
+              #{sendLimit},
+              #{effectTime},
+              1,
+              1
+            )
+    </select>
+
+    <select id="getCityList" parameterType="java.lang.String" resultType="com.asiainfo.fcm.entity.City">
+        select
+            city_id,
+            city_name
+        from city t
+        where not exists (
+            select
+                *
+            from surfing_send_quota
+            where channel_id = #{channelId}
+            and city_id = t.city_id
+            )
+    </select>
+
+    <select id="checkQuotaIsExist" parameterType="com.asiainfo.fcm.entity.Quota" resultType="com.asiainfo.fcm.entity.Quota">
+        select
+          *
+        from surfing_send_quota
+        where channel_id = #{channelId}
+        and effect_time = #{effectTime}
+        and city_id = #{cityId}
+        and effective = 1
+    </select>
+</mapper>

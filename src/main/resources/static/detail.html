@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+		<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>效果评估-地市评估</title>
+
+	<link rel="stylesheet" type="text/css" href="css/area.css">
+	<link rel="stylesheet" type="text/css" href="css/generalStyle.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/vicActManage.css">
+</head>
+<body>
+	<!-- start活动审批 -->
+	<div class="modal-wrap modal-wrap-approve" style="display:block">
+		<div class="modal-box">
+			<div class="modal-box-title">
+				<h3 style="display: inline-block;">活动审批</h3>
+				<a href="javascript: void(0);" class="modal-box-cancel">取消</a>
+				<a href="javascript: void(0);" class="modal-box-save">保存</a>
+			</div>
+			<ul class="tab-nav tab-nav-grey clearfix" id="actApproveNav">
+				<li>
+					<a href="#approveTab" data-id="approveTab">活动审批</a>
+				</li>
+				<li>
+					<a href="#detailTab" data-id="detailTab">活动详情</a>
+				</li>
+			</ul>
+			<div class="tabs">			
+				<!-- 活动详情 -->
+				<div class="tab-box" id="detailTab">								
+					<div class="modal-box-nav">
+						<ul>
+							<li class="on"><a href="#basicInfoShow">基本信息</a></li>
+							<li><a href="#sceneEventShow">场景事件</a></li>
+							<li><a href="#targetUserShow">目标用户</a></li>
+							<li><a href="#excChannelShow">执行渠道</a></li>
+							<li><a href="#businessShow">统计口径</a></li>
+						</ul>
+					</div>
+					<div class="modal-box-content">
+						<div id="basicInfoShow" class="content-item content-item-new-modal">
+							<h3><span>基本属性</span></h3>
+							<div class="row">
+								<div class="col-1">
+									<span class="item-property">活动编号：</span>
+									<span id="activityIdShow"></span>
+								</div>
+								<div class="col-1">
+									<span class="item-property">优先级：</span>
+									<span name="" id=""></span>
+								</div>
+								<div class="col-1">
+									<span class="item-property">所属地市：</span>
+									<span name="" id="cityIdShow"></span>
+								</div>
+							</div>
+							<div class="row">
+								<span class="item-property">所属部门：</span>
+									<span name="" id=""></span>
+								</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property">活动名称：</span>
+									<span id="activityNameShow"></span>
+								</div>
+							</div>
+						</div>
+						<div id="sceneEventShow" class="content-item content-item-new-modal">
+							<h3><span>场景事件</span></h3>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property">活动类型：</span>
+									<span></span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property">已选位置：</span>
+									<span></span>
+								</div>
+							</div>
+						</div>
+		
+						<div id="targetUserShow" class="content-item content-item-new-modal">
+							<h3><span>目标用户</span></h3>
+							
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property">已选用户：</span>
+									<span></span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property">测试号码：</span>
+									<span id="testPhoneNumShow"></span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property">删除用户：</span>
+									<span id="removeCustomerShow"></span>
+								</div>
+							</div>
+						</div>
+		
+		
+						<div id="excChannelShow" class="content-item content-item-new-modal">
+							<h3><span>执行渠道</span></h3>
+							<div style="border-bottom: 1px solid #e1e1e1;font-size: 28px;">
+								<a href="#exc1" class="selected">营业前台</a>
+								<a href="#exc2">客服前台</a>
+								<a href="#exc3">掌上冲浪短信</a>
+							</div>
+							<ul class="channel-tab">
+								<li id="exc1" class="selected">
+									<div class="row">
+										<span class="item-property">营销用语：</span>
+										<span></span>
+									</div>
+									<div class="row">
+										<div class="col-1">
+											<span class="item-property">活动审批人：</span>
+											<span></span>
+										</div>
+										<div class="col-1">
+											<span class="item-property">二级审批：</span>
+											<span></span>
+										</div>
+										<div class="col-1">
+											<span class="item-property">接触审批人：</span>
+											<span></span>
+										</div>
+									</div>
+									<div class="col-mar">
+										<span>渠道状态：</span>
+										<span></span>
+									</div>
+								</li>
+								<li id="exc2">
+									<div class="row">
+										<span class="item-property">营销用语：</span>
+										<span>22222</span>
+									</div>
+									<div class="row">
+										<div class="col-1">
+											<span class="item-property">活动审批人：</span>
+											<span></span>
+										</div>
+										<div class="col-1">
+											<span class="item-property">二级审批：</span>
+											<span></span>
+										</div>
+										<div class="col-1">
+											<span class="item-property">接触审批人：</span>
+											<span></span>
+										</div>
+									</div>
+								</li>
+								<li id="exc3">
+									<div class="row">
+										<span class="item-property">营销用语：</span>
+										<span>333333</span>
+									</div>
+									<div class="row">
+										<div class="col-1">
+											<span class="item-property">活动审批人：</span>
+											<span></span>
+										</div>
+										<div class="col-1">
+											<span class="item-property">二级审批：</span>
+											<span></span>
+										</div>
+										<div class="col-1">
+											<span class="item-property">接触审批人：</span>
+											<span></span>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+				
+							<div id="businessShow" class="content-item content-item-new-modal">
+							<h3><span>统计口径</span></h3>
+							
+							<div class="row">
+								<div class="col-1">
+									<span class="item-property h-block">开始时间：</span>
+									<span id="startDateShow"></span>
+								</div>
+								<div class="col-1">
+									<span class="item-property h-block">结束时间：</span>
+									<span id="endDateShow"></span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property">已选业务：</span>
+									<span></span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property">业务类型：</span>
+									<span id="businessTypeNameShow"></span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property">营销目的：</span>
+									<span id="marketingPurposeNameShow"></span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property">关联任务：</span>
+									<span></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 审批 -->
+				<div id="approveTab" class="selected">
+					<div class="box-content">
+						<div id="" class="content-item content-item-new-modal">						
+							<div class="">
+								<div class="result-title">
+									<span>审批意见：</span>
+									<span id="approveResult" class="border-radius-btn red">活动驳回</span>
+								</div>
+								<div class="result-content">
+									<div class="row">
+										<div class="left-mark">
+											<span class="item-property " data-id="1">阶段1：</span>
+										</div>
+										<div class="right-content">
+											<p>系统判断</p>
+											<div class="sub-content" id="status1">
+												<ul class="sub-row clearfix">
+													<li >
+														<i class="icon success-icon"></i>
+														<span class="top-move">通过</span>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>								
+									<div class="row">
+										<div class="left-mark">
+											<span class="item-property " data-id="2">阶段2：</span>
+										</div>
+										<div class="right-content">
+											<p>内容审批</p>
+											<div class="sub-content" id="status2">
+												<ul class="sub-row clearfix" >
+													<li >
+														<label>渠道名称：</label>
+														<span>渠道一</span>
+													</li>
+													<li >
+														<label>审批人：</label>												
+														<span>张飞</span>
+													</li>
+													<li >	
+														<label>审批时间：</label>													
+														<span>2017-07-12</span>
+													</li>
+													<li >
+														<i class="icon success-icon"></i>
+														<label></label>
+														<span class="top-move">通过</span>
+													</li>
+												</ul>
+													<ul class="sub-row clearfix" id="systemCheck">
+													<li >
+														<label>渠道名称：</label>
+														<span>渠道一</span>
+													</li>
+													<li >
+														<label>审批人：</label>												
+														<span>张飞</span>
+													</li>
+													<li >	
+														<label>审批时间：</label>													
+														<span>2017-07-12</span>
+													</li>
+													<li >
+														<i class="icon success-icon"></i>
+														<label></label>
+														<span class="top-move">通过</span>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>		
+									
+									<div class="row">
+										<div class="left-mark">
+											<span class="item-property " data-id="3">阶段3：</span>
+										</div>
+										<div class="right-content">
+											<p>渠道审批</p>
+											<div class="sub-content" id="status3">
+												<ul class="sub-row clearfix" id="systemCheck">
+													<li >
+														<label>渠道名称：</label>
+														<span>渠道三</span>
+													</li>
+													<li >
+														<label>审批人：</label>												
+														<span>张飞</span>
+													</li>
+													<li >	
+														<label>审批时间：</label>													
+														<span>2017-07-12</span>
+													</li>
+													<li >
+														<i class="icon success-icon"></i>
+														<label></label>
+														<span class="top-move">通过</span>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>		
+										
+									<div class="row">
+										<div class="left-mark">
+											<span class="item-property " data-id="4">阶段4：</span>
+										</div>
+										<div class="right-content">
+											<p>短信审批</p>
+											<div class="sub-content" id="status4">
+												<ul class="sub-row clearfix" id="systemCheck">
+													<li >
+														<label>渠道名称：</label>
+														<span>渠道四</span>
+													</li>
+													<li >
+														<label>审批人：</label>												
+														<span>张飞</span>
+													</li>
+													<li >	
+														<label>审批时间：</label>													
+														<span>2017-07-12</span>
+													</li>
+													<li >
+														<i class="icon error-icon"></i>
+														<label class="top-move">驳回原因：</label>
+														<span class="top-move">就是不允许</span>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>		
+																
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			
+			
+			
+			
+			
+			</div>	
+		</div>
+	</div>
+	<!-- end活动审批 -->
+		<script type="text/javascript" src="./js/dataTest.js"></script>  		
+		<script type="text/javascript" src="./lib/public/jquery-1.11.3.min.js"></script>
+		<script type="text/javascript" src="./lib/public/jquery.tagsinput.js"></script>
+		<script type="text/javascript" src="./lib/DatePicker/WdatePicker.js"></script>
+		<script type="text/javascript"  src="./lib/public/jquery.slimscroll.min.js"></script>
+		<!-- <script type="text/javascript" src="./js/pager.js"></script> -->
+		<script type="text/javascript" src="./js/topNav.js"></script>
+		<script type="text/javascript" src="./js/vicSideNav.js"></script>
+		<script type="text/javascript" src="./js/generalFunc.js"></script>  
+		<!-- <script type="text/javascript" src="./js/vicActManage.js"></script> -->
+		<script type="text/javascript" src="./js/iopModalDetails.js"></script>
+		<!-- <script src="js/contentTab.js"></script> -->
+<script>
+	$("#excChannelShow a").click(function (e) {
+		e.preventDefault();
+		$(this).addClass("selected").siblings().removeClass("selected");
+		$($(this).attr("href")).addClass("selected").siblings().removeClass("selected");
+	})
+</script>
+</body>
+</html>

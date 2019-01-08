@@ -1,0 +1,1385 @@
+	<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>策略库-运营场景</title>
+
+	<link rel="stylesheet" type="text/css" href="css/generalStyle.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" href="css/vicActManage.css">
+	<link rel="stylesheet" href="css/vicPopupStyle.css">
+	<link rel="stylesheet" href="css/vicAllNetActivity.css">
+	<link rel="stylesheet" type="text/css" href="css/iopModel.css">
+	<link rel="stylesheet" href="css/iopPublicStyle.css">
+	<link rel="stylesheet" type="text/css" href="css/iopScene.css">
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="../js/public/html5shiv.min.js"></script>
+	<script type="text/javascript" src="../js/public/respond.min.js"></script>
+	<script type="text/javascript" src="../js/public/excanvas.compiled.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<!--start 顶部导航 -->
+	<div class="nav-wrap">
+		<div class="logo lt">
+			<img src="./img/logo.png" alt="全触点"/>
+		</div>
+		<ul class="nav clearfix lt" id="headerNav">
+
+		</ul>
+		<div class="user rt clearfix">
+			<i class="user-icon"></i>
+			<span>您好，</span>
+			<span id="user">请登录</span>
+			<b title="退出">
+				<i class="exit"></i>
+			</b>
+		</div>
+	</div>
+	<!--end 顶部导航 -->
+	<!--左侧导航和主体内容-->
+	<div class="content-wrap clearfix">
+		<!--start 左侧导航 -->
+		<div class="side-nav">
+			<ul id="sideNav">
+
+			</ul>
+		</div>
+		<!--end 左侧导航 -->
+		<!--start主体内容-->
+		<div class="main">
+			<div class="content">
+				<div class="inner-content">
+					<div class="panel-title clearfix tab-nav">
+						<span class="title lt selected" data-type="1">
+							<a href="#provinceScene">本省上传(<span id="provinceSceneNum" class="color-grey">0</span>)</a>
+						</span>
+						<span class="title lt" data-type="2">
+							<a href="#groupAssign">集团下发(<span id="groupAssignNum" class="color-grey">0</span>)</a>
+						</span>
+						<div class="rt clearfix" >
+							<div class="lt search-box">
+								<input type="text" id="search" class="search" placeholder="支持营销活动名称搜索"/>
+								<i></i>
+							</div>
+							<span id="filter-btn" class="filter-btn lt border_radius">筛选<i></i></span>
+							<a href="##" class="create-new lt">新建活动	</a>
+							<span class="load-btn border_radius lt" id="download">
+								<i></i>
+								<span>数据下载</span>
+							</span>
+						</div>
+					</div>
+
+					<div class="content-tab">
+						<!--本省上传-->
+						<div id="provinceScene" class="selected">
+							<div class="panel-mid-s">
+	     						<!--<p class="searchResult">"全省" "2016-03-01~2016-06-01"相关搜索结果25455个</p>-->
+	     					</div>
+							<div class="panel-bottom">
+								<table cellspacing="0" id="table1" class="table">
+									<thead>
+										<tr>
+											<td class="width-5 text-align-center">&nbsp;</td>
+											<td class="text-align-left">营销活动名称</td>
+											<td>省份</td>
+											<td>创建人</td>
+											<td>创建日期</td>
+											<td >上报人</td>
+											<td>上报日期</td>
+											<!--<td>PCC策略</td>-->
+											<td>营销活动类型</td>
+											<td class="text-align-left">营销活动描述</td>
+											<td>状态</td>
+											<td class="text-align-center">操作</td>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+							<div class="page-wrap clearfix" id="page1"></div>
+						</div>
+						<!--集团下发-->
+						<div id="groupAssign">
+							<div class="panel-mid-s">
+	     						<!--<p calss="searchResult">"全省" "2016-03-01~2016-06-01"相关搜索结果25455个</p>-->
+	     					</div>
+							<div class="panel-bottom">
+								<table cellspacing="0" id="table2" class="table" >
+									<thead>
+										<tr>
+											<td class="width-5 text-align-center">&nbsp;</td>
+											<td class="text-align-left">营销活动名称</td>
+											<!--<td>创建人</td>-->
+											<!--<td>上报人</td>-->
+											<td>省份</td>
+											<!--<td>上报日期</td>-->
+											<!--<td>创建日期</td>-->
+											<!--<td>PCC策略</td>-->
+											<td>营销活动类型</td>
+											<td class="text-align-left">营销活动描述</td>
+											<td>状态</td>
+											<td class="text-align-center">操作</td>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+							<div class="page-wrap clearfix" id="page2">
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--end主体内容-->
+
+		<!--start筛选弹框-->
+		<form id="filter" action="#">
+			<div class="filter-panel">
+				<div class="inner-filter-panel">
+					<!--<div class="row">
+						<p>PCC策略：</p>
+						<select id="isPcc"  class="bg-border s-style" name="paramMap.activityType">
+							&lt;!&ndash;<option value="">全部</option>
+							<option value="6">是</option>&ndash;&gt;
+							<option value="">否</option>
+						</select>
+					</div>-->
+					<div class="row">
+						<p>营销活动类型：</p>
+						<select id="actType"  class="bg-border" name="paramMap.type">
+							<option value="">请选择</option>
+							<option value="1">4G产品类</option>
+							<option value="2">终端类</option>
+							<option value="3">流量类</option>
+							<option value="4">数字化服务类</option>
+							<option value="5">基础服务类</option>
+							<option value="6">PCC类</option>
+							<option value="7">宽带类</option>
+							<option value="9">其它类</option>
+
+						</select>
+					</div>
+					<div class="row">
+						<p class="clearfix">
+							活动生命周期：
+						</p>
+						<input type="text" class="Wdate" id="startDate" name="paramMap.activityStartTime" readonly onFocus="WdatePicker({dateFmt:'yyyy/MM/dd',maxDate:'%y/%M/%d'})"/>
+						-
+						<input type="text" class="Wdate" id="endDate" name="paramMap.activityEndTime" readonly onFocus="WdatePicker({dateFmt:'yyyy/MM/dd',minDate:'#F{$dp.$D(\'startDate\')}'})"/>
+					</div>
+					<div class="row btns">
+						<button id="ensure" class="ensure border_radius">确定</button>
+						<button id="cancel" class="cancel border_radius">取消</button>
+					</div>
+				</div>
+			</div>
+		</form>
+		<!--end筛选弹框-->
+
+	</div>
+	<!--start新建模态框-->
+	<div class="modal-wrap modal-wrap-new">
+			<div class="modal-box">
+				<div class="modal-box-title">
+					<h3 style="display: inline-block;">新建活动</h3>
+					<a href="javascript: void(0);" class="modal-box-cancel">取消</a>
+					<a href="javascript: void(0);" id="saveModel" class="modal-box-save disabled">保存</a>
+				</div>
+				<div class="modal-box-mid clearfix">
+					<div class="left-mark">
+						<div class="relate-act-box j-relate-activity" id="chooseActivity">
+							<span>关联活动</span>
+							<i></i>
+							<div class="table-box modal-item hide" >
+								<div class="tab-content selected" id="activityTableBox">
+									<div class="row wrap-border">
+										<div class="lable-table-wrap">
+											<div class="search-box">
+												<input type="text" class="search j-rel-search" style="width: 100%;">
+												<i></i>
+											</div>
+											<table id="relativeActivity">
+
+											</table>
+										</div>
+										<div id="pager" class="popup-page">
+
+										</div>
+									</div>
+									<div class="row btns">
+										<button class="ensure border_radius" id="ensureChoose">确定</button>
+										<button class="cancel border_radius">取消</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="right-content j-chose-activity">
+						<span class="lt">已选活动：</span>
+						<div class="lt view-chose-activity">
+							<p>
+								<label>编号：</label>
+								<span class="color-grey" id="relativeActId"></span>
+							</p>
+							<p>
+								<label>名称：</label>
+								<span class="color-grey" id="relativeActName"></span>
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="modal-box-nav">
+					<ul>
+						<li class="on"><a href="#basicInfo">基本信息</a></li>
+						<li><a href="#targetUser">目标用户</a></li>
+						<li><a href="#proCatalog">产品目录</a></li>
+						<li><a href="#touchPoint">渠道</a></li>
+						<li><a href="#policyTactic">时机策略</a></li>
+						<li><a href="#effectEvalution">效果评估</a></li>
+						<li><a href="#attachment">扩展信息</a></li>
+					</ul>
+				</div>
+				<div class="modal-box-content">
+					<form id="formBasicInfo">
+						<div id="basicInfo" class="content-item content-item-new-modal">
+							<h3><span>基本信息</span></h3>
+							<div class="row">
+								<div class="col-mar">
+									<span class="item-property">活动编号：</span>
+									<span name="" id="activityId">A1512545902484</span>
+									<input type="hidden" name="activityId" value="A1512545902484">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property h-block is-required">营销活动名称：</span>
+									<!-- <textarea class="h-block" rows="2" onpropertychange="this.style.posHeight = this.scrollHeight+5" onscroll="this.rows++;"></textarea> -->
+									<input type="text"  class="h-block" name="activityName" >
+								</div>
+							</div>
+							<!--<div class="row">
+                                <div class="col-1">
+                                    <span class="item-property h-block is-required">PCC策略：</span>
+                                    <select class="select-style j-ispcc" name="isPCC">
+                                        &lt;!&ndash;<option value="1">是</option>&ndash;&gt;
+                                        <option value="0">否</option>
+                                    </select>
+                                </div>
+                            </div>-->
+							<div class="row">
+								<div class="col-1">
+									<span class="item-property h-block is-required">营销活动目的：</span>
+									<select class="select-style j-other-target" name="activityObjective" >
+										<option value="1">新增客户类</option>
+										<option value="2">存量保有类</option>
+										<option value="3">价值提升类</option>
+										<option value="4">离网预警类</option>
+										<option value="9">其他类</option>
+									</select>
+								</div>
+								<div class="col-1 hidden">
+									<input type="text" class="h-iblock" placeholder="请输入其他营销活动目的">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-1">
+									<span class="item-property h-block is-required">营销活动类型：</span>
+									<select class="select-style j-other-type j-isPcc" name="activityType">
+										<option value="1">4G产品类</option>
+										<option value="2">终端类</option>
+										<option value="3">流量类</option>
+										<option value="4">数字化服务类</option>
+										<option value="5">基础服务类</option>
+										<!--<option value="6">PCC类</option>-->
+										<option value="7">宽带类</option>
+										<option value="9">其它类</option>
+									</select>
+								</div>
+								<div class="col-1 hidden">
+									<input type="text" class="h-iblock" placeholder="请输入其他营销活动类型">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-1">
+									<span class="item-property is-required">活动开始时间：</span>
+									<input class=" Wdate h-iblock" name="activityStartTime" type="text" readonly id="activityStartTime" onfocus="WdatePicker({minDate:'%y-%M-%d %H:%m:%s',dateFmt:'yyyy/MM/dd HH:mm:ss'});">
+								</div>
+								<div class="col-1">
+									<span class="item-property h-block is-required">活动结束时间：</span>
+									<input class=" Wdate h-iblock" name="activityEndTime" type="text" readonly onfocus="WdatePicker({minDate:'#F{$dp.$D(\'activityStartTime\')}',dateFmt:'yyyy/MM/dd HH:mm:ss'});">
+								</div>
+								<div class="col-1">
+									<span class="item-property h-block">二次策划完成时间：</span>
+									<input class=" Wdate h-iblock" name="twicePlanRequestAcctime" type="text" readonly onfocus="WdatePicker({minDate:'#F{$dp.$D(\'activityStartTime\')}',dateFmt:'yyyy/MM/dd HH:mm:ss'});">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property h-block is-required">营销活动描述：</span>
+									<textarea type="text" class="h-block" name="activityDescribe"></textarea>
+								</div>
+							</div>
+						</div>
+					</form>
+					<form id="segmentBO">
+						<div id="targetUser" class="content-item content-item-new-modal">
+							<h3><span>目标用户</span></h3>
+							<div class="row">
+								<div class="col-mar">
+									<span class="item-property">目标客户群编号：</span>
+									<span name="" id="sgmtId">A1512545902484</span>
+									<input type="hidden" name="sgmtId" value="A1512545902484">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property h-block is-required">目标客户群名称：</span>
+									<input type="text" class="h-block" name="sgmtName">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property h-block ">目标客户群描述：</span>
+									<textarea type="text" class="h-block" name="sgmtDesc"></textarea>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property h-block is-required">目标客户群筛选规则：</span>
+									<textarea type="text" class="h-block" name="sgmtSiftRule"></textarea>
+								</div>
+							</div>
+						</div>
+					</form>
+					<form id="offerBO">
+						<div id="proCatalog" class="content-item content-item-new-modal">
+							<h3><span>产品目录</span></h3>
+							<div class="row">
+								<div class="col-mar">
+									<span class="item-property">产品编码：</span>
+									<span name="" id="offerCode">A1512545902484</span>
+									<input type="hidden" name="offerCode" value="A1512545902484">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property is-required">产品名称：</span>
+									<input type="text" class="h-iblock" name="offerName">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-1">
+									<span class="item-property h-block is-required">产品分类：</span>
+									<select class="select-style " name="offerType">
+										<option value="1">电信服务</option>
+										<option value="2">客户服务</option>
+										<option value="3">数字内容服务</option>
+										<option value="4">实物</option>
+										<option value="5">虚拟物品</option>
+									</select>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property h-block">产品描述：</span>
+									<textarea type="text" class="h-block" name="offerDesc"></textarea>
+								</div>
+							</div>
+						</div>
+					</form>
+					<form id="channelBO">
+						<div id="touchPoint" class="content-item content-item-new-modal">
+							<h3><span>渠道</span></h3>
+							<div class="row">
+								<div class="col-1">
+									<span class="item-property h-block is-required">渠道名称：</span>
+									<select name="channelId" class="select-style">
+										<option value="1">营业厅</option>
+										<option value="2">掌厅</option>
+										<option value="3">网厅</option>
+										<option value="4">自助终端</option>
+										<option value="5">短信</option>
+										<option value="6">彩信</option>
+										<option value="7">手机APP营业厅</option>
+										<option value="8">掌上BOSS</option>
+										<option value="9">微信</option>
+										<option value="10">139邮箱</option>
+										<option value="11">自有业务产品及APP</option>
+										<option value="12">ESOP</option>
+										<option value="13">外呼</option>
+										<option value="14">省内自有其它类触点</option>
+									</select>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property h-block is-required">营销用语：</span>
+									<textarea type="text" class="h-block" name="marketInfo"></textarea>
+								</div>
+							</div>
+						</div>
+					</form>
+					<form id="timeBO">
+						<div id="policyTactic" class="content-item content-item-new-modal">
+							<h3><span>时机策略</span></h3>
+							<div class="row">
+								<div class="col-1">
+									<span class="item-property h-block is-required">时机：</span>
+									<select name="timeId" class="select-style">
+										<option value="0">无事件</option>
+										<option value="1">互联网使用事件</option>
+										<option value="2">社会事件</option>
+										<option value="3">位置行踪事件</option>
+										<option value="4">业务办理事件</option>
+										<option value="5">业务使用事件</option>
+										<option value="6">周期业务事件</option>
+										<option value="7">自助系统接触事件</option>
+										<option value="8">PCC事件</option>
+										<option value="9">其它事件</option>
+									</select>
+									<!--<div class="checkbox-wrap">
+                                        <ul class="checxbox-list j-checxbox-list clearfix">
+                                            <li><input type="checkbox" name="timeId" value="0"><label><span></span>无事件</label></li>
+                                            <li><input type="checkbox" name="timeId" value="1"><label><span></span>互联网使用事件</label></li>
+                                            <li><input type="checkbox" name="timeId" value="2"><label><span></span>社会事件</label></li>
+                                            <li><input type="checkbox" name="timeId" value="3"><label><span></span>位置行踪事件</label></li>
+                                            <li><input type="checkbox" name="timeId" value="4"><label><span></span>业务办理事件</label></li>
+                                            <li><input type="checkbox" name="timeId" value="5"><label><span></span>业务使用事件</label></li>
+                                            <li><input type="checkbox" name="timeId" value="6"><label><span></span>周期业务事件</label></li>
+                                            <li><input type="checkbox" name="timeId" value="7"><label><span></span>自助系统接触事件</label></li>
+                                            <li><input type="checkbox" name="timeId" value="8"><label><span></span>PCC事件</label></li>
+                                            <li><input type="checkbox" name="timeId" value="9"><label><span></span>	其它事件</label></li>
+                                        </ul>
+                                    </div>-->
+								</div>
+								<div class="col-1">
+									<span class="item-property h-block is-required">时间规则：</span>
+									<select class="select-style" name="timeRule">
+										<option value="D">日</option>
+										<option value="W">周</option>
+										<option value="M">月</option>
+									</select>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property h-block">时机描述：</span>
+									<textarea type="text" class="h-block" name="timeDistindes"></textarea>
+								</div>
+							</div>
+							<!--	<div class="row">
+                                    <div class="col-1">
+                                        <span class="item-property h-block is-required">时间规则：</span>
+                                        <select class="select-style" name="timeRule">
+                                            <option value="D">日</option>
+                                            <option value="W">周</option>
+                                            <option value="M">月</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-1">
+                                        <span class="item-property h-block">免打扰时段：</span>
+                                        <input type="text" name="disturbTime" class="h-iblock" >
+                                    </div>
+                                </div>-->
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property h-block">渠道接触规则：</span>
+									<textarea type="text" class="h-block" name="channelRule"></textarea>
+								</div>
+							</div>
+						</div>
+					</form>
+					<form id="kpiBO">
+						<div id="effectEvalution" class="content-item content-item-new-modal">
+							<h3><span>业务效果评估</span></h3>
+							<div class="tab-group">
+								<div class="tab-panel">
+									<div class="tab-title on">
+										<h4>
+											<a href="#" class="left-down-arrow"></a>
+											<span>通用指标</span>
+										</h4>
+									</div>
+									<div class="tab-real-content">
+										<div class="row">
+											<div class="col-1">
+												<span class="item-property h-block is-required">成功接触客户数：</span>
+												<input type="text" name="succContactUserNum" class="h-iblock" >
+											</div>
+											<div class="col-1">
+												<span class="item-property h-block is-required">接触成功率：</span>
+												<input type="text" name="succContactRatio" class="h-iblock" >
+											</div>
+											<div class="col-1">
+												<span class="item-property h-block is-required">响应率：</span>
+												<input type="text" name="responseRatio" class="h-iblock" >
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-1">
+												<span class="item-property h-block is-required">营销成功用户数：</span>
+												<input type="text" name="succMarketUserNum" class="h-iblock" >
+											</div>
+											<div class="col-1">
+												<span class="item-property h-block is-required">营销成功率：</span>
+												<input type="text" name="succMarketRatio" class="h-iblock" >
+											</div>
+											<div class="col-1">
+												<span class="item-property h-block is-required">投入产出比：</span>
+												<input type="text" name="inputOutputRatio" class="h-iblock" >
+											</div>
+										</div>
+									</div>
+								</div>
+								<!--非必填，暂时隐藏-->
+								<!--<div class="tab-panel">
+                                    <div class="tab-title on">
+                                        <h4>
+                                            <a href="#" class="left-down-arrow"></a>
+                                            <span>PCC策略指标</span>
+                                        </h4>
+                                    </div>
+                                    <div class="tab-real-content">
+                                        <div class="row">
+                                            <div class="col-1">
+                                                <span class="item-property h-block is-required">PCC签约用户数：</span>
+                                                <input type="text" name="pccOrderUserNum" class="h-iblock" >
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="item-property h-block is-required">PCC策略生效用户数：</span>
+                                                <input type="text" name="pccValidUserNum" class="h-iblock" >
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-1">
+                                                <span class="item-property h-block">PCC策略生效次数：</span>
+                                                <input type="text" name="pccValidCount" class="h-iblock" >
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="item-property h-block">签约客户转化率：</span>
+                                                <input type="text" name="pccOffnetRatio" class="h-iblock" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-panel">
+                                    <div class="tab-title on">
+                                        <h4>
+                                            <a href="#" class="left-down-arrow"></a>
+                                            <span>营销效益</span>
+                                        </h4>
+                                    </div>
+                                    <div class="tab-real-content">
+                                        <div class="row">
+                                            <div class="col-1">
+                                                <span class="item-property h-block">ARPU提升率：</span>
+                                                <input type="text" name="arpuAddRatio" class="h-iblock" >
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="item-property h-block">流量提升率：</span>
+                                                <input type="text" name="fluxAddRatio" class="h-iblock" >
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="item-property h-block">4G流量提升率：</span>
+                                                <input type="text" name="fourGFluxAddRatio" class="h-iblock" >
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-1">
+                                                <span class="item-property h-block">DOU提升率：</span>
+                                                <input type="text" name="douAddRatio" class="h-iblock" >
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="item-property h-block">4G DOU提升率：</span>
+                                                <input type="text" name="fourGDouAddRatio" class="h-iblock" >
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="item-property h-block">MOU提升率：</span>
+                                                <input type="text" name="mouAddRatio" class="h-iblock" >
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-1">
+                                                <span class="item-property h-block">通话时长提升率：</span>
+                                                <input type="text" name="durationAddRatio" class="h-iblock" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-panel">
+                                    <div class="tab-title on">
+                                        <h4>
+                                            <a href="#" class="left-down-arrow"></a>
+                                            <span>4G终端及流量</span>
+                                        </h4>
+                                    </div>
+                                    <div class="tab-real-content">
+                                        <div class="row">
+                                            <div class="col-1">
+                                                <span class="item-property h-block">4G终端4G流量客户占比：</span>
+                                                <input type="text" name="terFluxCUstRatio" class="h-iblock" >
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="item-property h-block">4G流量客户数：</span>
+                                                <input type="text" name="fluxCustNum" class="h-iblock" >
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="item-property h-block">4G客户中4G低流量用户占比：</span>
+                                                <input type="text" name="fUselessUserRatio" class="h-iblock" >
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-1">
+                                                <span class="item-property h-block">4G客户次月留存率：</span>
+                                                <input type="text" name="custLivingRatio" class="h-iblock" >
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="item-property h-block">4G客户中4G流量低使用天数（5天）占比：</span>
+                                                <input type="text" name="fUselessDaysRatio" class="h-iblock" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-panel">
+                                    <div class="tab-title on">
+                                        <h4>
+                                            <a href="#" class="left-down-arrow"></a>
+                                            <span>套餐</span>
+                                        </h4>
+                                    </div>
+                                    <div class="tab-real-content">
+                                        <div class="row">
+                                            <div class="col-1">
+                                                <span class="item-property h-block">套餐流量使用用户数：</span>
+                                                <input type="text" name="pkgUserNum" class="h-iblock" >
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="item-property h-block">套餐流量饱和度：</span>
+                                                <input type="text" name="pkgVolumn" class="h-iblock" >
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="item-property h-block">套餐流量活跃度：</span>
+                                                <input type="text" name="pkgAliveRatio" class="h-iblock" >
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-1">
+                                                <span class="item-property h-block">4G客户次月留存率：</span>
+                                                <input type="text" name="" class="h-iblock" >
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="item-property h-block">低流量用户占比：</span>
+                                                <input type="text" name="smallUserRatio" class="h-iblock" >
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="item-property h-block">语音使用用户：</span>
+                                                <input type="text" name="volumnUser" class="h-iblock" >
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-1">
+                                                <span class="item-property h-block">套餐语音饱和度：</span>
+                                                <input type="text" name="volumnUser" class="h-iblock" >
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="item-property h-block">套餐语音活跃用户占比：</span>
+                                                <input type="text" name="pkgCallAliveRatio" class="h-iblock" >
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="item-property h-block">低通话量用户占比：</span>
+                                                <input type="text" name="smallCallUserRatio" class="h-iblock" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-panel">
+                                    <div class="tab-title on">
+                                        <h4>
+                                            <a href="#" class="left-down-arrow"></a>
+                                            <span>数据业务</span>
+                                        </h4>
+                                    </div>
+                                    <div class="tab-real-content">
+                                        <div class="row">
+                                            <div class="col-1">
+                                                <span class="item-property h-block">月一次使用用户占比：</span>
+                                                <input type="text" name="uOneTimeUserRatio" class="h-iblock" >
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="item-property h-block">包月产品活跃度：</span>
+                                                <input type="text" name="aliveRatioMonthly" class="h-iblock" >
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="item-property h-block">使用用户次月留存率：</span>
+                                                <input type="text" name="uNextMAliveRatio" class="h-iblock" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-panel">
+                                    <div class="tab-title on">
+                                        <h4>
+                                            <a href="#" class="left-down-arrow"></a>
+                                            <span>宽带</span>
+                                        </h4>
+                                    </div>
+                                    <div class="tab-real-content">
+                                        <div class="row">
+                                            <div class="col-1">
+                                                <span class="item-property h-block">家庭宽带账户活跃用户数：</span>
+                                                <input type="text" name="bBAliveUserNum" class="h-iblock" >
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="item-property h-block">家庭宽带账户活跃度：</span>
+                                                <input type="text" name="broadbandAliveRatio" class="h-iblock" >
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="item-property h-block">魔百和用户活跃度：</span>
+                                                <input type="text" name="mobaiUserAliveRatio" class="h-iblock" >
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-1">
+                                                <span class="item-property h-block">低使用次数用户占比：</span>
+                                                <input type="text" name="uselessUserRatio" class="h-iblock" >
+                                            </div>
+                                            <div class="col-1">
+                                                <span class="item-property h-block">家庭宽带使用用户次月留存率：</span>
+                                                <input type="text" name="bBNextAliveRatio" class="h-iblock" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>-->
+							</div>
+						</div>
+					</form>
+					<form id="formAttachment">
+						<div id="attachment" class="content-item content-item-new-modal">
+							<h3><span>扩展信息</span></h3>
+							<div class="row">
+								<div class="col-1">
+									<span class="item-property h-block">所属流程：</span>
+									<select name="flow" class="select-style">
+										<option value="1">一级策划省级执行</option>
+										<option value="2">省级策划互联网执行</option>
+										<option value="3">省级策划省级执行</option>
+										<option value="4">一级策划电渠执行</option>
+										<option value="5">一级策划互联网执行</option>
+										<option value="99">其他</option>
+									</select>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-3">
+									<span class="item-property h-block">附件上传</span>
+									<div class="file-box">
+										<label for="uploadFile1">文件：</label>
+										<div class="userdefined-file">
+											　　<input type="text" name="attachmentName" data-attachmentId="" id="fileName1" value="点击此处选取上传文件">
+											　　<button type="button" class="default-btn blue j-upload-file-btn">上传</button>
+											<button type="button" class="default-btn ">取消</button>
+										</div>
+										<input type="file" name="file" id="uploadFile1">
+										<i class="upload-hint-msg">已上传</i>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	<!--end新建模态框-->
+	<!--start详情模态框-->
+	<div class="modal-wrap modal-wrap-detail">
+		<div class="modal-box">
+			<div class="modal-box-title">
+				<h3>运营场景详情</h3>
+				<a href="javascript: void(0);" class="modal-box-close">×</a>
+			</div>
+			<div class="modal-box-nav">
+				<ul>
+					<li class="on"><a href="#basicInfo_d">基本信息</a></li>
+					<li><a href="#targetUser_d">目标用户</a></li>
+					<li><a href="#proCatalog_d">产品目录</a></li>
+					<li><a href="#touchPoint_d">渠道</a></li>
+					<li><a href="#policyTactic_d">时机策略</a></li>
+					<li><a href="#effectEvalution_d">效果评估</a></li>
+					<li><a href="#attachment_d">扩展信息</a></li>
+				</ul>
+			</div>
+			<div class="modal-box-content">
+				<!--基本信息-->
+				<div id="basicInfo_d" class="content-item">
+					<h3><span>基本信息</span></h3>
+					<div class="row">
+						<div class="col-2">
+							<span class="item-property">上报人：</span>
+							<span data-name="uploadName"></span>
+						</div>
+						<div class="col-2">
+							<span class="item-property">省份：</span>
+							<span data-name="proName" ></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-2">
+							<span class="item-property">上报时间：</span>
+							<span data-name="uploadTime"></span>
+						</div>
+						<div class="col-2">
+							<span class="item-property">二次策划完成时间：</span>
+							<span data-name="twicePlanRequestAcctime" ></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-2">
+							<span class="item-property">活动开始时间：</span>
+							<span data-name="activityStartTime"></span>
+						</div>
+						<div class="col-2">
+							<span class="item-property">活动结束时间：</span>
+							<span data-name="activityEndTime" ></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property ">营销活动名称：</span>
+							<span data-name="activityName" ></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property ">营销活动目的：</span>
+							<span data-name="activityObjective" ></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property ">营销活动类型：</span>
+							<span data-name="activityType" ></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property ">营销活动描述：</span>
+							<span data-name="activityDescribe" ></span>
+						</div>
+					</div>
+				</div>
+				<!--目标客户-->
+				<div id="targetUser_d" class="content-item">
+					<h3><span>目标客户</span></h3>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property ">目标客户群：</span>
+							<span data-name="sgmtName" ></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property ">目标客户群描述：</span>
+							<span data-name="sgmtDesc" ></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property ">目标客户群筛选规则：</span>
+							<span data-name="sgmtSiftRule" ></span>
+						</div>
+					</div>
+				</div>
+				<!--产品目录-->
+				<div id="proCatalog_d" class="content-item">
+					<h3><span>产品目录</span></h3>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">产品名称：</span>
+							<span data-name="offerName"></span>
+						</div>
+						<!--<div class="col-2">
+							<span class="item-property">产品编码：</span>
+							<span data-name="offerCode" ></span>
+						</div>-->
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property ">产品分类：</span>
+							<span data-name="offerType" ></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property ">描述：</span>
+							<span data-name="offerDesc" ></span>
+						</div>
+					</div>
+				</div>
+				<!--渠道-->
+				<div id="touchPoint_d" class="content-item">
+					<h3><span>渠道</span></h3>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property ">渠道名称：</span>
+							<span data-name="channelName" ></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property ">营销用语：</span>
+							<span data-name="marketInfo" ></span>
+						</div>
+					</div>
+				</div>
+				<!--时机策略-->
+				<div id="policyTactic_d" class="content-item">
+					<h3><span>时机策略</span></h3>
+					<div class="row">
+						<div class="col-2">
+							<span class="item-property ">时机：</span>
+							<span data-name="timeId" ></span>
+						</div>
+						<div class="col-2">
+							<span class="item-property ">时间规则：</span>
+							<span data-name="timeRule" ></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property ">时机描述：</span>
+							<span data-name="timeDistindes" ></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property ">渠道接触规则：</span>
+							<span data-name="channelRule" ></span>
+						</div>
+					</div>
+					<!--<div class="tab-group-wrap">
+						<div class="tab-group">
+							<div class="tab-panel">
+								<div class="tab-title on">
+									<h4>
+										<a href="#" class="left-down-arrow"></a>
+										<span>时机规则</span>
+									</h4>
+								</div>
+								<div class="row">
+									<div class="col-2">
+										<span class="item-property">周期：</span>
+										<span data-name=""></span>
+									</div>
+									<div class="col-2">
+										<span class="item-property">免打扰时间段：</span>
+										<span data-name="" ></span>
+									</div>
+								</div>
+							</div>
+							<div class="tab-panel">
+								<div class="tab-title on">
+									<h4>
+										<a href="#" class="left-down-arrow"></a>
+										<span>PCC策略</span>
+									</h4>
+								</div>
+								<div class="tab-real-content">
+									<div class="row">
+										<div class="col-2">
+											<span class="item-property">策略名称：</span>
+											<span data-name=""></span>
+										</div>
+										<div class="col-2">
+											<span class="item-property">策略编码：</span>
+											<span data-name="" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-3">
+											<span class="item-property ">策略描述：</span>
+											<span data-name="" ></span>
+										</div>
+
+									</div>
+									<div class="row">
+										<div class="col-2">
+											<span class="item-property">策略开始时间：</span>
+											<span data-name=""></span>
+										</div>
+										<div class="col-2">
+											<span class="item-property">策略结束时间：</span>
+											<span data-name="" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-2">
+											<span class="item-property">策略分类：</span>
+											<span data-name=""></span>
+										</div>
+										<div class="col-2">
+											<span class="item-property">适用网络：</span>
+											<span data-name="" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-2">
+											<span class="item-property">目标业务：</span>
+											<span data-name=""></span>
+										</div>
+										<div class="col-2">
+											<span class="item-property">终端类型：</span>
+											<span data-name="" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-3">
+											<span class="item-property ">配额状态：</span>
+											<span data-name="" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-3">
+											<span class="item-property ">适用区域：</span>
+											<span data-name="" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-3">
+											<span class="item-property ">执行手段：</span>
+											<span data-name="" ></span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>-->
+				</div>
+				<div id="effectEvalution_d" class="content-item">
+					<h3><span>业务效果评估</span></h3>
+					<div class="tab-group-wrap">
+						<div class="tab-group">
+							<!--<div class="tab-panel">
+								<div class="tab-title on">
+									<h4>
+										<a href="#" class="left-down-arrow"></a>
+										<span>PCC策略指标</span>
+									</h4>
+								</div>
+								<div class="tab-real-content">
+									<div class="row">
+										<div class="col-2">
+											<span class="item-property">PCC签约用户数：</span>
+											<span data-name=""></span>
+										</div>
+										<div class="col-2">
+											<span class="item-property">PCC策略生效用户数：</span>
+											<span data-name="" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-2">
+											<span class="item-property">PCC策略生效次数：</span>
+											<span data-name=""></span>
+										</div>
+										<div class="col-2">
+											<span class="item-property">签约客户转化率：</span>
+											<span data-name="" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-3">
+											<span class="item-property">响应率：</span>
+											<span data-name=""></span>
+										</div>
+									</div>
+								</div>
+							</div>-->
+							<div class="tab-panel">
+								<div class="tab-title on">
+									<h4>
+										<a href="#" class="left-down-arrow"></a>
+										<span>通用指标</span>
+									</h4>
+								</div>
+								<div class="tab-real-content">
+									<div class="row">
+										<div class="col-2">
+											<span class="item-property">成功接触客户数：</span>
+											<span data-name="succContactUserNum"></span>
+										</div>
+										<div class="col-2">
+											<span class="item-property">接触成功率：</span>
+											<span data-name="succContactRatio" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-2">
+											<span class="item-property">营销成功用户数：</span>
+											<span data-name="succMarketUserNum"></span>
+										</div>
+										<div class="col-2">
+											<span class="item-property">营销成功率：</span>
+											<span data-name="succMarketRatio" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-2">
+											<span class="item-property">响应率：</span>
+											<span data-name="responseRatio"></span>
+										</div>
+										<div class="col-2">
+											<span class="item-property">投入产出比：</span>
+											<span data-name="inputOutputRatio"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--<div class="tab-panel">
+								<div class="tab-title on">
+									<h4>
+										<a href="#" class="left-down-arrow"></a>
+										<span>营销效益</span>
+									</h4>
+								</div>
+								<div class="tab-real-content">
+									<div class="row">
+										<div class="col-2">
+											<span class="item-property">ARPU提升率：</span>
+											<span data-name=""></span>
+										</div>
+										<div class="col-2">
+											<span class="item-property">流量提升率：</span>
+											<span data-name="" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-2">
+											<span class="item-property">4G流量提升率：</span>
+											<span data-name=""></span>
+										</div>
+										<div class="col-2">
+											<span class="item-property">DOU提升率：</span>
+											<span data-name="" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-2">
+											<span class="item-property">4G DOU提升率：</span>
+											<span data-name=""></span>
+										</div>
+										<div class="col-2">
+											<span class="item-property">MOU提升率：</span>
+											<span data-name="" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-3">
+											<span class="item-property">通话时长提升率：</span>
+											<span data-name=""></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="tab-panel">
+								<div class="tab-title on">
+									<h4>
+										<a href="#" class="left-down-arrow"></a>
+										<span>4G终端及流量</span>
+									</h4>
+								</div>
+								<div class="tab-real-content">
+									<div class="row">
+										<div class="col-2">
+											<span class="item-property">4G终端4G流量客户占比：</span>
+											<span data-name=""></span>
+										</div>
+										<div class="col-2">
+											<span class="item-property">4G客户流量户数：</span>
+											<span data-name="" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-2">
+											<span class="item-property">4G客户中4G低流量用户占比：</span>
+											<span data-name=""></span>
+										</div>
+										<div class="col-2">
+											<span class="item-property">4G客户次月留存率：</span>
+											<span data-name="" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-3">
+											<span class="item-property">4G客户中4G流量低使用天数（5天）占比：</span>
+											<span data-name=""></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="tab-panel">
+								<div class="tab-title on">
+									<h4>
+										<a href="#" class="left-down-arrow"></a>
+										<span>套餐</span>
+									</h4>
+								</div>
+								<div class="tab-real-content">
+									<div class="row">
+										<div class="col-2">
+											<span class="item-property">套餐流量使用用户数：</span>
+											<span data-name=""></span>
+										</div>
+										<div class="col-2">
+											<span class="item-property">套餐流量饱和度：</span>
+											<span data-name="" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-2">
+											<span class="item-property">套餐流量活跃度：</span>
+											<span data-name=""></span>
+										</div>
+										<div class="col-2">
+											<span class="item-property">4G客户次月留存率：</span>
+											<span data-name="" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-2">
+											<span class="item-property">低流量用户占比：</span>
+											<span data-name=""></span>
+										</div>
+										<div class="col-2">
+											<span class="item-property">语音使用用户：</span>
+											<span data-name="" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-2">
+											<span class="item-property">套餐语音饱和度：</span>
+											<span data-name=""></span>
+										</div>
+										<div class="col-2">
+											<span class="item-property">套餐语音活跃用户占比：</span>
+											<span data-name="" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-3">
+											<span class="item-property">低通话量用户占比：</span>
+											<span data-name=""></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="tab-panel">
+								<div class="tab-title on">
+									<h4>
+										<a href="#" class="left-down-arrow"></a>
+										<span>数据业务</span>
+									</h4>
+								</div>
+								<div class="tab-real-content">
+									<div class="row">
+										<div class="col-2">
+											<span class="item-property">月一次使用用户占比：</span>
+											<span data-name=""></span>
+										</div>
+										<div class="col-2">
+											<span class="item-property">包月产品活跃度：</span>
+											<span data-name="" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-3">
+											<span class="item-property">使用用户次月留存率：</span>
+											<span data-name=""></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="tab-panel">
+								<div class="tab-title on">
+									<h4>
+										<a href="#" class="left-down-arrow"></a>
+										<span>宽带</span>
+									</h4>
+								</div>
+								<div class="tab-real-content">
+									<div class="row">
+										<div class="col-2">
+											<span class="item-property">家庭宽带账户活跃用户数：</span>
+											<span data-name=""></span>
+										</div>
+										<div class="col-2">
+											<span class="item-property">家庭宽带账户活跃度：</span>
+											<span data-name="" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-2">
+											<span class="item-property">魔百和用户活跃度：</span>
+											<span data-name=""></span>
+										</div>
+										<div class="col-2">
+											<span class="item-property">低使用次数用户占比：</span>
+											<span data-name="" ></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-3">
+											<span class="item-property">家庭宽带使用用户次月留存率：</span>
+											<span data-name=""></span>
+										</div>
+									</div>
+								</div>
+							</div>-->
+						</div>
+					</div>
+				</div>
+				<div id="attachment_d" class="content-item">
+					<h3><span>扩展信息</span></h3>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">所属流程：</span>
+							<span data-name="flow" ></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">附件：</span>
+							<span data-name="attachmentName" class="attachment-box"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--end详情模态框-->
+</div>
+</div>
+<script type="text/javascript" src="./lib/public/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./lib/public/bootstrap.min.js"></script>
+<script type="text/javascript" src="./lib/DatePicker/WdatePicker.js"></script>
+<script type="text/javascript"  src="./lib/public/jquery.slimscroll.min.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.blockUI.js"></script>
+<script type="text/javascript" src="./lib/public/ajaxfileupload.js"></script>
+<script type="text/javascript" src="./js/pager.js"></script>
+<script type="text/javascript" src="./js/topNav.js"></script>
+<script type="text/javascript" src="./js/iopSideNav.js"></script>
+<script type="text/javascript" src="./js/generalFunc.js"></script>
+<script type="text/javascript" src="./js/iopPublicFuns.js"></script>
+<script type="text/javascript" src="./js/iopScene.js"></script>
+<script type="text/javascript" src="./js/iopModalDetails.js"></script>
+<script src="js/contentTab.js"></script>
+</body>
+</html>

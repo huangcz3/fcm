@@ -1,0 +1,771 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asiainfo.fcm.mapper.primary.ActivityMapper">
+    <resultMap type="com.asiainfo.fcm.model.ActivityChannelDetail" id="ActivityChannelDetailBean">
+        <id column="channel_id" property="channelId"/>
+        <result column="activity_id" property="activityId"/>
+        <result column="activity_name" property="activityName"/>
+        <result column="channel_name" property="channelName"/>
+
+            <collection property="activityChannelRuleDetailList" ofType="com.asiainfo.fcm.model.ActivityChannelRuleDetail" column="channel_id">
+                <result column="rule_id" property="ruleId"/>
+                <result column="rule_name" property="ruleName"/>
+                <result column="rule_value" property="ruleValue"/>
+                <result column="rule_extended_value" property="ruleExtendedValue"/>
+            </collection>
+            <collection property="approverInfoList" ofType="com.asiainfo.fcm.entity.ApproverInfo" column="channel_id">
+                <result column="channel_id" property="channelId"/>
+                <result column="channel_name" property="channelName"/>
+                <result column="city_id" property="cityId"/>
+                <result column="city_name" property="cityName"/>
+                <result column="approver_id" property="approverId"/>
+                <result column="approver_name" property="approverName"/>
+                <result column="approver_phone" property="approverPhone"/>
+                <result column="approver_level" property="approverLevel"/>
+                <result column="approval_group" property="approvalGroup"/>
+                <result column="approval_role" property="approvalRole"/>
+                <result column="effective" property="effective"/>
+            </collection>
+    </resultMap>
+
+
+    <insert id="saveActivityInfo" parameterType="com.asiainfo.fcm.entity.Activity">
+        INSERT INTO activity_info(
+            activity_id,
+            activity_name,
+            creator_id,
+            creator_name,
+            create_time,
+            start_time,
+            end_time,
+            city_id,
+            city_name,
+            business_type_id,
+            business_type_name,
+            business_small_type_id,
+            business_small_type_name,
+            marketing_purpose_id,
+            marketing_purpose_name,
+            scene_flag,
+            scene_id,
+            scene_name,
+            remove_employee,
+            remove_red_list,
+            remove_sensitive,
+            remove_cancel_10086,
+            remove_group_user,
+            remove_upload,
+            remove_customer_group_id,
+            activity_state,
+            deleted,
+            stopped,
+            customer_update_cycle,
+            dept_id,
+            dept_name
+        )VALUES (
+            #{activityId},
+            #{activityName},
+            #{creatorId},
+            #{creatorName},
+            #{createTime} ,
+            #{startTime},
+            #{endTime},
+            #{cityId},
+            #{cityName},
+            #{businessTypeId},
+            #{businessTypeName},
+            #{businessSmallTypeId},
+            #{businessSmallTypeName},
+            #{marketingPurposeId},
+            #{marketingPurposeName},
+            #{sceneFlag},
+            #{sceneId},
+            #{sceneName},
+            #{removeEmployee},
+            #{removeRedList},
+            #{removeSensitive},
+            #{removeCancel10086},
+            #{removeGroupUser},
+            #{removeUpload},
+            #{removeCustomerGroupId},
+            #{activityState},
+            0,
+            0,
+            #{customerUpdateCycle},
+            #{deptId},
+            #{deptName}
+        )
+
+    </insert>
+
+    <select id="getActivityList" parameterType="java.util.Map" resultType="com.asiainfo.fcm.entity.Activity">
+        SELECT
+        *
+        FROM (
+            SELECT
+                row_number() over( order by a.create_time desc ) nrows,
+                a.activity_id,
+                a.activity_name,
+                a.creator_id,
+                a.creator_name,
+                VARCHAR_FORMAT(a.create_time,'yyyy-mm-dd hh24:mi:ss') create_time,
+                a.start_time,
+                a.end_time,
+                a.city_id,
+                a.city_name,
+                a.activity_state,
+                a.stopped,
+                b.final_amount
+            FROM activity_info a
+            LEFT JOIN activity_customer_remove_info b ON a.activity_id = b.activity_id
+            <if test='channelId != "@" '>
+                LEFT JOIN (select activity_id,channel_id from activity_channel_info group by activity_id,channel_id) c ON a.activity_id = c.activity_id
+            </if>
+            <if test="searchVal !='' ">
+                LEFT JOIN (select distinct activity_id from activity_channel_info where rule_id = 'R001' and rule_value like CONCAT(CONCAT('%',#{searchVal}),'%')) d ON a.activity_id = d.activity_id
+            </if>
+            where a.deleted = 0
+            <if test='startTime !=null and  startTime !="" and endTime !="" and endTime !=null'>
+                and a.create_time between #{startTime} and #{endTime}
+            </if>
+            <choose>
+                <when test=' currentCity != 1 '>
+                    and a.city_id = #{currentCity}
+                </when>
+                <otherwise>
+                    <if test='cityId != "0" '>
+                        and a.city_id = #{cityId}
+                    </if>
+                </otherwise>
+            </choose>
+            <if test='channelId != "@" '>
+                    and c.channel_id = #{channelId}
+            </if>
+            <choose>
+                <when test="showState == 1">
+                    and a.activity_state = 0
+                </when>
+                <when test="showState == 2">
+                    and ( a.activity_state = 2 or a.activity_state = 3 )
+                </when>
+                <when test="showState == 3">
+                    and a.activity_state = 1
+                </when>
+                <when test="showState == 4">
+                    and a.activity_state = 4
+                </when>
+                <when test="showState == 5">
+                    and (a.activity_state = 5 or a.activity_state = 7)
+                </when>
+                <when test="showState == 6">
+                    and a.activity_state = 6
+                </when>
+                <when test="showState == 7">
+                    and a.activity_state = 8
+                </when>
+                <when test="showState == 8">
+                    and a.activity_state = 9
+                </when>
+            </choose>
+            <if test="searchVal !='' ">
+                and (a.activity_name like CONCAT(CONCAT('%',#{searchVal}),'%')
+                or a.creator_name like CONCAT(CONCAT('%',#{searchVal}),'%')
+                or a.activity_id like CONCAT(CONCAT('%',#{searchVal}),'%')
+                or d.activity_id is not null
+                )
+            </if>
+            <if test='deptId != "all" '>
+                and a.dept_id = #{deptId}
+            </if>
+                ORDER BY a.create_time desc
+        ) t
+      where t.nrows BETWEEN #{startRow}+1 AND #{startRow} + #{lengthRow} order by t.create_time DESC
+    </select>
+
+    <select id="getActivityListTotals" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT
+          count(1)
+        FROM activity_info a
+        LEFT JOIN activity_customer_remove_info b ON a.activity_id = b.activity_id
+        <if test='channelId != "@" '>
+            LEFT JOIN (select activity_id,channel_id from activity_channel_info group by activity_id,channel_id) c ON a.activity_id = c.activity_id
+        </if>
+        <if test="searchVal !='' ">
+            LEFT JOIN (select distinct activity_id from activity_channel_info where rule_id = 'R001' and rule_value like CONCAT(CONCAT('%',#{searchVal}),'%')) d ON a.activity_id = d.activity_id
+        </if>
+        where a.deleted = 0
+        <if test='startTime !=null and  startTime !="" and endTime !="" and endTime !=null'>
+            and a.create_time between #{startTime} and #{endTime}
+        </if>
+        <choose>
+            <when test=' currentCity != 1 '>
+                and a.city_id = #{currentCity}
+            </when>
+            <otherwise>
+                <if test='cityId != "0" ' >
+                    and a.city_id = #{cityId}
+                </if>
+            </otherwise>
+        </choose>
+        <if test='channelId != "@" '>
+            and c.channel_id = #{channelId}
+        </if>
+        <choose>
+            <when test="showState == 1">
+                and a.activity_state = 0
+            </when>
+            <when test="showState == 2">
+                and ( a.activity_state = 2 or a.activity_state = 3 )
+            </when>
+            <when test="showState == 3">
+                and a.activity_state = 1
+            </when>
+            <when test="showState == 4">
+                and a.activity_state = 4
+            </when>
+            <when test="showState == 5">
+                and (a.activity_state = 5 or a.activity_state = 7)
+            </when>
+            <when test="showState == 6">
+                and a.activity_state = 6
+            </when>
+            <when test="showState == 7">
+                and a.activity_state = 8
+            </when>
+            <when test="showState == 8">
+                and a.activity_state = 9
+            </when>
+        </choose>
+        <if test="searchVal !='' ">
+            and (a.activity_name like CONCAT(CONCAT('%',#{searchVal}),'%')
+            or a.creator_name like CONCAT(CONCAT('%',#{searchVal}),'%')
+            or a.activity_id like CONCAT(CONCAT('%',#{searchVal}),'%')
+            or d.activity_id is not null
+            )
+        </if>
+        <if test='deptId != "all" '>
+            and a.dept_id = #{deptId}
+        </if>
+    </select>
+
+
+    <select id="getActivityById" parameterType="java.lang.String" resultType="com.asiainfo.fcm.entity.Activity">
+        SELECT * FROM activity_info WHERE activity_id = #{activityId}
+    </select>
+
+    <insert id="saveActivityChannelInfo" parameterType="com.asiainfo.fcm.entity.ActivityChannelInfo">
+        INSERT INTO activity_channel_info(
+            activity_id,
+            activity_name,
+            channel_id,
+            channel_name,
+            rule_id,
+            rule_value,
+            rule_extended_value
+        )VALUES(
+            #{activityId},
+            #{activityName},
+            #{channelId},
+            #{channelName},
+            #{ruleId},
+            #{ruleValue},
+            #{ruleExtendedValue}
+        )
+    </insert>
+
+    <select id="getChannelDetail" parameterType="java.lang.String" resultMap="ActivityChannelDetailBean" >
+        SELECT
+          a.*,
+          c.*,
+          b.*
+        FROM activity_channel_info a
+        LEFT JOIN channel_rule b on a.rule_id = b.rule_id
+       LEFT JOIN activity_approval_info c on a.channel_id = c.channel_id and c.activity_id = #{activityId}
+        WHERE a.activity_id = #{activityId}
+    </select>
+
+    <insert id="saveRecommendProductListInfo" parameterType="java.util.List">
+        INSERT INTO activity_recommend_product(
+          activity_id,
+          activity_name,
+          product_type,
+          product_id,
+          product_name
+        )VALUES
+        <foreach collection="list" index="index" item="item" separator=",">
+            (
+              #{item.activityId},
+              #{item.activityName},
+              #{item.productType},
+              #{item.productId},
+              #{item.productName}
+            )
+        </foreach>
+    </insert>
+
+    <select id="getRecommendProduct" parameterType="java.lang.String" resultType="com.asiainfo.fcm.entity.ActivityRecommendProduct">
+        SELECT * FROM activity_recommend_product WHERE activity_id = #{activityId}
+    </select>
+
+    <insert id="saveTestPhoneNum" parameterType="java.util.Map">
+        INSERT INTO activity_test_phone(activity_id,test_phone_no)
+        VALUES
+        <foreach collection="phoneList" index="index" item="item" separator=",">
+            (#{activityId},#{item})
+        </foreach>
+    </insert>
+
+    <insert id="saveActivityPriority" parameterType="java.util.Map">
+        INSERT INTO activity_priority
+        (activity_id,activity_name,city_id,city_name,priority_time)
+        values
+        (#{activityId},#{activityName},#{cityId},#{cityName},CURRENT_TIMESTAMP)
+    </insert>
+
+    <select id="getApproverInfo" resultType="com.asiainfo.fcm.entity.ApproverInfo">
+        SELECT * FROM approver WHERE channel_id = #{channelId} and approver_id = #{approverId} and approver_level = #{approverlevel}
+        <if test="approverlevel ==1 ">
+            and city_id = #{cityId}
+        </if>
+    </select>
+
+    <insert id="saveActivityApprovalInfo" parameterType="com.asiainfo.fcm.entity.ActivityApprovalInfo">
+        INSERT INTO activity_approval_info
+        (activity_id,activity_name,channel_id,channel_name,approval_result,approval_comments,approver_id,approver_name,approver_phone,approver_level,approve_time,approval_group,approval_role)
+        VALUES
+        (#{activityId},#{activityName},#{channelId},#{channelName},#{approvalResult},#{approvalComments},#{approverId},#{approverName},#{approverPhone},#{approverLevel},
+        <choose>
+            <when test=' approverId == "sys" '>
+                CURRENT_TIMESTAMP,
+            </when>
+            <otherwise>
+               #{approveTime},
+            </otherwise>
+        </choose>
+        #{approvalGroup},#{approvalRole})
+    </insert>
+
+    <select id="isCanApprove" parameterType="map" resultType="java.lang.Integer">
+        select
+          case when count(1)>0 then 1 else 0 end opFlag
+        from activity_approval_info a
+        left join activity_info b on a.activity_id = b.activity_id
+        where a.activity_id =#{activityId} and a.approver_id = #{approverId}
+        and b.deleted = 0 and b.stopped = 0 and b.activity_state in (1,4,6)
+    </select>
+
+    <select id="getApproverInfoById"  resultType="com.asiainfo.fcm.entity.ApproverInfo">
+        SELECT
+          a.*,
+          b.*
+        FROM channel_approval_setting a
+        left join approver_info b on a.approval_group = b.approval_group and a.approval_role = b.approval_role
+        WHERE a.channel_id = #{channelId} and a.approval_level = #{preLevel} and a.city_id = #{cityId} and b.effective = 1
+    </select>
+    <update id="updateActivityState" parameterType="com.asiainfo.fcm.entity.Activity">
+        update activity_info set activity_state=#{activityState}
+        where activity_id=#{activityId}
+    </update>
+    <insert id="saveCustomGroupInfo" parameterType="java.util.List" >
+        INSERT INTO activity_customer_group_info
+            (activity_id,activity_name,customer_group_id,customer_group_name,create_type)
+        VALUES
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.activityId},#{item.activityName},#{item.customerGroupId},#{item.customerGroupName},#{item.createType})
+        </foreach>
+    </insert>
+
+    <update id="approveActivityChannelInfo" parameterType="java.util.Map">
+        UPDATE activity_approval_info
+        SET approval_result = #{approvalResult},
+            approval_comments = #{commnets},
+            approver_id = #{approverId},
+            approver_name = #{approverName},
+            approver_phone = #{approverPhone},
+            approve_time = CURRENT_TIMESTAMP
+        WHERE activity_id = #{activityId} AND channel_id = #{channelId} AND approver_level = #{preLevel}
+    </update>
+
+    <select id="getApproverPreLevel" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT MIN (approver_level) FROM activity_approval_info WHERE channel_id = #{channelId}  and activity_id = #{activityId} and approval_result = 0
+    </select>
+
+    <select id="getApprovalMaxLevel" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT MAX (approver_level) from approver where 1=1 and city_id = #{cityId}
+        <if test='channelId !="@" '>
+           and channel_id = #{channelId}
+        </if>
+    </select>
+
+    <select id="isExsitUnapprovalChannel" resultType="java.lang.Integer">
+        select count(1) from activity_approval_info where activity_id = #{activityId} AND approver_level = #{preLevel} and approval_result in (0,2)
+    </select>
+
+
+    <select id="getCustomGroupInfo" parameterType="java.lang.String" resultType="com.asiainfo.fcm.entity.ActivityCustomerGroupInfo">
+        select * from activity_customer_group_info where activity_id = #{activityId}
+    </select>
+
+    <select id="getUnApprovalChannelInfo" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+          a.activity_id,
+          a.activity_name,
+          a.channel_id,
+          a.channel_name
+        from activity_approval_info a
+        left join activity_info b on a.activity_id = b.activity_id
+        left join approver_info c on a.approval_group = c.approval_group and a.approval_role = c.approval_role
+        where a.activity_id =#{activityId}
+              and a.approval_result = 0
+              and b.deleted = 0 and b.stopped = 0 and b.activity_state in (1,4,6)
+              and a.approver_level = #{approverLevel} and c.approver_id = #{approverId}
+    </select>
+
+    <select id="getTestPhoneList" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT test_phone_no from activity_test_phone where activity_id = #{activityId}
+    </select>
+
+    <update id="updteActivityState" >
+        UPDATE activity_info set activity_state = #{state} WHERE activity_id = #{activityId}
+    </update>
+
+    <select id="getApprovalLevelSettings" resultType="map">
+        SELECT
+          need_content_approval needContentApproval,
+          need_channel_approval needChannelApproval,
+          need_leader_approval needLeaderApproval
+        FROM channel WHERE channel_id = #{channelId}
+
+    </select>
+
+    <select id="getChannelSmsSetting" resultType="map">
+        select
+            approval_level,
+            is_can_sms_approval
+        from channel_approval_setting where channel_id = #{channelId} and city_id = #{cityId}
+    </select>
+
+    <select id="getApprovalSetting" resultType="map">
+        select
+          approval_level,
+          is_need_approval
+        from channel_approval_setting where channel_id = #{channelId} and city_id = #{cityId}
+    </select>
+
+    <update id="deleteActivity" parameterType="string">
+        UPDATE activity_info SET stopped = 1 , deleted = 1 where activity_id = #{activityId}
+    </update>
+
+    <select id="getApprovaledMaxLevel" parameterType="string" resultType="int">
+        select MAX (approver_level) from activity_approval_info where approval_result != 0 and activity_id = #{activityId}
+    </select>
+
+    <select id="getActivityState" parameterType="string" resultType="int">
+        select activity_state from activity_info where activity_id = #{activityId}
+    </select>
+
+    <select id="getActivityApprovalResult" resultType="com.asiainfo.fcm.entity.ActivityApprovalInfo">
+        select
+            activity_id,
+            activity_name,
+            channel_id,
+            channel_name,
+            approval_result,
+            approval_comments,
+            approver_id,
+            approver_name,
+            approver_phone,
+            approver_level,
+            approval_group,
+            approval_role,
+            VARCHAR_FORMAT(approve_time,'yyyy-mm-dd hh24:mi:ss') approve_time
+        from activity_approval_info where activity_id = #{activityId} and approver_level =#{level}
+    </select>
+
+
+    <select id="getUnApprovalMinLevel" parameterType="string" resultType="int">
+        select
+        CASE WHEN  MIN(approver_level) is NULL then 3 ELSE MIN(approver_level) END
+        from activity_approval_info WHERE activity_id = #{activityId} and approval_result = 0
+    </select>
+
+    <select id="getCanApprovalIds" resultType="string">
+        select
+          a.approver_id
+        from activity_approval_info a
+        left join activity_info b on a.activity_id = b.activity_id
+        where a.activity_id = #{activityId} and a.approver_level =#{level} and a.approval_result = 0 and b.activity_state not in (0,2,3,5)
+    </select>
+
+    <select id="getCanApprovers" resultType="string">
+        select
+          b.approver_id approver_id
+        from activity_approval_info a
+        left join approver_info b on a.approval_group = b.approval_group and a.approval_role = b.approval_role
+        left join activity_info c on a.activity_id = c.activity_id
+        where a.activity_id = #{activityId} and a.approver_level =#{level} and a.approval_result = 0 and c.activity_state not in (0,2,3,5) and b.effective = 1
+    </select>
+
+    <select id="getActivityRejectTimes" resultType="int">
+        select count(1) from activity_approval_info a where a.activity_id = #{activityId} and a.approver_level =#{level} and a.approval_result = 2
+    </select>
+
+    <select id="getChannelTotals" parameterType="string" resultType="int">
+      select count(distinct channel_id) from activity_channel_info where activity_id = #{activityId}
+    </select>
+
+    <select id="getCustomerRemoveInfo" parameterType="string" resultType="com.asiainfo.fcm.entity.CustomerRemoveInfo">
+        select * from activity_customer_remove_info where activity_id = #{activityId}
+    </select>
+
+    <insert id="saveSceneInfo" parameterType="list" >
+        insert into activity_scene_info(
+          activity_id,
+          activity_name,
+          scene_id,
+          scene_name,
+          scene_rule_id,
+          scene_rule_value,
+          scene_rule_extended_value
+        )VALUES
+        <foreach collection="list" index="index" item="item" separator=",">
+        (
+          #{item.activityId},
+          #{item.activityName},
+          #{item.sceneId},
+          #{item.sceneName},
+          #{item.sceneRuleId},
+          #{item.sceneRuleValue},
+          #{item.sceneRuleExtendedValue}
+        )
+        </foreach>
+    </insert>
+
+    <select id="getSceneInfo" parameterType="string" resultType="com.asiainfo.fcm.entity.ActivitySceneInfo">
+        select * from activity_scene_info where activity_id = #{activityId}
+    </select>
+
+    <select id="isExsitByActivityId" parameterType="string" resultType="int">
+        select count(1) from activity_info where activity_id = #{activityId}
+    </select>
+
+    <select id="getActivityInfoById" parameterType="string" resultType="com.asiainfo.fcm.entity.Activity">
+        select * from activity_info where activity_id = #{activityId}
+    </select>
+
+    <select id="smsTemplateContent" parameterType="int" resultType="string">
+        select template_content from sms_template where template_type = #{type}
+    </select>
+
+    <update id="pausedAcitivity" parameterType="string">
+        update activity_info set stopped = 1 where activity_id = #{activityId}
+    </update>
+
+    <update id="recoveryActivity" parameterType="string">
+        update activity_info set stopped = 0 where activity_id = #{activityId}
+    </update>
+
+    <select id="getCreatorId" parameterType="string" resultType="string">
+        select creator_id from activity_info where activity_id = #{activityId}
+    </select>
+
+    <select id="isApprovaled" parameterType="map" resultType="int">
+        select
+          count(1)
+        from activity_approval_info
+        where activity_id = #{activityId} and channel_id = #{channelId}
+              and approver_level = #{preLevel} and approval_result != 0
+    </select>
+
+    <update id="saveBackgroundApprovalInfo" parameterType="map">
+       update activity_approval_info
+        set approval_result = #{approvalresult},
+            approval_comments = #{commnet},
+            approve_time = current_timestamp
+        where activity_id = #{activityid} and channel_id = #{channelId} and approver_level = #{prelevel}
+    </update>
+
+    <select id="isCanOp"  resultType="int">
+        select
+          count(1)
+        from (
+          select distinct(approver_id) op_id from activity_approval_info where activity_id = #{activityId}
+          union all
+          select distinct(creator_id) op_id  from activity_info where activity_id = #{activityId}
+          union all
+          select b.approver_id from activity_approval_info a
+		  left join approver_info b on a.approval_group = b.approval_group and a.approval_role = b.approval_role
+		  where a.activity_id = #{activityId}
+        ) a
+        where a.op_id = #{userId}
+    </select>
+
+    <select id="getApproverInfos" parameterType="string" resultType="string">
+        select
+          b.approver_id
+        from activity_approval_info a
+        left join approver_info b on a.approval_group = b.approval_group and a.approval_role = b.approval_role
+        where a.activity_id = #{activityId}
+    </select>
+
+    <select id="getAllActivityList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        row_number() over( order by a.create_time desc ) nrows,
+        a.activity_id,
+        a.activity_name,
+        a.creator_id,
+        a.creator_name,
+        VARCHAR_FORMAT(a.create_time,'yyyy-mm-dd hh24:mi:ss') create_time,
+        a.start_time,
+        a.end_time,
+        a.city_id,
+        a.city_name,
+        a.activity_state,
+        a.stopped,
+        b.final_amount,
+        e.channel_name
+        FROM activity_info a
+        LEFT JOIN activity_customer_remove_info b ON a.activity_id = b.activity_id
+        LEFT JOIN (select distinct activity_id,channel_name from activity_channel_info) e ON a.activity_id = e.activity_id
+        <if test='channelId != "@" '>
+            LEFT JOIN (select activity_id,channel_id from activity_channel_info group by activity_id,channel_id) c ON a.activity_id = c.activity_id
+        </if>
+        <if test="searchVal !='' ">
+            LEFT JOIN (select activity_id,rule_value from activity_channel_info where rule_id = 'R001') d ON a.activity_id = d.activity_id
+        </if>
+        where a.deleted = 0
+        <if test='startTime !=null and  startTime !="" and endTime !="" and endTime !=null'>
+            and a.create_time between #{startTime} and #{endTime}
+        </if>
+        <choose>
+            <when test=' currentCity != 1 '>
+                and a.city_id = #{currentCity}
+            </when>
+            <otherwise>
+                <if test="cityId != 0 ">
+                    and a.city_id = #{cityId}
+                </if>
+            </otherwise>
+        </choose>
+        <if test='channelId != "@" '>
+            and c.channel_id = #{channelId}
+        </if>
+        <choose>
+            <when test="showState == 1">
+                and a.activity_state = 0
+            </when>
+            <when test="showState == 2">
+                and ( a.activity_state = 2 or a.activity_state = 3 )
+            </when>
+            <when test="showState == 3">
+                and a.activity_state = 1
+            </when>
+            <when test="showState == 4">
+                and a.activity_state = 4
+            </when>
+            <when test="showState == 5">
+                and (a.activity_state = 5 or a.activity_state = 7)
+            </when>
+            <when test="showState == 6">
+                and a.activity_state = 6
+            </when>
+            <when test="showState == 7">
+                and a.activity_state = 8
+            </when>
+            <when test="showState == 8">
+                and a.activity_state = 9
+            </when>
+        </choose>
+        <if test="searchVal !='' ">
+            and (a.activity_name like CONCAT(CONCAT('%',#{searchVal}),'%')
+            or a.creator_name like CONCAT(CONCAT('%',#{searchVal}),'%')
+            or a.activity_id like CONCAT(CONCAT('%',#{searchVal}),'%')
+            or d.rule_value like CONCAT(CONCAT('%',#{searchVal}),'%')
+            )
+        </if>
+        <if test='deptId != "all" '>
+            and a.dept_id = #{deptId}
+        </if>
+        ORDER BY a.create_time desc
+    </select>
+
+    <select id="getApproverInfoByApproverId" parameterType="map" resultType="com.asiainfo.fcm.entity.ApproverInfo">
+        select
+        distinct
+            a.approver_name,
+            a.approver_phone
+        from approver_info a
+        left join channel_approval_setting b on a.approval_group = b.approval_group and a.approval_role = b.approval_role
+        where a.approver_id = #{approverId} and b.channel_id = #{channelId} and b.approval_level = #{level} and a.effective = 1
+    </select>
+
+    <select id="getNextApproverInfos" parameterType="map" resultType="com.asiainfo.fcm.entity.ApproverInfo">
+       select
+       b.*
+      from channel_approval_setting a
+      left join approver_info b on a.approval_group = b.approval_group and a.approval_role = b.approval_role
+      where a.channel_id = #{channelId} and a.city_id = #{cityId} and a.approval_level = #{preLevel}
+      and is_need_approval = 1 and is_can_sms_approval = 1
+
+    </select>
+
+    <select id="getSmsInfo" parameterType="string" resultType="map">
+        select
+        distinct
+            b.activity_id,
+            b.activity_name,
+            b.city_id,
+            b.city_name,
+            a.channel_id,
+            a.channel_name,
+            b.creator_name,
+            b.start_time,
+            b.end_time,
+            c.rule_value,
+            d.final_amount
+        from activity_approval_info a
+        left join activity_info b on a.activity_id = b.activity_id
+        left join activity_channel_info c on a.activity_id = c.activity_id and c.rule_id = 'R001'
+        left join activity_customer_remove_info d on a.activity_id = d.activity_id
+        where b.activity_id = #{activityId}
+    </select>
+
+    <select id="getBaseInfoByActId" parameterType="string" resultType="map">
+        select
+        city_id
+        from activity_info where activity_id = #{activityId}
+    </select>
+
+    <select id="getActivityOpLogs" parameterType="string" resultType="map">
+        select
+            activity_id
+            user_id,
+            user_name,
+            user_phone,
+            op_type,
+            op_code,
+            op_name,
+            op_desc,
+            op_result,
+            VARCHAR_FORMAT(op_time,'yyyy-mm-dd hh24:mi:ss') op_time
+        from activity_op_record_info where activity_id = #{activityId}
+    </select>
+
+    <select id="getchannelMaxLevel" resultType="int">
+        select Max(approval_level) from channel_approval_setting where channel_id = #{channelId} and city_id = #{cityId} and effective = 1
+    </select>
+
+    <select id="getChannels" parameterType="string" resultType="string">
+        select distinct channel_id from activity_channel_info where activity_id = #{activityId}
+    </select>
+
+    <select id="getActivities2Toutiao" resultType="string">
+        select distinct a.activity_id from activity_info a left join activity_channel_info b on a.activity_id=b.activity_id
+        where a.activity_state=4 and a.deleted=0 and current_date between a.start_time and a.end_time and b.channel_id='q08'
+    </select>
+
+    <select id="getActivities2Wechat" resultType="string">
+        select distinct a.activity_id from activity_info a left join activity_channel_info b on a.activity_id=b.activity_id
+        where a.activity_state=4 and a.deleted=0 and current_date between a.start_time and a.end_time and b.channel_id='q11'
+    </select>
+</mapper>

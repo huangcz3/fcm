@@ -1,0 +1,67 @@
+.modal-box{
+    width:60%;
+    margin-left:-30%;
+}
+.file-box {
+    position: relative;
+    height: 30px;
+    line-height: 30px;
+}
+.file-box label {
+    display: inline-block;
+}
+.userdefined-file {
+    position: absolute;
+    top: 0;
+    left: 60px;
+    z-index: 2;
+    width: 380px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 0;  /*应对子元素为 inline-block 引起的外边距*/
+}
+.userdefined-file input[type="text"] {
+    display: inline-block;
+    vertical-align: middle;
+    padding-right: 14px;
+    padding-left: 14px;
+    width: 220px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.default-btn {
+    display: inline-block;
+    vertical-align: middle;
+    width: 80px;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    background: #D0D4DA;
+    border: none;
+    -webkit-border-radius:0;
+    -moz-border-radius:0;
+    border-radius:0;
+   /* color: #fff;*/
+    cursor: pointer;
+}
+.default-btn.blue{
+    background: #85B1E3;
+}
+.file-box input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 60px;
+    z-index: 3;
+    opacity: 0;
+    width: 220px;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+}

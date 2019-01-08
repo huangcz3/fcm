@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>营销活动-渠道建议</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="./css/public/bootstrap-fileinput.css">
+    <link rel="stylesheet" type="text/css" href="./css/public/bootstrap-tagsinput.css">
+    <link rel="stylesheet" type="text/css" href="css/generalStyle.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="./css/vicChannelSuggest.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="./lib/public/html5shiv.min.js"></script>
+    <script type="text/javascript" src="./lib/public/respond.min.js"></script>
+    <script type="text/javascript" src="./lib/public/excanvas.compiled.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+<!--start 开始顶部导航 -->
+<div class="nav-wrap">
+    <div class="logo lt">
+        <img src="./img/logo.png" alt="全触点"/>
+    </div>
+    <ul class="nav clearfix lt" id="headerNav">
+
+    </ul>
+    <div class="user rt clearfix">
+        <i class="user-icon"></i>
+        <span>您好，</span>
+        <span id="user"></span>
+        <b title="退出">
+            <i class="exit"></i>
+        </b>
+    </div>
+</div>
+<!--end 顶部导航 -->
+<!--左侧导航和主体内容-->
+<div class="content-wrap">
+    <!--start 左侧导航 -->
+    <div class="side-nav">
+        <ul id="sideNav">
+
+        </ul>
+    </div>
+    <!--end 左侧导航 -->
+
+    <!--start主体内容-->
+    <div class="main">
+        <div class="content">
+            <div class="inner-content">
+                <div class="panel-title clearfix">
+                    <span class="title lt selected" data-type="1">
+                        <a href="##">渠道建议</a>
+                        <span id="num" class="color-grey"></span>
+                    </span>
+                    <div class="rt clearfix" id="historySer" >
+                        <div class="lt search-box">
+                            <input type="text" id="search" class="search" placeholder="支持上传文件名搜索"/>
+                            <i></i>
+                        </div>
+                        <a href="##" id="upload" class="create-new u-create-btn">上传文件</a>
+                        <input type="file" name="file" id="file" style="display: none"/>
+                    </div>
+                </div>
+
+                <div class="content-tab">
+                    <div id="history" class="selected">
+                        <div class="panel-bottom">
+                            <table cellspacing="0" id="table" class="table">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="page-wrap clearfix" id="page"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end主体内容-->
+
+    <!--start数据下载-->
+    <div class="modal-wrap modal-wrap-edit">
+        <div class="modal-box">
+            <div class="modal-box-title">
+                <h3>下载详情</h3>
+                <a href="javascript: void(0);" class="modal-box-cancel">取消</a>
+            </div>
+
+            <div class="wrapper">
+                <table  style="text-align: center;" width="100%"  >
+                    <tbody>
+                    <tr >
+                        <td>
+                            <img src="./img/c_s3.png" alt="全触点" />
+                            <table width="100%" height="100px" id="zhangTing" >
+                                <tr class="color-grey">
+                                    <td  align="right" >掌厅：</td>
+                                    <td align="left"><span class="filedowload"><a href="#" >数据下载</a></span></td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="color-grey">用户：</td>
+                                    <td align="left" class="costomer">0</td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="color-grey">占比：</td>
+                                    <td align="left" class="scale">0%</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="border-left:1px solid #000;">
+                            <img src="./img/c_s5.png" alt="全触点"/>
+                            <table width="170px" height="100px" id="wangTing" >
+                                <tr class="color-grey">
+                                    <td  align="right" >网厅：</td>
+                                    <td align="left"><span class="filedowload"><a href="#" >数据下载</a></span></td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="color-grey">用户：</td>
+                                    <td align="left" class="costomer">0</td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="color-grey">占比：</td>
+                                    <td align="left" class="scale">0%</td>
+                                </tr>
+                            </table>
+                        </td>
+
+                        <td style="border-left:1px solid #000;">
+                            <img src="./img/c_s6.png" alt="全触点"/>
+                            <table width="170px" height="100px" id="10086IVR" >
+                                <tr class="color-grey">
+                                    <td align="right">10086IVR：</td>
+                                    <td align="left"><span class="filedowload"><a href="#" >数据下载</a></span></td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="color-grey">用户：</td>
+                                    <td align="left" class="costomer">0</td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="color-grey">占比：</td>
+                                    <td align="left" class="scale">0%</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="border-left:1px solid #000;">
+                            <img src="./img/c_s2.png" alt="全触点"/>
+                            <table width="170px" height="100px" id="zhuiWei" >
+                                <tr class="color-grey">
+                                    <td  align="right">追尾短信：</td>
+                                    <td align="left"><span class="filedowload"><a href="#" >数据下载</a></span></td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="color-grey">用户：</td>
+                                    <td align="left" class="costomer">0</td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="color-grey">占比：</td>
+                                    <td align="left" class="scale">0%</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="border-left:1px solid #000;">
+                            <img src="./img/c_s6.png" alt="全触点"/>
+                            <table width="170px" height="100px" id="CRM"  >
+                                <tr class="color-grey">
+                                    <td align="right" >CRM：</td>
+                                    <td align="left"><span class="filedowload"><a href="#" >数据下载</a></span></td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="color-grey">用户：</td>
+                                    <td align="left" class="costomer">0</td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="color-grey">占比：</td>
+                                    <td align="left" class="scale">0%</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="./img/c_s2.png" alt="全触点"/>
+                            <table width="170px" height="100px" id="duanTing" >
+                                <tr class="color-grey">
+                                    <td  align="right">短厅：</td>
+                                    <td align="left"><span class="filedowload"><a href="#" >数据下载</a></span></td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="color-grey">用户：</td>
+                                    <td align="left" class="costomer">0</td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="color-grey ">占比：</td>
+                                    <td align="left" class="scale">0%</td>
+                                </tr>
+                            </table>
+                        </td>
+
+                        <td style="border-left:1px solid #000;">
+                            <img src="./img/c_s1.png" alt="全触点"/>
+                            <table width="170px" height="100px" id="HeShengHuo" >
+                                <tr class="color-grey">
+                                    <td align="right">和生活：</td>
+                                    <td align="left"><span class="filedowload"><a href="#" >数据下载</a></span></td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="color-grey">用户：</td>
+                                    <td align="left" class="costomer">0</td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="color-grey">占比：</td>
+                                    <td align="left" class="scale">0%</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="border-left:1px solid #000;">
+                            <img src="./img/c_s6.png" alt="全触点"/>
+                            <table width="170px" height="100px" id="10086RenGong" >
+                                <tr class="color-grey">
+                                    <td align="right">10086人工：</td>
+                                    <td align="left"><span class="filedowload"><a href="#" >数据下载</a></span></td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="color-grey">用户：</td>
+                                    <td align="left" class="costomer">0</td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="color-grey">占比：</td>
+                                    <td align="left" class="scale">0%</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="border-left:1px solid #000;">
+                            <img src="./img/c_s4.png" alt="全触点"/>
+                            <table width="170px" height="100px" id="YiDongXinShengHuo" >
+                                <tr class="color-grey">
+                                    <td align="right">移动新生活：</td>
+                                    <td align="left"><span class="filedowload"><a href="#" >数据下载</a></span></td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="color-grey">用户：</td>
+                                    <td align="left" class="costomer">0</td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="color-grey">占比：</td>
+                                    <td align="left" class="scale">0%</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="border-left:1px solid #000;">
+                            <img src="./img/c_s2.png" alt="全触点"/>
+                            <table width="170px" height="100px" id="other" >
+                                <tr class="color-grey">
+                                    <td align="right" >未知：</td>
+                                    <td align="left"><span class="filedowload"><a href="#" >数据下载</a></span></td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="color-grey">用户：</td>
+                                    <td align="left" class="costomer">0</td>
+                                </tr>
+                                <tr>
+                                    <td align="right" class="color-grey">占比：</td>
+                                    <td align="left" class="scale">0%</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--end数据下载-->
+
+</div>
+<script type="text/javascript" src="./lib/public/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.blockUI.js"></script>
+<script type="text/javascript" src="./lib/DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.slimscroll.min.js"></script>
+<script type="text/javascript" src="./js/pager.js"></script>
+<script type="text/javascript" src="./js/topNav.js"></script>
+<script type="text/javascript" src="./js/vicSideNav.js"></script>
+<script type="text/javascript" src="./js/generalFunc.js"></script>
+<script type="text/javascript" src="./lib/public/ajaxfileupload.js"></script>
+<script type="text/javascript" src="./js/vicChannelSuggest.js"></script>
+</body>
+</html>

@@ -1,0 +1,2272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>营销活动-活动管理</title>
+  <link rel="stylesheet" type="text/css" href="layui/css/layui.css">
+  <link rel="stylesheet" type="text/css" href="./css/public/bootstrap-fileinput.css">
+  <link rel="stylesheet" type="text/css" href="./css/public/bootstrap-tagsinput.css">
+  <link rel="stylesheet" href="./css/public/jquery.autocomplete.css">
+  <link rel="stylesheet" href="./css/public/select2.min.css">
+  <link rel="stylesheet" type="text/css" href="css/generalStyle.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/vicActManage.css">
+  <link rel="stylesheet" type="text/css" href="css/vicPopupStyle.css">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script type="text/javascript" src="./lib/public/html5shiv.min.js"></script>
+  <script type="text/javascript" src="./lib/public/excanvas.compiled.js"></script>
+  <style>
+    .modal-wrap{
+      -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr=#E6ffffff,endColorstr=#E6ffffff)";
+
+    }
+    .full-scr-overlay {
+      -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr=#BEffffff,endColorstr=#BEffffff)";
+    }
+  </style>
+  <![endif]-->
+</head>
+
+<body>
+<input type="hidden" id="curActivityId" />
+<input type="hidden" id="curActivityName" />
+<input type="hidden" id="curActivityState"/>
+<input type="hidden" id="smartMapActivityId" value="" />
+<!--start 开始顶部导航 -->
+<div class="nav-wrap">
+  <div class="logo lt">
+    <img src="./img/logo.png" alt="全触点" />
+  </div>
+  <ul class="nav clearfix lt" id="headerNav">
+  </ul>
+  <div class="user rt clearfix">
+    <i class="user-icon"></i>
+    <span>您好，</span>
+    <span id="user">请登录</span>
+    <b title="退出">
+      <i class="exit"></i>
+    </b>
+  </div>
+  <!--<div class="help rt">
+    <a class="help-icon j-help-icon">帮助</a>
+    <div class="help-drop-box hidden">
+      <b class="connect-arrow"></b>
+      <p>
+        <a href="./base/downloadHelpDoc" class="help-drop-icon download-docs-icon"></a>
+        <span>使用文档</span>
+      </p>
+      <p>
+        <a href="#" class="help-drop-icon url-icon j-change-browser-url"></a>
+        <span>获取链接</span>
+      </p>
+    </div>
+  </div>-->
+</div>
+<!--end 顶部导航 -->
+<!--左侧导航和主体内容-->
+<div class="content-wrap">
+  <!--start 左侧导航 -->
+  <div class="side-nav">
+    <ul id="sideNav">
+    </ul>
+  </div>
+  <!--end 左侧导航 -->
+  <!--start主体内容-->
+  <div class="main">
+    <div class="content">
+      <div class="inner-content">
+        <div class="panel-title clearfix">
+            <span class="title lt selected">
+				营销活动列表
+				<span id="activities_num" class="color-grey"></span>
+            </span>
+          <div class="rt clearfix">
+            <div class="lt search-box">
+              <input type="text" id="search" class="search" placeholder="" />
+              <i></i>
+            </div>
+            <span id="filter-btn" class="filter-btn lt border_radius">筛选<i></i></span>
+            <a href="##" class="create-new lt">新建活动	</a>
+            <span class="load-btn border_radius lt" id="download">
+                <i></i>
+                <span>数据下载</span>
+              </span>
+          </div>
+        </div>
+        <div class="content-tab">
+          <div id="activities" class="selected">
+            <!-- <div class="panel-mid-s">
+                               <p class="searchResult">"全省" "2016-03-01~2016-06-01"相关搜索结果25455个</p>
+                       </div> -->
+            <div class="panel-bottom">
+              <table cellspacing="0" id="table" class="table">
+                <thead>
+                <tr>
+                  <td class="width-5">&nbsp;</td>
+                  <td class="width-13 text-align-left" style="width: 12%;">活动名称</td>
+                  <td>活动状态</td>
+                  <td style="width: 12%;">活动ID</td>
+                  <!-- <td style="width: 9%;">当前审批人</td> -->
+                  <td style="width: 5%;">地市</td>
+                  <td>开始时间</td>
+                  <td>结束时间</td>
+                  <td>创建时间</td>
+                  <td>创建人</td>
+                  <td>目标客户数</td>
+                  <td>操作</td>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+            <div class="page-wrap clearfix" id="page"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--end主体内容-->
+  <!--start筛选弹框-->
+  <div class="filter-panel">
+    <div class="inner-filter-panel">
+      <div class="row">
+        <p>地市：</p>
+        <select id="area" class="bg-border">
+        </select>
+      </div>
+      <div class="row" id="deptSpan" style="display: none;" >
+        <p>部门：</p>
+        <select id="dept" class="bg-border">
+        </select>
+      </div>
+      <div class="row">
+        <p>活动状态：</p>
+        <select id="state" class="bg-border elem-s">
+          <option value="0">全部状态</option>
+          <option value="1">系统判定中</option>
+          <option value="2">系统判定失败</option>
+          <option value="3">待审批</option>
+          <option value="4">审批中</option>
+          <option value="5">审批驳回</option>
+          <option value="6">审批通过待执行</option>
+          <option value="7">执行中</option>
+          <option value="8">执行结束</option>
+        </select>
+      </div>
+      <div class="row">
+        <p>执行渠道：</p>
+        <select id="channel" class="bg-border">
+        </select>
+      </div>
+      <div class="row">
+        <p class="clearfix">
+          <span>创建时间区间：</span>
+          <!-- <span>结束时间：</span>-->
+        </p>
+        <input type="text" readOnly="true" class="Wdate" id="startDate" onFocus="WdatePicker({maxDate:'%y-%M-%d'})" /> -
+        <input type="text" readOnly="true" class="Wdate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}' })" />
+      </div>
+      <div class="row btns">
+        <button id="ensure" class="ensure border_radius">确定</button>
+        <button id="cancel" class="cancel border_radius">取消</button>
+      </div>
+    </div>
+  </div>
+  <!--end筛选弹框-->
+</div>
+<!--start新建模态框-->
+<div class="modal-wrap modal-wrap-new">
+  <div class="modal-box">
+    <div class="modal-box-title">
+      <h3 style="display: inline-block;">新建活动</h3>
+      <a href="javascript: void(0);" class="modal-box-cancel">取消</a>
+      <a href="javascript: void(0);" id="saveModel" class="modal-box-save disabled">提交</a>
+    </div>
+    <div class="modal-box-nav">
+      <ul>
+        <li class="on"><a href="#basicInfo">基本信息</a></li>
+        <li><a href="#sceneEvent">场景事件</a></li>
+        <li><a href="#targetUser">目标用户</a></li>
+        <li><a href="#excChannel">执行渠道</a></li>
+        <li><a href="#business">统计口径</a></li>
+      </ul>
+    </div>
+    <div class="modal-box-content">
+      <div id="basicInfo" class="content-item content-item-new-modal">
+        <h3><span>基本属性</span></h3>
+        <div class="row">
+          <div class="col-mar">
+            <span class="item-property">活动编号：</span>
+            <span name="activityId" id="activityId"></span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <span class="item-property h-block is-required">活动名称：</span>
+            <!-- <textarea class="h-block" rows="2" onpropertychange="this.style.posHeight = this.scrollHeight+5" onscroll="this.rows++;"></textarea> -->
+            <input class="h-block j-input-clear" id="activityName" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-1">
+            <span class="item-property is-required">营销目的：</span>
+          </div>
+          <div class="col-2-6">
+            <span class="item-property is-required">业务大类：</span>
+          </div>
+          <div class="col-2-6">
+            <span class="item-property is-required">业务小类：</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-1">
+            <select class="h-iblock select-s-style" id="marketingPurpose">
+              <option value=""></option>
+            </select>
+          </div>
+          <div class="col-2-6">
+            <select class="h-iblock select-s-style" id="bussinessType">
+              <option value=""></option>
+            </select>
+          </div>
+          <div class="col-2-6">
+            <select class="h-iblock select-s-style" id="bussinessSmallType">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div id="sceneEvent" class="content-item content-item-new-modal">
+        <h3><span>场景事件</span></h3>
+        <div class="row">
+          <div class="col-3">
+            <span class="item-property h-block is-required">活动类型：</span>
+            <div class="act-type-content clearfix">
+              <ul class='radio-box' id="actTypes">
+                <!-- <li>
+                          <input type="radio" name="activity_type" value="0"/>
+                                      <label>
+                                          <span class="selected"></span>
+                                          非实时
+                                      </label>
+                                  </li>
+                                  <li>
+                                      <input type="radio" name="activity_type"/>
+                                      <label>
+                                          <span></span>
+                                          上网行为
+                                      </label>
+                                  </li>
+                              -->
+              </ul>
+              <!-- <canvas id="canvas" style="display: inline-block;margin-left: 25%;;position: absolute" height="360" width="40"></canvas> -->
+              <div class="act-type-sub-panel">
+                <ul>
+                  <!-- 非实时 -->
+                  <li class="selected" data-typeid="0"></li>
+                  <!--实时位置-->
+                  <li id="realTimeSite" data-typeid="4">
+                    <div class="clearfix g-list-title">
+                      <p class="lt">待选实时位置：（<span id="siteNum"></span>）</p>
+                      <select name="" id="siteSelect" class="select-s-style lt">
+                        <option value=""></option>
+                      </select>
+                      <div class="lt search-box">
+                        <input type="text" id="siteSearch" class="input-s-style" placeholder="支持名称搜索">
+                        <i></i>
+                      </div>
+                      <a href="##" data-bindtab="siteTagsTab" class="rt a-underline chooseAll">全选</a>
+                    </div>
+                    <div class="data-list checkbox " id="siteTagsTab"></div>
+                    <div id="sitePage" class="s-pager-box"></div>
+                    <div class="clearfix g-list-title">
+                      <p class="lt">已选实时位置(<span id="chosedSiteNum" class="u-clear">0</span>)：</p>
+                      <a href="##" data-bindtab="chosedSite" class="remove-all rt a-underline">清空</a>
+                    </div>
+                    <div class="tags-box  j-slimscroll-tab">
+                      <input id="chosedSite" name="tags" data-tagname="tags_area" data-ruleId="SR006" />
+                    </div>
+                  </li>
+                  <!-- 上网行为 -->
+                  <li id="internet" data-typeid="5">
+                    <div class="clearfix g-list-title">
+                      <p class="lt">待选APP：（<span id="appNum"></span>）</p>
+                      <select name="" id="appSelect" class="select-s-style lt">
+                        <option value=""></option>
+                      </select>
+                      <div class="lt search-box">
+                        <input type="text" id="appSearch" class="input-s-style" placeholder="支持名称搜索">
+                        <i></i>
+                      </div>
+                      <a href="##" data-bindtab="appTagsTab" class="rt a-underline chooseAll">全选</a>
+                    </div>
+                    <div class="data-list checkbox " id="appTagsTab">
+                      <!--<input type="checkbox" name="paymentChannel" value="1">
+                      <label class="col-mar"><span></span>QQ</label>-->
+                    </div>
+                    <div id="appPage" class="s-pager-box"></div>
+                    <div class="clearfix g-list-title">
+                      <p class="lt">已选APP(<span id="chosedAppNum" class="u-clear">0</span>)：</p>
+                      <a href="##" data-bindtab="chosedApp" class="remove-all rt a-underline">清空</a>
+                    </div>
+                    <div class="tags-box  j-slimscroll-tab">
+                      <input id="chosedApp" name="tags" data-tagname="tags_area" data-ruleId="SR007" />
+                    </div>
+                  </li>
+                  <!-- 网厅缴费 -->
+                  <li data-typeid="2" >
+                    <ul class="h-tab" data-canvas="3">
+                      <li data-bindtab="payAmount">
+                        <label><span class="selected"></span>缴费金额</label>
+                      </li>
+                      <li data-bindtab="payChannel" style="display:none;">
+                        <label><span></span>缴费渠道</label>
+                      </li>
+                    </ul>
+
+                    <ul class="content">
+                      <li class="money selected" data-tab="payAmount">
+                          <span>
+                              <input type="text" name="" class="input-s-style j-min-value j-number" data-tagname="input_area" data-ruleid="SR001">
+                              <i>元</i>
+                          </span> -
+                        <span>
+                             <input type="text" name="" class="input-s-style j-max-value j-number" data-tagname="input_area" data-ruleid="SR002">
+                             <i>元</i>
+                          </span>
+                        <p class="hint-msg">如果输入数值为小数，保存时会精确至小数点后两位；包含边界值。</p>
+                      </li>
+                      <li class="checkbox" data-tab="payChannel">
+
+                      </li>
+                    </ul>
+                  </li>
+                  <!-- 业务订购 -->
+                  <li data-typeid="3" id="bussinessOrder">
+                    <ul class="h-tab">
+                      <li data-bindtab="bussCode">
+                        <label><span class="selected"></span>业务代码</label>
+                      </li>
+                      <li data-bindtab="bussName" style="display:none;">
+                        <label><span></span>业务名称</label>
+                      </li>
+                    </ul>
+                    <ul class="content business-border">
+                      <li class="selected" data-tab="bussCode">
+                        <span class="item-property h-block ">业务代码：</span>
+                        <input type="text" name="" id="bussinessCode" class="h-block j-input-clear"  data-tagname="input_area" data-ruleid="SR004">
+                        <span class="hint-msg">（多个业务代码，以英文逗号“,”分隔）</span>
+                        <p class="line"></p>
+                        <span class="item-property h-block ">业务订购Top15：</span>
+                        <div class="checkbox data-list j-checkbox-clear">
+                          <ul class="sub-checxbox clearfix" id="top15BussOrder">
+
+                          </ul>
+                        </div>
+                      </li>
+                      <li data-tab="bussName">
+                        <span class="item-property h-block ">业务名称：</span>
+                        <input id="bussinessName" type="text" name="" class="h-block j-input-clear" data-tagname="input_area" data-ruleid="SR005">
+                      </li>
+                    </ul>
+                  </li>
+                  <!-- 实时位置 -->
+                  <!--  <li id="realTimePos" data-typeid="4">
+                      <div class="clearfix g-list-title">
+                        <p class="lt">待选位置：（<span id="">23</span>）</p>
+                        <select class="select-s-style lt" name="" id="positions">
+                          <option value=""></option>
+                        </select>
+                        <a href="##" class="rt a-underline chooseAll" data-bindtab="posTagsTab">全选</a>
+                      </div>
+                      <div class="data-list checkbox j-slimscroll-tab" id="posTagsTab">
+                        加载中，请稍等...
+                     &lt;!&ndash;   <input type="checkbox" name="paymentChannel" value="1">
+                        <label class="col-mar"><span></span>春熙路</label>
+                      &ndash;&gt;
+                      </div>
+                      <div class="clearfix g-list-title">
+                        <p class="lt">已选位置(<span id="chosedPosNum" class="u-clear">4</span>)：</p>
+                        <a href="javascript:void 0;" class="rt a-underline remove-all" data-bindtab="posTagsTab">清空</a>
+                      </div>
+                      <div class="tags-box j-slimscroll-tab">
+                        <input id="chosedPosition" name="tags" data-tagname="tags_area" data-ruleid="SR006"/>
+                      </div>
+                    </li>-->
+                  <!-- 4G换卡 -->
+                  <li data-typeid="1">
+                    <!--无内容  -->
+                  </li>
+                  <!-- 和包使用营销 -->
+                  <li data-typeid="6"></li>
+                  <!-- PCC -->
+                  <li data-typeid="8">
+                    <div class="clearfix g-list-title">
+                      <p class="lt">策略类型：</p>
+                      <select class="select-s-style lt" name="" id="policyType" data-tagname="select_area" data-ruleid="SR011">
+                        <option value="0"> == 请选择类型 == </option>
+                        <option value="1">管控</option>
+                        <option value="2">提醒</option>
+                        <option value="3">业务保障</option>
+                        <option value="4">差异化计费</option>
+                        <option value="5">营销</option>
+                        <option value="6">网络能力开放</option>
+                        <option value="7">后向流量统付</option>
+                        <option value="99">其他</option>
+                      </select>
+                      <!--<div class="lt search-box">
+                        <input type="text" id="pccSearch" class="input-s-style" placeholder="支持名称搜索">
+                        <i></i>
+                      </div>
+                      <span class="default-btn blue" id="pccSearchBtn">查询</span>-->
+                      <p class="lt">（单选）</p>
+                    </div>
+                    <!-- <div id="pccList" class="checkbox j-slimscroll-tab">
+                      &lt;!&ndash; <input type="checkbox" data-ruleid="SR003" data-tagname="label_area" name="paymentChannel" value="ob0009">
+                       <label class="col-mar"><span></span>网厅联动优势</label>&ndash;&gt;
+                     </div>-->
+
+                    <div id="pccList" class="table-box modal-item u-pccList" >
+                      <div class="tab-content selected">
+                        <div class="row wrap-border">
+                          <div class="lable-table-wrap">
+                            <div class="search-box">
+                              <input type="text" class="search j-policy-search j-input-clear" style="width: 100%;" placeholder="支持策略名称搜索">
+                              <i></i>
+                            </div>
+                            <table>
+                              <thead>
+                              <tr>
+                                <td style='width:30px '>&nbsp;</td>
+                                <td style='width: 25%'>所属区域</td>
+                                <td>策略名称</td>
+                              </tr>
+                              </thead>
+                              <tbody></tbody>
+                            </table>
+                          </div>
+                          <div id="pccPager" class="popup-page u-pcc-pager">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="cover-modal">数据获取中，请稍后...</div>
+                    </div>
+                    <div id="policyDetail" class="policy-detail-box">
+                      <span>策略描述：</span>
+                      <p></p>
+                    </div>
+                  </li>
+                  <!-- 追尾 -->
+                  <li data-typeid="7"></li>
+                  <!-- 驻点营销 -->
+                  <li  data-typeid="9">
+                    <p>短信模板：</p>
+                    <div class="j-msg-template hint-msg">
+
+                    </div>
+                    <p class="margin-top-40">注意事项：</p>
+                    <div class="hint-msg">如果不填写短信下发内容，则默认按照模板发送短信；如果自定义短信下发内容，请参照模板填写，其中
+                      <span class="over-max-msg">{DATE}</span>
+                      、
+                      <span class="over-max-msg">{POS}</span>
+                      、
+                      <span class="over-max-msg">{ACTIVITY}</span>
+                      字样必须包含。
+                    </div>
+                  </li>
+                  <!-- 饱和度实时事件 -->
+                  <li  data-typeid="10">
+                    <div class="money selected" >
+                            <span>
+                                <input type="text" name="" class="input-s-style j-min-value j-number" data-tagname="input_area" data-ruleid="SR008">
+                                <i>%</i>
+                            </span> -
+                      <span>
+                             <input type="text" name="" class="input-s-style j-max-value j-number" data-tagname="input_area" data-ruleid="SR009">
+                             <i>%</i>
+                          </span>
+                      <p class="hint-msg">如果输入数值为小数，系统会自动精确至两位小数（四舍五入），包含边界值。</p>
+                    </div>
+                  </li>
+                  <!-- 智能地图 -->
+                  <li data-typeid="11">
+                    <div class="map-nav-box clearfix">
+                      <div class="map-icon-box clearfix j-map-box">
+                        <p >
+                          <input type="text" class="map-icon-input j-jumpto-map">
+                          <i class="map-icon"></i>
+                        </p>
+                        <span>(点击图标跳转)</span>
+                      </div>
+                    </div>
+                    <p class="line"></p>
+
+                    <div>
+                      <div class="map-response-box">
+                        <div class="map-result-box">
+                          <span class="default-btn green j-map-result" data-type="1">点击查看地图选区</span>
+                          <p class="hint-msg">( 地图选区操作成功之后，必须点击查看，否则将无法保存活动 )</p>
+                          <div>
+                            <div class="map-table-box">
+                              <table id="intelligentMapTableR">
+
+                              </table>
+                            </div>
+                            <!--<div id="intelligentMapPageR"></div>-->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <!--流量提醒-->
+                  <li data-typeid="12">
+                    <div>
+                      <span>提醒类型：</span>
+                      <div class="checkbox" id="bossflowRadio" >
+                        <!--<input type="checkbox" data-ruleid="SR015" data-tagname="label_area" name="paymentChannel" value="sntybz">-->
+                        <!--<label class="col-mar"><span></span>省内通用不足20M</label>-->
+                        <!--<input type="checkbox" data-ruleid="SR015" data-tagname="label_area" name="paymentChannel" value="gntybz">-->
+                        <!--<label class="col-mar"><span></span>国内通用不足20M</label>-->
+                        <!--<input type="checkbox" data-ruleid="SR015" data-tagname="label_area" name="paymentChannel" value="gntyover">-->
+                        <!--<label class="col-mar"><span></span>国内通用使用完</label>-->
+                        <!--<input type="checkbox" data-ruleid="SR015" data-tagname="label_area" name="paymentChannel" value="sntyover">-->
+                        <!--<label class="col-mar"><span></span>省内通用使用完</label>-->
+                      </div>
+                    </div>
+                  </li>
+                  <!-- 高铁候车 -->
+                  <li  data-typeid="13">
+                    <p>场景描述：</p>
+                    <div class="j-high-speed-train hint-msg">
+
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- 添加 -->
+      <div id="targetUser" class="content-item content-item-new-modal">
+        <h3><span>目标用户</span></h3>
+        <div class="row">
+          <div class="col-3">
+            <span class="item-property h-block is-required">新建用户群：</span>
+            <ul class="user-group-input clearfix">
+              <li id="figureContWrap" data-popup="6" style="display: none;">
+                <div class="li-wrap">
+                  <span class="user-group-icon number-icon"></span>
+                  <p>
+                    数字内容
+                    <i></i>
+                  </p>
+                </div>
+                <div class="bottom-shadow-cover"></div>
+              </li>
+              <li  class="label-input" data-popup="14" style="display: none;">
+                <div class="li-wrap">
+                  <span class="user-group-icon label-icon"></span>
+                  <p>
+                    标签导入
+                  </p>
+                </div>
+                <div class="bottom-shadow-cover"></div>
+              </li>
+              <li data-popup="3" id="marketInputWrap" style="display: none;">
+                <div class="li-wrap">
+                  <span class="user-group-icon market-icon j-market-import"></span>
+                  <p>
+                    集市导入
+                  </p>
+                </div>
+                <div class="bottom-shadow-cover"></div>
+              </li>
+              <li data-popup="2" id="customInputWrap" style="display: none;">
+                <div class="li-wrap">
+                  <span class="user-group-icon custom-icon"></span>
+                  <p>
+                    自定义导入
+                  </p>
+                </div>
+                <div class="bottom-shadow-cover"></div>
+                <!-- <div class="modal-item">
+                                    <ul>
+                                        <li><a href=""></a></li>
+                                        <li><a href=""></a></li>
+                                    </ul>
+                                    <ul class="content">
+                                        <li class="selected">
+
+                                        </li>
+                                        <li ></li>
+                                    </ul>
+                                </div> -->
+              </li>
+              <li data-popup="1" id="historyInputWrap" style="display: none;">
+                <div class="li-wrap">
+                  <span class="user-group-icon history-icon"></span>
+                  <p>
+                    历史导入
+                  </p>
+                </div>
+                <div class="bottom-shadow-cover"></div>
+              </li>
+              <!--add by wanglei 0306-->
+              <li data-popup="7" id="smartMap" style="display: none;" >
+                <div class="li-wrap" >
+                  <span class="user-group-icon number-icon"></span>
+                  <p>
+                    智能地图
+                  </p>
+                </div>
+                <div class="bottom-shadow-cover"></div>
+              </li>
+
+              <li data-popup="8" id="customerInsight" style="display: none;">
+                <div class="li-wrap">
+                  <span class="user-group-icon number-icon"></span>
+                  <p>
+                    客户洞察
+                    <i></i>
+                  </p>
+                </div>
+                <div class="bottom-shadow-cover"></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <span class="item-property h-block">已选用户：</span>
+            <div class="radio-box clearfix hide j-update-cycle">
+              <span class="lt padding-lt-10">更新客户群周期：</span>
+              <p class="selected">
+                <input class="radio-input" type="radio" name="updateCycle" value="1" checked="checked">
+                <label><span class=""></span>一次性</label>
+              </p>
+              <!-- <p class="">
+                   <input class="radio-input" type="radio" name="updateCycle" value="2">
+                   <label><span></span>月周期</label>
+               </p>-->
+              <p >
+                <input class="radio-input" type="radio" name="updateCycle" value="3" >
+                <label><span></span>日周期</label>
+              </p>
+            </div>
+          </div>
+          <div class="col-3">
+            <input type="text" id="selectedUser">
+          </div>
+        </div>
+        <!--      <div class="row">
+               <div class="col-3">
+                 <span class="item-property h-block">测试号码：</span>
+                 <input type="text" class="h-block j-input-clear" id="phoneNum" placeholder='号码间请用英文","隔开,粘贴请右键选择"粘贴"'>
+               </div>
+             </div>  -->
+        <div class="row checkbox">
+          <div class="col-3">
+            <span class="item-property h-block">剔除用户：</span>
+          </div>
+          <div class="col-3 default-selected">
+            <div class="col-mar">
+              <label id="removeEmployee"><span></span>内部号码</label>
+            </div>
+            <div class="col-mar">
+              <label id="removeRedList"><span></span>红名单</label>
+            </div>
+            <div class="col-mar">
+              <label id="removeSensitive"><span></span>敏感客户</label>
+            </div>
+            <div class="col-mar">
+              <label id="removeCancel10086"><span></span>取消10086流量提醒客户</label>
+            </div>
+            <div class="col-mar">
+              <label id="removeGroupUser"><span></span>集团重要客户</label>
+            </div>
+          </div>
+          <div class="col-3 clearfix">
+            <label id="removeUpload" class="lt"><span></span>自定义导入</label>
+            <div class="lt">
+              <div class="fileinput fileinput-new" data-provides="fileinput" id="fileUpLoad2">
+                    <span class="gradient-btn btn-file">
+                    <span class="fileinput-new">选择文件 </span>
+                    <span class="fileinput-exists"> 另选文件 </span>
+                    <input type="hidden" name="file">
+                    <input type="file" name="file" id="removeGroupFile" data-id="removeUpload" multiple  accept="text/plain,text/csv"> </span>
+                <span class="fileinput-filename"> </span> &nbsp;
+                <a href="javascript:;" class="close fileinput-exists" data-dismiss="fileinput"> </a>
+              </div>
+            </div>
+            <a href="##" id="ensureUpload" class="a-underline ensure-upload lt">确认上传</a>
+          </div>
+        </div>
+      </div> <!-- 添加/div -->
+      <div id="excChannel" class="content-item content-item-new-modal">
+        <h3><span>执行渠道</span></h3>
+        <div class="row">
+          <div class="col-3">
+            <span class="item-property is-required">执行渠道：</span>
+          </div>
+        </div>
+        <div class="row checkbox" id="channelListBox">
+          <!-- 渠道导航 -->
+        </div>
+        <div class="item-tab" id="item-tab">
+          <!-- <a href="##" class="selected" data-channelId="exc_channel_1">营业前台</a>
+                  <a href="##">客服前台</a> -->
+        </div>
+        <ul class="channel-tab" id="channel-tab">
+          <!-- 前台大掌柜 -->
+          <li data-channelId="f01">
+            <div class="row">
+              <div class="col-3">
+                <span class=" is-required">营销用语：</span>
+              </div>
+              <div class="col-3">
+                <textarea id="crmVicWords" class="h-block higher" data-ruleid="R001" data-tagname="text_area"></textarea>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">一级审批：</span>
+                <select class="select-s-style" data-use="contentApproverId">
+                </select>
+              </div>
+              <div class="col-1">
+                <span class="item-property">二级审批：</span>
+                <select class="select-s-style" data-use="channelApproverId">
+                </select>
+              </div>
+            </div>
+          </li>
+          <!-- 客服系统 -->
+          <li data-channelId="f02">
+            <div class="row">
+              <div class="col-3">
+                <span class=" is-required">营销用语：</span>
+              </div>
+              <div class="col-3">
+                <textarea id="vicWords2" class="h-block higher" data-ruleid="R001"  data-tagname="text_area"></textarea>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">一级审批：</span>
+                <select class="select-s-style" data-use="contentApproverId">
+                </select>
+              </div>
+              <div class="col-1">
+                <span class="item-property">二级审批：</span>
+                <select class="select-s-style" data-use="channelApproverId">
+                </select>
+              </div>
+            </div>
+          </li>
+          <!-- start掌厅 -->
+          <li data-channelId="q03">
+            <div class="row">
+              <div class="col-mar">
+                <span class="item-property">发送时段：</span>
+                <span name="">9:00-12:00、14:00-20:00</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">广告位：</span>
+                <select name="" id="advZT" class="select-s-style" data-ruleid="R002"  data-tagname="select_area">
+
+                </select>
+              </div>
+              <div class="col-1" style="width:400px;">
+                <span class="item-property">连接码表：</span>
+                <select name="" id="lkCodeZT" class="select-s-style" data-ruleid="R010" style="width:280px;" data-tagname="select_area">
+
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span>URL：</span>
+              </div>
+              <div class="col-3">
+                <input type="text" class="h-block j-validate-url" data-ruleid="R007" data-tagname="input_area" placeholder="请以http/https开头">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class=" is-required">标题</span>
+              </div>
+              <div class="col-3">
+                <input type="text" class="h-block" data-ruleid="R011" data-tagname="input_area">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class=" is-required">内容</span>
+              </div>
+              <div class="col-3">
+                <textarea class="h-block higher" data-ruleid="R001"  data-tagname="text_area"></textarea>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class=" is-required">图片</span>
+              </div>
+              <div id="picDetail">
+
+              </div>
+              <!-- <div class="img-preview-box lt" id="localImage" >
+                 <img id="preview" width="120px" height="140px" style="display:block;width:120px;height:140px;">
+             </div> -->
+
+            </div>
+            <div class="row">
+              <div class="col-1" style="width:36%;">
+                <span class="hint-msg">上传图片内容需不违反国家相关法律规定!</span>
+              </div>
+              <div class="col-1">
+                <a href="showPic.html" target="_blank" class="link a-underline">图片上传说明</a>
+                <a href="law.html" target="_blank" class="link a-underline">相关法律法规</a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">一级审批：</span>
+                <select class="select-s-style" data-use="contentApproverId">
+                </select>
+              </div>
+              <div class="col-1">
+                <span class="item-property">二级审批：</span>
+                <select class="select-s-style" data-use="channelApproverId">
+                </select>
+              </div>
+            </div>
+          </li>
+          <!-- end掌厅 -->
+          <!-- start优惠提醒 -->
+          <li data-channelId="d01" >
+            <div class="row">
+              <div class="col-mar">
+                <span class="item-property">发送时段：</span>
+                <span name="">9:00-12:00、14:00-20:00</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="col-mar checkbox-high">短信下发内容</span>
+                <span class="checkbox j-validate-null">
+                         <input type="checkbox" value="0">
+                        <label class="col-mar"><span></span>不填写短信内容(选中则可不填写，不选则必须填写)</label>
+                      </span>
+
+              </div>
+              <div class="col-3" id="dxMsg_div">
+                <textarea  data-tagname="text_area" data-ruleid="R001" id="dxMsg" class="h-block higher" name="channelContext" onkeydown="checkMaxInput(this)" onkeyup="checkMaxInput(this)" onfocus=" htmlEvents.removeHintMsg(this);checkMaxInput(this)"></textarea>
+                <span class="rt hint-msg"> 优惠提醒短信超过70个字会拆分成两条短信发送，会占用短信发送量，请注意控制字数！</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">一级审批：</span>
+                <select class="select-s-style" data-use="contentApproverId">
+                </select>
+              </div>
+              <div class="col-1">
+                <span class="item-property">二级审批：</span>
+                <select class="select-s-style" data-use="channelApproverId">
+                </select>
+              </div>
+            </div>
+          </li>
+          <!-- end优惠提醒 -->
+          <!-- start触点短信 -->
+          <li data-channelId="d02">
+            <div class="row">
+              <div class="col-mar">
+                <span class="item-property">发送时段：</span>
+                <span name="">9:00-12:00、14:00-20:00</span>
+              </div>
+            </div>
+            <div class="row checkbox">
+              <div class="col-3">
+                <span class="item-property h-block">渠道小类：</span>
+              </div>
+              <div class="clo-3">
+                <div class="col-mar">
+                  <label data-ruleid="R009"  data-tagname="label_area"><span></span>1008611</label>
+                </div>
+                <div class="col-mar">
+                  <label data-ruleid="R009"  data-tagname="label_area"><span></span>1008632</label>
+                </div>
+                <div class="col-mar">
+                  <label data-ruleid="R009"  data-tagname="label_area"><span></span>CXLL</label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="item-property h-block">挂尾内容：</span>
+              </div>
+              <div class="col-3">
+                <textarea data-tagname="text_area" id="ydMsg" class="h-block higher" name="channelContext" data-ruleid="R001" onkeydown="checkMaxInput(this)" onkeyup="checkMaxInput(this)" onfocus="checkMaxInput(this)" onblur="checkMaxInput(this);resetMaxmsg();"></textarea>
+                <!--  <i id="ydMsgmsg" class="Max_msg lt">剩70字</i> -->
+                <!--  <span class="rt hint-msg">输入字数请在70字以内，同一用户被多个活动关联，挂尾短信将以最新审批通过的活动为准。</span>-->
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">一级审批：</span>
+                <select class="select-s-style" data-use="contentApproverId">
+                </select>
+              </div>
+              <div class="col-1">
+                <span class="item-property">二级审批：</span>
+                <select class="select-s-style" data-use="channelApproverId">
+                </select>
+              </div>
+            </div>
+          </li>
+          <!-- end触点短信 -->
+          <!-- start10086主动提醒(宣传) -->
+          <li data-channelId="d03" >
+            <div class="row">
+              <div class="col-3">
+                <span class="item-property h-block">挂尾内容：</span>
+              </div>
+              <div class="col-3">
+                <!--<textarea data-tagname="text_area" id="gwdxInput" class="h-block higher" name="channelContext" data-ruleid="R001" onkeydown="checkMaxInput1(this,70)" onkeyup="checkMaxInput1(this,70)" onfocus="resetMaxmsg();checkMaxInput1(this,70)" onblur="overWordsTyped(this,70);">-->
+                <textarea data-tagname="text_area" id="gwdxInput" class="h-block higher" name="channelContext" data-ruleid="R001" onkeydown="checkMaxInput(this)" onkeyup="checkMaxInput(this)" onfocus="checkMaxInput(this)" onblur="checkMaxInput(this);resetMaxmsg();"></textarea>
+                <!--<span class="rt hint-msg">请控制输入字数在70字以内</span>-->
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">一级审批：</span>
+                <select class="select-s-style" data-use="contentApproverId">
+                </select>
+              </div>
+              <div class="col-1">
+                <span class="item-property">二级审批：</span>
+                <select class="select-s-style" data-use="channelApproverId">
+                </select>
+              </div>
+            </div>
+          </li>
+          <!-- end10086主动提醒(宣传) -->
+          <!-- start10086群发 -->
+          <li data-channelId="d05">
+            <div class="row">
+              <div class="col-mar">
+                <span class="item-property">发送时段：</span>
+                <span name="">9:00-12:00、14:00-20:00</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class=" is-required">营销用语：</span>
+              </div>
+              <div class="col-3">
+                <textarea class="h-block higher" data-ruleid="R001"  data-tagname="text_area"></textarea>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">一级审批：</span>
+                <select class="select-s-style" data-use="contentApproverId">
+                </select>
+              </div>
+              <div class="col-1">
+                <span class="item-property">二级审批：</span>
+                <select class="select-s-style" data-use="channelApproverId">
+                </select>
+              </div>
+            </div>
+          </li>
+          <!--end10086群发-->
+          <!-- start来电提醒 -->
+          <li data-channelId="d06">
+            <div class="row">
+              <div class="col-mar">
+                <span class="item-property">发送时段：</span>
+                <span name="">9:00-12:00、14:00-20:00</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class=" is-required">营销用语：</span>
+              </div>
+              <div class="col-3">
+                <textarea class="h-block higher" data-ruleid="R001"  data-tagname="text_area"></textarea>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">一级审批：</span>
+                <select class="select-s-style" data-use="contentApproverId">
+                </select>
+              </div>
+              <div class="col-1">
+                <span class="item-property">二级审批：</span>
+                <select class="select-s-style" data-use="channelApproverId">
+                </select>
+              </div>
+            </div>
+          </li>
+          <!--end来电提醒-->
+          <!-- 追尾短信模式-->
+          <li data-channelId="q09">
+            <div class="row">
+              <div class="col-mar">
+                <span class="item-property">发送时段：</span>
+                <span name="">9:00-12:00、14:00-20:00</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">提醒类型：</span>
+                <select name="select_zhuiwei_no" id="select_zhuiwei_no" class="select-s-style" data-ruleid="R008" data-tagname="select_area">
+                  <!-- <option value="1">启动页</option>
+                                  <option value="2">弹窗页</option> -->
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="cold-3">
+                <span class="item-property h-block">营销用语：</span>
+              </div>
+              <div class="col-3" id="xsh_div">
+                <textarea id="zhuiwei_text" class="h-block higher" name="channelContext" data-ruleid="R001" data-tagname="text_area" onkeydown="checkMaxInput(this)" onkeyup="checkMaxInput(this)" onfocus="checkMaxInput(this)" onblur="checkMaxInput(this);resetMaxmsg();"></textarea>
+                <span class="rt hint-msg">每个用户 10086追尾与10086主动宣传两种活动短信15天内只收到一次</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">一级审批：</span>
+                <select class="select-s-style" data-use="contentApproverId">
+                </select>
+              </div>
+              <div class="col-1">
+                <span class="item-property">二级审批：</span>
+                <select class="select-s-style" data-use="channelApproverId">
+                </select>
+              </div>
+            </div>
+          </li>
+          <!-- end10086阀值提醒（追尾） -->
+          <!-- start 互联网渠道 -->
+          <li data-channelId="q07">
+            <div class="row u-hint-msg hidden">
+              <div class="col-3">
+                <span class="h-block over-max-msg">该运营位已被占用，请选择其他运营位!</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">运营位名称：</span>
+                <select name="iop_show_select1" id="iop_show_select1" class="select-s-style g-width-200" data-ruleid="R002" data-tagname="select_area">
+                </select>
+              </div>
+              <div class="col-1">
+                <span class="item-property">运营位类型：</span>
+                <input name="iop_show_select2" id="iop_show_select2" class="input-s-style" data-ruleid="R003" data-tagname="input_area"/>
+              </div>
+            </div>
+            <div class="row" >
+              <div class="col-1">
+                <span class="item-property">运营位目录：</span>
+                <input id="iop_show_select3" class="input-s-style" data-ruleid="R004" data-tagname="input_area"/>
+              </div>
+              <div class="col-1 j-hlwImg" style="position:relative;width:340px;">
+                <span class="item-property">图片：</span>
+                <span class="sub-row">
+                      		<span data-id="hlwImg" ><span id="hlwImgSize" class="imgSize"></span></span>
+	                        <a href="javascript:;" class="a-upload">
+	                          <input type="file" name="file" data-id="hlwImg" id="hlwImg" onchange="imgChange(this,'hlwImg')" data-ruleid="R005" data-tagname="input_area" accept='image/jpeg,image/gif,image/png'>
+	                          <span class="upload-btn">点击这里上传图片</span>
+	                        </a>
+                      	</span>
+                <!--  <div class="img-preview-box" id="hlwImgBox" style="width:100px;height:120px">
+                      <img id="hlwImg" width="100px" height="120px" style="width:100px;height:120px;">
+                  </div> -->
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="item-property h-block ">跳转链接：</span>
+              </div>
+              <div class="col-3">
+                <input id="page_path" class="h-block j-validate-url " data-ruleid="R007" data-tagname="input_area"/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="cold-3">
+                <span class="item-property h-block">营销用语：</span>
+              </div>
+              <div class="col-3">
+                <!--<textarea data-tagname="text_area" id="iop_text" class="h-block higher" name="channelContext" data-ruleid="R001" onkeydown="checkMaxInput1(this,150)" onkeyup="checkMaxInput1(this,150)" onfocus="resetMaxmsg();checkMaxInput1(this,150)" onblur="overWordsTyped(this,150)">-->
+                <textarea data-tagname="text_area" id="iop_text" class="h-block higher" name="channelContext" data-ruleid="R001"  onkeydown="checkMaxInput(this)" onkeyup="checkMaxInput(this)" onfocus="checkMaxInput(this)" onblur="checkMaxInput(this);resetMaxmsg();"></textarea>
+                <!--<span class="rt hint-msg">输入字数请在150字以内</span>-->
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">一级审批：</span>
+                <select class="select-s-style" data-use="contentApproverId">
+                </select>
+              </div>
+              <div class="col-1">
+                <span class="item-property">二级审批：</span>
+                <select class="select-s-style" data-use="channelApproverId">
+                </select>
+              </div>
+            </div>
+          </li>
+          <!-- end 互联网渠道 -->
+          <!-- start和生活 -->
+          <li data-channelId="q05" >
+            <div class="row">
+              <input type="hidden" class="h-block j-validate-url" data-ruleid="R002" data-tagname="input_area" value="q0501">
+              <div class="col-3">
+                <span class="is-required">跳转链接：</span>
+              </div>
+              <div class="col-3">
+                <input type="text" class="h-block j-validate-url" data-ruleid="R007" data-tagname="input_area" placeholder="请以http/https开头">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class=" is-required">图片链接</span>
+                <label class="col-mar" style="color: #758494;"><span></span></label>
+              </div>
+              <div class="col-3">
+                <input type="text" class="h-block " data-ruleid="R006"  data-tagname="input_area" placeholder="请以http/https开头">
+              </div>
+            </div>
+            <!-- <div class="row">
+              <div class="col-3">
+                <span class=" is-required">图片链接：</span>
+              </div>
+              <div class="col-3 lt" id="hshPicDetail">
+                <div class="sub-row">
+                        <span data-id="hshImg" style="width:200px;">首页Banner
+							<span class="imgSize">720*420</span>
+                        </span>
+                  <a href="javascript:;" class="a-upload">
+                    <input data-tagname="input_area" type="file" name="file" data-id="hshImg" id="hshImg" onchange="imgChange(this,'hshImg');" data-ruleid="R005" accept='image/jpeg,image/gif,image/png'>
+                    <span class="upload-btn">点击这里上传图片</span>
+                  </a>
+                </div>
+              </div>
+              <div class="col-3 img-preview-box lt" id="hshImageBox" style="margin-left:230px;">
+                <img id="hshImagePreview" width="120px" height="140px" style="display: block; width: 130px; height: 160px;">
+            </div>
+            </div> -->
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">一级审批：</span>
+                <select class="select-s-style" data-use="contentApproverId">
+                </select>
+              </div>
+              <div class="col-1">
+                <span class="item-property">二级审批：</span>
+                <select class="select-s-style" data-use="channelApproverId">
+                </select>
+              </div>
+            </div>
+          </li>
+          <!-- end和生活 -->
+          <!-- start外呼 -->
+          <li data-channelId="d07">
+            <div class="row">
+              <div class="col-3">
+                        <span class="">
+                          渠道小类：
+                        </span>
+                <select class="select-s-style" name="" id="" data-ruleid="R009" data-tagname="select_area">
+                  <option value="10086">10086</option>
+                  <option value="10088" >10088</option>
+                  <option value="10085">10085</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class=" is-required">营销用语：</span>
+              </div>
+              <div class="col-3">
+                <textarea class="h-block higher" data-ruleid="R001"  data-tagname="text_area"></textarea>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">一级审批：</span>
+                <select class="select-s-style" data-use="contentApproverId">
+                </select>
+              </div>
+              <div class="col-1">
+                <span class="item-property">二级审批：</span>
+                <select class="select-s-style" data-use="channelApproverId">
+                </select>
+              </div>
+            </div>
+          </li>
+          <!-- end10088外呼 -->
+          <!-- start今日头条 -->
+          <li data-channelId="q08">
+            <div class="row">
+              <div class="col-3">
+                <span class=" is-required">标题</span>
+                <label class="col-mar" style="color: #758494;"><span></span>（长度6-25汉字）</label>
+              </div>
+              <div class="col-3">
+                <input type="text" class="h-block" data-ruleid="R011" data-tagname="input_area">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class=" is-required">图片链接</span>
+                <label class="col-mar" style="color: #758494;"><span></span>（分辨率必须为690*388，图片大小<100K ）</label>
+              </div>
+              <div class="col-3">
+                <input type="text" class="h-block " data-ruleid="R006" data-tagname="input_area" placeholder="请输入">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class=" is-required">跳转链接</span>
+              </div>
+              <div class="col-3">
+                <input type="text" class="h-block " data-ruleid="R007" data-tagname="input_area" placeholder="请输入">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class=" is-required">点位短代码</span>
+              </div>
+              <div class="col-3">
+                <input type="text" class="h-block " data-ruleid="R020" data-tagname="input_area" placeholder="请输入">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">一级审批：</span>
+                <select class="select-s-style" data-use="contentApproverId">
+                </select>
+              </div>
+              <div class="col-1">
+                <span class="item-property">二级审批：</span>
+                <select class="select-s-style" data-use="channelApproverId">
+                </select>
+              </div>
+            </div>
+          </li>
+          <!-- end今日头条结束-->
+
+          <!-- start掌厅push -->
+          <li data-channelId="q13">
+            <div class="row">
+              <div class="col-3">
+                <span class=" is-required">标题</span>
+                <label class="col-mar" style="color: #758494;"><span></span>（长度6-25汉字）</label>
+              </div>
+              <div class="col-3">
+                <input type="text" class="h-block" data-ruleid="R011" data-tagname="input_area">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class=" is-required">营销用语：</span>
+              </div>
+              <div class="col-3">
+                <textarea class="h-block higher" data-ruleid="R001"  data-tagname="text_area"></textarea>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class=" is-required">跳转链接</span>
+              </div>
+              <div class="col-3">
+                <input type="text" class="h-block " data-ruleid="R007" data-tagname="input_area" placeholder="请输入">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">一级审批：</span>
+                <select class="select-s-style" data-use="contentApproverId">
+                </select>
+              </div>
+              <div class="col-1">
+                <span class="item-property">二级审批：</span>
+                <select class="select-s-style" data-use="channelApproverId">
+                </select>
+              </div>
+            </div>
+          </li>
+          <!-- end掌厅push结束-->
+
+          <!-- 渠道：微信公众号 Kh -->
+          <li data-channelId="q10">
+            <!-- 微信公众号配置列表 -->
+            <div class="row">
+              <div class="col-3">
+                        <span class="is-required">
+                          配置类型：
+                        </span>
+                <select class="select-s-style" name="" id="wxgzh_config_types" data-ruleid="R002" sub="1" data-tagname="select_area">
+                  <option value="q1001" >首页弹框</option>
+                  <option value="q1002">广告位</option>
+                  <option value="q1003">猜你喜欢</option>
+                  <option value="q1004">最热单品</option>
+                </select>
+              </div>
+            </div>
+            <!-- 微信公众号面板 -->
+            <div id="wxgzh_config_template">
+              <!-- 微信公众号：首页弹窗 -->
+              <div id="wxgzh_popup">
+                <div class="row">
+                  <div class="col-3">
+                    <span class=" is-required">图片链接</span>
+                    <label class="col-mar" style="color: #758494;"><span></span>（分辨率必须为720*1024，图片大小<100K ）</label>
+                  </div>
+                  <div class="col-3">
+                    <input type="text" class="h-block " data-ruleid="R006" sub="1" data-tagname="input_area" placeholder="请输入">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-3">
+                    <span class="is-required">跳转链接</span>
+                  </div>
+                  <div class="col-3">
+                    <input type="text" class="h-block " data-ruleid="R007" sub="1" data-tagname="input_area" placeholder="请输入">
+                  </div>
+                </div>
+              </div>
+              <!-- 微信公众号：广告位 -->
+              <div id="wxgzh_banner">
+                <div class="row">
+                  <div class="col-3">
+                    <span class=" is-required">图片链接</span>
+                    <label class="col-mar" style="color: #758494;"><span></span>（分辨率必须为750*250，图片大小<100K ）</label>
+                  </div>
+                  <div class="col-3">
+                    <input type="text" class="h-block " data-ruleid="R006" data-tagname="input_area" placeholder="请输入">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-3">
+                    <span class=" is-required">跳转链接</span>
+                  </div>
+                  <div class="col-3">
+                    <input type="text" class="h-block " data-ruleid="R007" data-tagname="input_area" placeholder="请输入">
+                  </div>
+                </div>
+              </div>
+              <!-- 微信公众号：猜你喜欢 -->
+              <div id="wxgzh_guess">
+                <div class="row">
+                  <div class="col-3">
+                    <span class=" is-required">标题</span>
+                    <label class="col-mar" style="color: #758494;"><span></span>（50字以内）</label>
+                  </div>
+                  <div class="col-3">
+                    <input type="text" class="h-block" data-ruleid="R011" data-tagname="input_area">
+
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-3">
+                    <span class=" is-required">跳转链接</span>
+                  </div>
+                  <div class="col-3">
+                    <input type="text" class="h-block " data-ruleid="R007" data-tagname="input_area" placeholder="请输入">
+                  </div>
+                </div>
+              </div>
+              <!-- 微信公众号：最热单品 -->
+              <div id="wxgzh_hot">
+                <div class="row">
+                  <div class="col-3">
+                    <span class=" is-required">资费代码名称</span>
+                    <label class="col-mar" style="color: #758494;"><span></span></label>
+                  </div>
+                  <div class="col-3">
+                    <input type="text" class="h-block" data-ruleid="R012" data-tagname="input_area">
+
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-3">
+                    <span class=" is-required">资费代码</span>
+                    <label class="col-mar" style="color: #758494;"><span></span></label>
+                  </div>
+                  <div class="col-3">
+                    <input type="text" class="h-block" data-ruleid="R013" data-tagname="input_area">
+
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-3">
+                    <span class=" is-required">图标链接</span>
+                    <label class="col-mar" style="color: #758494;"><span></span></label>
+                  </div>
+                  <div class="col-3">
+                    <input type="text" class="h-block" data-ruleid="R019" data-tagname="input_area">
+
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-3">
+                    <span class=" is-required">跳转链接</span>
+                  </div>
+                  <div class="col-3">
+                    <input type="text" class="h-block " data-ruleid="R007" data-tagname="input_area" placeholder="请输入">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-3">
+                    <span class=" is-required">资费订购基数</span>
+                  </div>
+                  <div class="col-3">
+                    <input type="text" class="h-block" data-ruleid="R014" data-tagname="input_area">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- 审批面板 -->
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">一级审批：</span>
+                <select class="select-s-style" data-use="contentApproverId">
+                </select>
+              </div>
+              <div class="col-1">
+                <span class="item-property">二级审批：</span>
+                <select class="select-s-style" data-use="channelApproverId">
+                </select>
+              </div>
+            </div>
+          </li>
+
+
+          <!-- start和我看 -->
+          <li data-channelId="q12" >
+            <div class="row">
+              <div class="col-3">
+                        <span class="">
+                          渠道小类：
+                        </span>
+                <select class="select-s-style" name="" data-ruleid="R002" data-tagname="select_area">
+                  <option value="q1201">首页banner1</option>
+                  <option value="q1202">首页banner2</option>
+                  <option value="q1203">首页banner3</option>
+                  <option value="q1204">首页banner4</option>
+                  <option value="q1205">首页banner5</option>
+                  <option value="q1206">首页banner6</option>
+                  <option value="q1207">首页banner7</option>
+                  <option value="q1208">首页banner8</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="is-required">跳转链接：</span>
+              </div>
+              <div class="col-3">
+                <input type="text" class="h-block j-validate-url" data-ruleid="R007" data-tagname="input_area" placeholder="请以http/https开头">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class=" is-required">图片链接</span>
+                <label class="col-mar" style="color: #758494;"><span></span></label>
+              </div>
+              <div class="col-3">
+                <input type="text" class="h-block " data-ruleid="R006"  data-tagname="input_area" placeholder="请以http/https开头">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">一级审批：</span>
+                <select class="select-s-style" data-use="contentApproverId">
+                </select>
+              </div>
+              <div class="col-1">
+                <span class="item-property">二级审批：</span>
+                <select class="select-s-style" data-use="channelApproverId">
+                </select>
+              </div>
+            </div>
+          </li>
+          <!-- end和我看 -->
+
+          <!-- start客户经理 -->
+          <li data-channelId="d08" >
+            <div class="row">
+              <div class="col-3">
+                <span class=" is-required">营销用语：</span>
+              </div>
+              <div class="col-3">
+                <textarea class="h-block higher" data-ruleid="R001"  data-tagname="text_area"></textarea>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">一级审批：</span>
+                <select class="select-s-style" data-use="contentApproverId">
+                </select>
+              </div>
+              <div class="col-1">
+                <span class="item-property">二级审批：</span>
+                <select class="select-s-style" data-use="channelApproverId">
+                </select>
+              </div>
+            </div>
+          </li>
+          <!-- end客户经理 -->
+
+          <!-- 渠道：微信朋友圈 Kh -->
+          <li data-channelId="q11">
+            <div class="row">
+              <div class="col-mar">
+                <span class="">限制：</span>
+                <span name="">朋友圈广告的投放时间需大于等于 6 小时，小于等于 10 个自然日，且每天投放的时段需保持一致。</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="">标题</span>
+                <label class="col-mar" style="color: #758494;"><span></span>（长度1-40汉字）</label>
+              </div>
+              <div class="col-3">
+                <input type="text" class="h-block" data-ruleid="R011" data-tagname="input_area">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="">URL：</span>
+                <label class="col-mar" style="color: #758494;"><span></span>字段长度最小 1 字节，长度最大 1023 字节</label>
+              </div>
+              <div class="col-3">
+                <input type="text" class="h-block j-validate-url" data-ruleid="R007" data-tagname="input_area" placeholder="请以http/https开头" onfocus="this.placeholder=''" onblur="this.placeholder='请以http/https开头'">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class=" ">广告出价</span>
+                <label class="col-mar" style="color: #758494;"><span></span> 60-200元/cpm </label>
+              </div>
+              <div class="col-3">
+                <input type="text" class="h-block" data-ruleid="R016" data-tagname="input_area">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3" style="margin-bottom: 5px">
+                <span class=" ">日限额</span>
+                <label class="col-mar" style="color: #758494;"><span></span></label>
+              </div>
+              <div class="col-1" style="margin-right: 50px">
+                <span class=" ">重点城市日限额</span><label class="col-mar" style="color: #758494;"><span></span>重点城市日限额之和</label>
+                <input type="text" class="h-block" data-ruleid="R017" data-tagname="input_area" placeholder="重点城市日限额" onfocus="this.placeholder=''" onblur="this.placeholder='重点城市日限额'">
+
+              </div>
+
+              <div class="col-1" >
+                <span class=" ">其他城市日限额</span><label class="col-mar" style="color: #758494;"><span></span>其他城市日限额之和</label>
+                <input type="text" class="h-block" data-ruleid="R018" data-tagname="input_area" placeholder="其他城市日限额" onfocus="this.placeholder=''" onblur="this.placeholder='其他城市日限额'">
+
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-3">
+                        <span class="">
+                          图片规格：
+                        </span>
+                <select class="select-s-style" name="" id="wx_pic" data-ruleid="R015" data-tagname="select_area">
+                  <option value="263" >800*640</option>
+                  <option value="310">640*800</option>
+                  <option value="311">800*800</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <div class="sub-row" id="pic263">
+                <span data-id="263">263<span class="imgSize">800*640</span></span>
+                <a href="javascript:;" class="a-upload">
+                  <input data-tagname="input_area" type="file" data-ruleid="R005" name="file" data-id="wx_pic_1" id="wx_pic_1" onchange="imgChange(this)" accept="image/jpeg,image/gif,image/png">
+                  <span class="upload-btn">点击这里上传图片</span></a>
+              </div>
+              <div class="sub-row" id="pic310">
+                <span data-id="310">310<span class="imgSize">640*800</span></span>
+                <a href="javascript:;" class="a-upload">
+                  <input data-tagname="input_area" type="file" data-ruleid="R005" name="file" data-id="wx_pic_2" id="wx_pic_2" onchange="imgChange(this)" accept="image/jpeg,image/gif,image/png">
+                  <span class="upload-btn">点击这里上传图片</span></a>
+              </div>
+              <div class="sub-row" id="pic311">
+                <span data-id="311">311<span class="imgSize">800*800</span></span>
+                <a href="javascript:;" class="a-upload">
+                  <input data-tagname="input_area" type="file" data-ruleid="R005" name="file" data-id="wx_pic_3" id="wx_pic_3" onchange="imgChange(this)" accept="image/jpeg,image/gif,image/png">
+                  <span class="upload-btn">点击这里上传图片</span></a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">一级审批：</span>
+                <select class="select-s-style" data-use="contentApproverId">
+                </select>
+              </div>
+              <div class="col-1">
+                <span class="item-property">二级审批：</span>
+                <select class="select-s-style" data-use="channelApproverId">
+                </select>
+              </div>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+      <div id="business" class="content-item content-item-new-modal">
+        <h3><span>统计口径</span></h3>
+        <div class="row">
+          <div class="col-1">
+            <span class="item-property h-block is-required">开始时间：</span>
+            <!-- onfocus="judgeActCycle();WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'%y-%M-%d',maxDate:'#F{$dp.$D(\'endTime\')}'})" -->
+            <input type="text" readOnly="true" name="" class="h-iblock Wdate j-input-clear" id="startTime" />
+          </div>
+          <div class="col-1">
+            <span class="item-property h-block is-required">结束时间：</span>
+            <!-- onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'startTime\')}'})" -->
+            <input type="text" name="" readOnly="true" class="h-iblock Wdate j-input-clear" id="endTime" >
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <span class="item-property h-block is-required">推荐业务：</span>
+            <div class="choose-buse" data-popup="4" id="chooseBuss">
+              <div class="li-wrap">
+                <span class="user-group-icon number-icon"></span>
+                <p>
+                  选择业务 <i></i>
+                </p>
+              </div>
+              <div class="bottom-shadow-cover"></div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          已选业务()
+        </div>
+        <div class="row" id="businessSelected">
+          <div class="data-list">
+            <input id="chosedBussiness" />
+          </div>
+          <!-- 	<div class="col-3">
+                      <a href="##" class="a-underline expand-all" data-bindtab="businessSelected">展开全部</a>
+                  </div> -->
+        </div>
+
+        <!--<div class="row">
+          <div class="col-3">
+            <span class="item-property ">关联任务：</span>
+          </div>
+          <div class="col-2-6">
+            <select class="h-iblock select-s-style">
+              <option value=""></option>
+            </select>
+          </div>
+          <a href="javascript:var win = window.open('./vicTaskManage.html');$(win).find('.create-new').click();">新建任务</a>
+        </div>-->
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<!--end新建模态框-->
+<!-- start详情模态框 -->
+<div class="modal-wrap modal-wrap-detail">
+  <div class="modal-box">
+    <div class="modal-box-title">
+      <h3 style="display: inline-block;">营销活动详情</h3>
+      <a href="javascript: void(0);" class="modal-box-cancel" >×</a>
+    </div>
+    <ul class="tab-nav tab-nav-grey clearfix" id="actDetailNav">
+      <li>
+        <a href="#detailTab_d" data-id="detailTab_d">活动详情</a>
+      </li>
+      <li>
+        <a href="#approveTab_d" data-id="approveTab_d">审批流程</a>
+      </li>
+      <li>
+        <a href="#operateTab_d" data-id="operateTab_d">操作记录</a>
+      </li>
+    </ul>
+    <div class="tabs">
+      <!-- 活动详情 -->
+      <div id="detailTab_d" class="tab-box detailTab" >
+        <div class="modal-box-nav">
+          <ul>
+            <li class="on"><a href="#basicInfoShow">基本信息</a></li>
+            <li><a href="#sceneEventShow">场景事件</a></li>
+            <li><a href="#targetUserShow">目标用户</a></li>
+            <li><a href="#excChannelShow">执行渠道</a></li>
+            <li><a href="#businessShow">统计口径</a></li>
+          </ul>
+        </div>
+        <div class="modal-box-content">
+          <div id="basicInfoShow" class="content-item content-item-new-modal">
+            <h3><span>基本属性</span></h3>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">活动编号：</span>
+                <span data-elemid="activityIdShow"></span>
+              </div>
+              <div class="col-1">
+                <span class="item-property">所属地市：</span>
+                <span name="" data-elemid="cityIdShow"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="item-property">活动名称：</span>
+                <span data-elemid="activityNameShow"></span>
+              </div>
+            </div>
+          </div>
+          <div id="sceneEventShow" class="content-item content-item-new-modal">
+            <h3><span>场景事件</span></h3>
+            <div class="row">
+              <div class="col-3">
+                <span class="item-property">活动类型：</span>
+                <span data-elemid="activityType"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3 clearfix">
+                <span class="item-property lt">相关信息：</span>
+                <div data-elemid="activityTypeInfo" class="sceneTab lt"></div>
+              </div>
+            </div>
+          </div>
+          <div id="targetUserShow" class="content-item content-item-new-modal">
+            <h3><span>目标用户</span></h3>
+            <div class="row">
+              <div class="col-3">
+                <span class="item-property">已选用户：</span>
+                <span data-elemid="chosedGroups"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="item-property">测试号码：</span>
+                <span data-elemid="testPhoneNumShow"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="item-property">删除用户：</span>
+                <span data-elemid="removeCustomerShow"></span>
+              </div>
+            </div>
+          </div>
+          <div id="excChannelShow" class="content-item content-item-new-modal">
+            <h3><span>执行渠道</span></h3>
+            <div style="border-bottom: 1px solid #e1e1e1;font-size: 28px;" data-elemid="channelTabNav" class="item-tab">
+
+            </div>
+            <ul class="channel-tab">
+
+            </ul>
+          </div>
+          <div id="businessShow" class="content-item content-item-new-modal">
+            <h3><span>统计口径</span></h3>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property ">开始时间：</span>
+                <span data-elemid="startDateShow"></span>
+              </div>
+              <div class="col-1">
+                <span class="item-property">结束时间：</span>
+                <span data-elemid="endDateShow"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="item-property">已选业务：</span>
+                <span data-elemid="chosedBusiness"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="item-property">营销目的：</span>
+                <span data-elemid="marketingPurposeNameShow"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="item-property">业务大类：</span>
+                <span data-elemid="businessTypeNameShow"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="item-property">业务小类：</span>
+                <span data-elemid="businessSmallTypeNameShow"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 审批流程 -->
+      <div id="approveTab_d" class="selected approveTab">
+        <div class="box-content">
+          <div class="content-item content-item-new-modal">
+            <div class="">
+              <div class="result-title">
+                <span>审批意见：</span>
+                <span id="approveResult" class=""></span>
+              </div>
+              <div class="result-content modal-box-content">
+                <div class="row hide" data-step="step1">
+                  <div class="left-mark">
+                    <span class="item-property " data-id="1">阶段1：</span>
+                  </div>
+                  <div class="right-content">
+                    <p>系统判断</p>
+                    <div class="sub-content step1" id="status1">
+                      <ul class="sub-row clearfix">
+                        <li>
+                          <i class=""></i>
+                          <span class="top-move"></span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="row hide" data-step="step2">
+                  <div class="left-mark">
+                    <span class="item-property " data-id="2">阶段2：</span>
+                  </div>
+                  <div class="right-content">
+                    <p>一级审批</p>
+                    <div class="sub-content step2">
+
+                    </div>
+                  </div>
+                </div>
+                <div class="row hide" data-step="step3">
+                  <div class="left-mark">
+                    <span class="item-property " data-id="3">阶段3：</span>
+                  </div>
+                  <div class="right-content">
+                    <p>二级审批</p>
+                    <div class="sub-content step3" id="status3">
+
+                    </div>
+                  </div>
+                </div>
+                <div class="row hide" data-step="step4">
+                  <div class="left-mark">
+                    <span class="item-property " data-id="4">阶段4：</span>
+                  </div>
+                  <div class="right-content">
+                    <p>三级审批</p>
+                    <div class="sub-content step4" id="status4">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 操作记录 -->
+      <div id="operateTab_d" class="approveTab operate-log">
+        <div class="box-content">
+          <div class="content-item content-item-new-modal">
+            <div class="">
+              <div class="result-title ">
+                <div class="row log-row">
+                  <div class="left-mark">
+                    <span class="item-property"></span>
+                  </div>
+                  <div class="right-content">
+                    <div class="sub-content" >
+                      <ul class="sub-row clearfix">
+                        <li>
+                          <span>操作者</span>
+                        </li>
+                        <li>
+                          <span>操作名称</span>
+                        </li>
+                        <li>
+                          <span>操作结果</span>
+                        </li>
+                        <li>
+                          <span>操作时间</span>
+                        </li>
+                        <li>
+                          <span>操作说明</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="result-content modal-box-content">
+                <!--<div class="row">-->
+                <!--<div class="left-mark">-->
+                <!--<span class="item-property " data-id="1">记录 <span class="logNo">1</span>：</span>-->
+                <!--</div>-->
+                <!--<div class="right-content">-->
+                <!--<div class="sub-content" >-->
+                <!--<ul class="sub-row clearfix">-->
+                <!--<li>-->
+                <!--<span>哈哈</span>-->
+                <!--</li>-->
+                <!--<li>-->
+                <!--<span>暂停活动</span>-->
+                <!--</li>-->
+                <!--<li>-->
+                <!--<span>2017-12-13 10:25:32</span>-->
+                <!--</li>-->
+                <!--</ul>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end详情模态框 -->
+<!-- start活动审批 -->
+<div class="modal-wrap modal-wrap-approve">
+  <div class="modal-box">
+    <div class="modal-box-title">
+      <h3 style="display: inline-block;">活动审批</h3>
+      <a href="javascript: void(0);" class="modal-box-cancel" >取消</a>
+      <a href="javascript: void(0);" id="saveApprove" class="modal-box-save">保存</a>
+    </div>
+    <ul class="tab-nav tab-nav-grey clearfix" id="actApproveNav">
+      <li>
+        <a href="#approveTab" data-id="approveTab">活动审批</a>
+      </li>
+      <li>
+        <a href="#detailTab" data-id="detailTab">活动详情</a>
+      </li>
+    </ul>
+    <div class="tabs">
+      <!-- 活动详情 -->
+      <div class="tab-box detailTab" id="detailTab" >
+        <div class="modal-box-nav">
+          <ul>
+            <li class="on"><a href="#basicInfoShow_1">基本信息</a></li>
+            <li><a href="#sceneEventShow_1">场景事件</a></li>
+            <li><a href="#targetUserShow_1">目标用户</a></li>
+            <li><a href="#excChannelShow_1">执行渠道</a></li>
+            <li><a href="#businessShow_1">统计口径</a></li>
+          </ul>
+        </div>
+        <div class="modal-box-content">
+          <div id="basicInfoShow_1" class="content-item content-item-new-modal">
+            <h3><span>基本属性</span></h3>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">活动编号：</span>
+                <span data-elemid="activityIdShow"></span>
+              </div>
+              <div class="col-1">
+                <span class="item-property">所属地市：</span>
+                <span name="" data-elemid="cityIdShow"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="item-property">活动名称：</span>
+                <span data-elemid="activityNameShow"></span>
+              </div>
+            </div>
+          </div>
+          <div id="sceneEventShow_1" class="content-item content-item-new-modal">
+            <h3><span>场景事件</span></h3>
+            <div class="row">
+              <div class="col-3">
+                <span class="item-property">活动类型：</span>
+                <span data-elemid="activityType"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3 clearfix">
+                <span class="item-property lt">相关信息：</span>
+                <div data-elemid="activityTypeInfo" class="sceneTab lt"></div>
+              </div>
+            </div>
+          </div>
+          <div id="targetUserShow_1" class="content-item content-item-new-modal">
+            <h3><span>目标用户</span></h3>
+            <div class="row">
+              <div class="col-3">
+                <span class="item-property">已选用户：</span>
+                <span data-elemid="chosedGroups"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="item-property">测试号码：</span>
+                <span data-elemid="testPhoneNumShow"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="item-property">删除用户：</span>
+                <span data-elemid="removeCustomerShow"></span>
+              </div>
+            </div>
+          </div>
+          <div id="excChannelShow_1" class="content-item content-item-new-modal">
+            <h3><span>执行渠道</span></h3>
+            <div style="border-bottom: 1px solid #e1e1e1;font-size: 28px;" data-elemid="channelTabNav" class="item-tab"></div>
+            <ul class="channel-tab">
+              <!-- CRM营业前台/大掌柜 -->
+              <li data-channelid="f01" class="selected"></li>
+              <!-- 客服系统 -->
+              <li data-channelid="f02"></li>
+              <!-- 掌厅 -->
+              <li data-channelid="q03"></li>
+              <!-- 优惠提醒 -->
+              <li data-channelid="d01"></li>
+              <!-- 触点短信 -->
+              <li data-channelid="d02"></li>
+              <!-- 10086主动提醒 -->
+              <li data-channelid="d03"></li>
+              <!-- 10086阀值提醒 -->
+              <li data-channelid=""></li>
+              <!-- 互联网渠道 -->
+              <li data-channelid="q07"></li>
+              <!-- 10088外呼 -->
+              <li data-channelid="d07"></li>
+              <!-- 今日头条 -->
+              <li data-channelid="q08"></li>
+              <!-- 微信公众号 -->
+              <li data-channelid="q10"></li>
+              <!-- 微信朋友圈 -->
+              <li data-channelid="q11"></li>
+            </ul>
+          </div>
+          <div id="businessShow_1" class="content-item content-item-new-modal">
+            <h3><span>统计口径</span></h3>
+            <div class="row">
+              <div class="col-1">
+                <span class="item-property">开始时间：</span>
+                <span data-elemid="startDateShow"></span>
+              </div>
+              <div class="col-1">
+                <span class="item-property">结束时间：</span>
+                <span data-elemid="endDateShow"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="item-property">已选业务：</span>
+                <span data-elemid="chosedBusiness"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="item-property">业务类型：</span>
+                <span data-elemid="businessTypeNameShow"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="item-property">营销目的：</span>
+                <span data-elemid="marketingPurposeNameShow"></span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <span class="item-property">关联任务：</span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 活动审批 -->
+      <div id="approveTab" class="approveTab">
+        <div class="modal-box-content">
+          <div id="" class="content-item content-item-new-modal">
+            <div>
+              <div class="left-mark">审批意见：</div>
+              <div class="right-content" style="margin-left:100px;" id="approveChannels">
+                <div class="row">
+                  <div class="col-3">
+                    <span class="item-property h-block is-required" data-id="1">渠道一</span>
+                  </div>
+                  <div class="col-3">
+                    <div class="radio-box clearfix">
+                      <p class="selected">
+                        <input class="radio-input" type="radio" name="filter" value="1" checked="checked">
+                        <label><span class=""></span>通过</label>
+                      </p>
+                      <p>
+                        <input class="radio-input" type="radio" name="filter" value="2">
+                        <label><span></span>驳回</label>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-3 hide">
+                    <textarea class="h-block higher" placeholder="请填写驳回原因" class="selected"></textarea>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-3">
+                    <span class="item-property h-block is-required" data-id="2">渠道二</span>
+                  </div>
+                  <div class="col-3">
+                    <div class="radio-box clearfix">
+                      <p class="selected">
+                        <input class="radio-input" type="radio" name="channel1" value="1" checked="checked">
+                        <label><span></span>通过</label>
+                      </p>
+                      <p>
+                        <input class="radio-input" type="radio" name="channel1"  value="2">
+                        <label><span></span>驳回</label>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-3 hide">
+                    <textarea class="h-block higher" placeholder="请填写驳回原因"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end活动审批 -->
+<!-- start文件上传等待提示模态框 -->
+<div class="modal-wrap modal-wrap-upload">
+  <div class="upload-wait-hint">文件上传中，请稍后...</div>
+</div>
+<!-- end文件上传等待提示模态框 -->
+<!-- start图片预览模态框 -->
+<div class="modal-wrap modal-wrap-showImg">
+  <div class="g-modal-box">
+    <div class="modal-box-title">
+      <h3 style="display: inline-block;" class="j-img-name">cat.png</h3>
+      <a href="javascript: void(0);" class="j-cancel-view">×</a>
+    </div>
+    <div class="img-box">
+      <img/>
+    </div>
+  </div>
+</div>
+<!-- end图片预览模态框 -->
+<!-- start活动列表目标客户数详情弹框 -->
+<div class="pop-box clearfix">
+  <p class="pop-title">剔除</p>
+  <ul class="pop-content">
+    <li data-id="removeCancel10086">
+      <span class="pop-left-mark" >取消10086流量提醒客户：</span>
+      <span data-id="removeCancel10086Amount">0</span>
+    </li>
+    <li data-id="removeGroupUser">
+      <span class="pop-left-mark" >集团重要客户：</span>
+      <span data-id="removeGroupUserAmount">0</span>
+    </li>
+    <li data-id="removeEmployee">
+      <span class="pop-left-mark" >内部号码：</span>
+      <span data-id="removeEmployeeAmount">0</span>
+    </li>
+    <li data-id="removeRedList">
+      <span class="pop-left-mark" >红名单：</span>
+      <span data-id="removeRedListAmount">0</span>
+    </li>
+    <li data-id="removeSensitive">
+      <span class="pop-left-mark" >敏感客户：</span>
+      <span data-id="removeSensitiveAmount">0</span>
+    </li>
+    <li data-id="removeUpload">
+      <span class="pop-left-mark">自定义上传：</span>
+      <span data-id="removeUploadAmount">0</span>
+    </li>
+    <li data-id="noRemove">
+      <span class="pop-left-mark">未选择剔除用户</span>
+    </li>
+  </ul>
+</div>
+<!-- end活动列表目标客户数详情弹框 -->
+<!--start低版本浏览器提示框-->
+<div class="full-scr-overlay hidden j-counsel-hint-modal" >
+  <div class="tip tip-confirm">
+    <div class="hint-content">
+      <p>当前浏览器版本：<b id="myBrowser">IE9</b></p>
+      <p>系统当前支持如下图所展示浏览器。如果您的浏览器版本太低，将会影响系统页面展示及部分功能，可升级IE浏览器至IE9及以上版本，或更换浏览器。</p>
+      <p> 更换浏览器便捷方式：点击顶部导航栏 "<b>帮助</b> -- <b>获取网址</b>  <i class="help-drop-icon url-icon"></i>"
+        按钮，复制链接，用下方展示浏览器打开。
+      </p>
+      <p> 如有其它疑问，可点击“ <b>下载文档</b>
+        <i class="help-drop-icon download-docs-icon"></i>”按钮，下载后查看系统使用文档，或咨询相关人员。
+      </p>
+      <p class="bg-browser"></p>
+    </div>
+    <div class="btn-group">
+      <a href="javascript:;" class="btn-group-ensure j-counsel-hint-close">知道了</a>
+    </div>
+  </div>
+</div>
+<!--end低版本浏览器提示框-->
+
+
+<!--&lt;!&ndash;帮助网址&ndash;&gt;
+<div class="float-url-box">
+  <input type="text" class="j-get-url">
+  <b class="j-close-url-box">×</b>
+</div>-->
+
+<script type="text/javascript" src="./lib/public/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./layui/layui.js"></script>
+<script type="text/javascript" src="./lib/public/bootstrap-tagsinput.js"></script>
+<script type="text/javascript" src="./lib/DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.slimscroll.min.js"></script>
+<script type="text/javascript" src="./lib/public/bootstrap-fileinput.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.blockUI.js"></script>
+<script type="text/javascript" src="./lib/public/ajaxfileupload.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.autocomplete.js"></script>
+<script type="text/javascript" src="./lib/public/select2.full.min.js"></script>
+<script type="text/javascript" src="./lib/i18n/zh-CN.js"></script>
+<script type="text/javascript" src="./js/lowBrowserHint.js"></script>
+<script type="text/javascript" src="./js/pager.js"></script>
+<script type="text/javascript" src="./js/topNav.js"></script>
+<script type="text/javascript" src="./js/vicSideNav.js"></script>
+<script type="text/javascript" src="./js/generalFunc.js"></script>
+<script type="text/javascript" src="./js/vicActManage.js"></script>
+<script type="text/javascript" src="./js/vicPopup.js"></script>
+<script src="js/config.js"></script>
+<script type="text/javascript" src="./js/iopModalDetails.js"></script>
+<script type="text/javascript" src="./js/smartMap.js"></script>
+<!-- <script src="js/contentTab.js"></script> -->
+
+</body>
+
+</html>

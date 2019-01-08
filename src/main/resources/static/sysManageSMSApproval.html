@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>短信审批设置</title>
+    <link rel="stylesheet" type="text/css" href="./css/public/bootstrap-fileinput.css">
+    <link rel="stylesheet" type="text/css" href="./css/public/bootstrap-tagsinput.css">
+    <link rel="stylesheet" href="./css/public/jquery.autocomplete.css">
+    <link rel="stylesheet" type="text/css" href="css/generalStyle.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/sysManageSMSApproval.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="./lib/public/html5shiv.min.js"></script>
+    <script type="text/javascript" src="./lib/public/excanvas.compiled.js"></script>
+    <style>
+        .modal-wrap {
+            -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#E6ffffff,endColorstr=#E6ffffff)";
+
+        }
+        .full-scr-overlay {
+            -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#BEffffff,endColorstr=#BEffffff)";
+        }
+    </style>
+    <![endif]-->
+</head>
+
+<body>
+<!--start 开始顶部导航 -->
+<div class="nav-wrap">
+    <div class="logo lt">
+        <img src="./img/logo.png" alt="全触点"/>
+    </div>
+    <ul class="nav clearfix lt" id="headerNav">
+    </ul>
+    <div class="user rt clearfix">
+        <i class="user-icon"></i>
+        <span>您好，</span>
+        <span id="user">请登录</span>
+        <b title="退出">
+            <i class="exit"></i>
+        </b>
+    </div>
+</div>
+<!--end 顶部导航 -->
+<!--左侧导航和主体内容-->
+<div class="content-wrap">
+    <!--start 左侧导航 -->
+    <div class="side-nav">
+        <ul id="sideNav">
+        </ul>
+    </div>
+    <!--end 左侧导航 -->
+    <!--start主体内容-->
+    <div class="main">
+        <div class="content">
+            <div class="inner-content">
+                <div class="panel-title clearfix">
+            <span class="title lt">
+				短信审批设置
+                <span id="channel_num" class="color-grey"></span>
+            </span>
+                    <div class="rt clearfix">
+                        <div class="lt search-box">
+                            <input type="text" id="search" class="search" />
+                            <i></i>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="content-tab">
+                    <div id="channels" class="selected">
+                        <div class="panel-bottom">
+                            <table cellspacing="0" id="table" class="table">
+                                <thead>
+                                <tr>
+                                    <td class="width-5">&nbsp;</td>
+                                    <td class="width-13 text-align-left">渠道</td>
+                                    <td>渠道类型</td>
+                                    <td>是否需要内容审批</td>
+                                    <td>是否需要渠道审批</td>
+                                    <td>是否需要分管领导审批</td>
+                                    <!--<td style="width: 12%;">城市</td>-->
+                                    <!-- <td style="width: 9%;">当前审批人</td> -->
+                                    <td>是否支持短息审批</td>
+                                    <td class="width-10">操作</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="page-wrap clearfix" id="page"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end主体内容-->
+</div>
+
+
+<!--start修改短信审批设置-->
+<div class="modal-wrap modal-wrap-edit">
+    <div class="modal-box approver_modal_box">
+        <div class="modal-box-title">
+            <h3>修改短信审批设置</h3>
+            <a href="javascript: void(0);" class="modal-box-cancel approver_modal_box_a">取消</a>
+            <a href="javascript: void(0);" class="modal-box-save disabled approver_modal_box_a">保存</a>
+        </div>
+
+        <div class="wrapper approver_modal_wrapper">
+            <form id="approver-content">
+                <div class="row">
+                    <div class="col-3">
+                        <span class="item-property h-block is-required" style="width: 160px;">&nbsp;&nbsp;&nbsp;&nbsp;渠道：</span>
+                        <input type="text" class="u-channel select-m-style select-m1-style" name="channel" id="channel" disabled="disabled"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-3">
+                        <span class="item-property h-block is-required" style="width: 160px;">&nbsp;&nbsp;渠道类型：</span>
+                        <input type="text" class="u-channelTypeName select-m-style select-m1-style" name="channelTypeName" id="channelTypeName" disabled="disabled"/>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-3">
+                        <span class="item-property is-required" style="width: 160px;">是否支持短息审批	：</span>
+                        <select class="priority select-m-style j-approve-sms select-m1-style" name="smsAproval" id="smsAproval" name="priority">
+                            <option value="0">否</option>
+                            <option value="1">是</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--end修改短信审批设置-->
+
+</div>
+<!--end低版本浏览器提示框-->
+<script type="text/javascript" src="./lib/public/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.blockUI.js"></script>
+<script type="text/javascript" src="./lib/DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="./js/pager.js"></script>
+<script type="text/javascript" src="./js/topNav.js"></script>
+<script type="text/javascript" src="./js/sysManageSideNav.js"></script>
+<script type="text/javascript" src="./js/generalFunc.js"></script>
+<script type="text/javascript" src="./js/sysManageSMSApproval.js"></script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>系统提示</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/generalStyle.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="./lib/public/html5shiv.min.js"></script>
+    <script type="text/javascript" src="./lib/public/excanvas.compiled.js"></script>
+    <![endif]-->
+    <script src="js/jquery.js"></script>
+    <style>
+        h2 {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+            outline: none;
+        }
+        .content-main{
+            width: 100%;
+            border: 80px #267BDA solid;
+            background: #EEF1F6
+        }
+
+        #content_text {
+            position: relative;
+            width: 50%;
+            margin:0 auto;
+            text-align: center;
+
+        }
+        .content-main h1{
+            position: relative;
+            font-size: 21px;
+            top: -20px;
+            padding: 0 10px;
+        }
+
+        .content-main p{
+            position: relative;
+            font-size: 16px;
+            top: 5px;
+            padding: 0 10px;
+        }
+        .content-main h1 span.icon {
+            position: relative;
+            display: inline-block;
+            top: 5px;
+            margin: 0 10px 5px 0;
+            background: #267BDA;
+            width: 50px;
+            height: 50px;
+            -moz-box-shadow: 1px 2px white;
+            -webkit-box-shadow: 1px 2px white;
+            box-shadow: 1px 2px white;
+            -webkit-border-radius: 50px;
+            -moz-border-radius: 50px;
+            border-radius: 50px;
+            color: #dfdfdf;
+            font-size: 46px;
+            line-height: 48px;
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 0 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-wrap">
+        <div class="logo lt">
+            <img src="./img/logo.png" alt="全触点"/>
+        </div>
+    </div>
+
+    <div class="content-main" >
+
+        <div id="content_text" >
+            <h1><span class="icon">!</span>系统提示</h1>
+            <p>您访问的页面不存在，请确认您的登录信息是否有效！如需帮助请联系管理员！</p>
+        </div>
+    </div>
+
+</body>
+<script>
+    $(function(){
+        var wheight = window.innerHeight - 46;
+        $(".content-main").css("height",wheight+'px');
+        $("#content_text").height = wheight * 0.5;
+        $("#content_text").css("top",wheight * 0.25);
+
+    })
+</script>
+</html>

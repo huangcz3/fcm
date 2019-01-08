@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>效果评估-地市评估</title>
+
+	<link rel="stylesheet" type="text/css" href="css/generalStyle.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/activityAssessment.css">
+
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="./lib/public/html5shiv.min.js"></script>
+	<script type="text/javascript" src="./lib/public/respond.min.js"></script>
+	<script type="text/javascript" src="./lib/public/excanvas.compiled.js"></script>
+	<![endif]-->
+</head>
+<body>
+
+	<!--start 开始顶部导航 -->
+	<div class="nav-wrap">
+		<div class="logo lt">
+			<img src="./img/logo.png" alt="全触点"/>
+		</div>
+		<ul class="nav clearfix lt" id="headerNav">
+
+		</ul>
+		<div class="user rt clearfix">
+			<i class="user-icon"></i>
+			<span>您好，</span>
+			<span id="user"></span>
+			<b title="退出">
+				<i class="exit"></i>
+			</b>
+		</div>
+	</div>
+	<!--end 顶部导航 -->
+	<!--左侧导航和主体内容-->
+	<div class="content-wrap">
+		<!--start 左侧导航 -->
+		<div class="side-nav">
+			<ul id="sideNav">
+
+			</ul>
+		</div>
+		<!--end 左侧导航 -->
+
+		<!--start主体内容-->
+		<div class="main">
+			<div class="content">
+				<div class="inner-content">
+					<div class="panel-title clearfix">
+						<span class="title lt selected">
+							<a href="#activities">活动列表(<span id="activities_num" class="color-grey"></span>)</a>
+						</span>
+					<!-- 	<span class="title lt">
+							<a href="#tasks">任务列表(<span id="tasks_num" class="color-grey"></span>)</a>
+						</span> -->
+						<div class="rt clearfix">
+							<div class="lt search-box">
+								<input type="text" id="search" class="search" placeholder=""/>
+								<i></i>
+							</div>
+							<span id="filter-btn" class="filter-btn lt border_radius">筛选<i></i></span>	
+							<span class="load-btn border_radius lt" id="download">
+								<i></i>
+								<span>数据下载</span>
+							</span>		
+						</div>
+					</div>
+
+					<div class="content-tab">
+						<div id="activities" class="selected">
+							<div class="panel-mid-s">
+	     						<p class="searchResult">相关搜索结果0个</p>
+	     					</div>
+							<div class="panel-bottom">
+								<table cellspacing="0" id="table" class="table">
+									<thead>
+										<tr>
+										
+											<td class="width-5">&nbsp;</td>
+											<td class="width-6" >活动编号</td>
+											<td class="width-8">活动名称</td>
+											<td class="width-5">地市</td>
+											<td class="width-20">执行渠道</td>
+											<td class="pre-td slide-btn">&lt;</td>
+											<td class="width-6 hide"  data-index="col-1">创建人</td>
+											<td class="width-8 hide" data-index="col-2">创建时间</td>
+											<td class="width-8 hide" data-index="col-3">开始时间</td>
+											<td class="width-8 hide" data-index="col-4">结束时间</td>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+							<div class="page-wrap clearfix" id="page1"></div>	
+						</div>
+						<div id="tasks">
+							<div class="panel-mid-s">
+	     						<p class="searchResult">"全省" "2016-03-01~2016-06-01"相关搜索结果25455个</p>
+	     					</div>
+							<div class="panel-bottom">
+								<div class="thead-box">
+									<table class="table" cellspacing="0" id="table_t_head">
+										<thead>
+											<tr>
+												<td class="width-5">&nbsp;</td>
+												<td class="width-6" >任务编号</td>
+												<td class="width-8">任务名称</td>
+												<td class="width-5">地市</td>
+												<td class="pre-td slide-btn width-1">&lt;</td>
+												<td class="width-6" data-index="col-1">创建人</td>
+												<td class="width-8" data-index="col-2">创建时间</td>
+												<td class="width-8" data-index="col-3">开始时间</td>
+												<td class="width-8" data-index="col-4">结束时间</td>
+												<td class="width-20" data-index="col-5">执行渠道</td>
+											</tr>
+										</thead>
+									</table>
+								</div>
+								<div class="tbody-box">
+									<table cellspacing="0" id="table_t" class="table">
+										<thead>
+											<tr>
+												<td class="width-5">&nbsp;</td>
+												<td class="width-6" >任务编号</td>
+												<td class="width-8">任务名称</td>
+												<td class="width-5">地市</td>
+												<td class="pre-td slide-btn width-1">&lt;</td>
+												<td class="width-6" data-index="col-1">创建人</td>
+												<td class="width-8" data-index="col-2">创建时间</td>
+												<td class="width-8" data-index="col-3">开始时间</td>
+												<td class="width-8" data-index="col-4">结束时间</td>
+												<td class="width-20" data-index="col-5">执行渠道</td>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+
+
+							</div>
+							<div class="page-wrap clearfix" id="page2"></div>							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--end主体内容-->
+
+		<!--start筛选弹框-->
+		<div class="filter-panel">
+			<div class="inner-filter-panel">
+				<div class="row">
+					<p>地市：</p>
+					<select id="area"  class="bg-border">
+
+					</select>
+				</div>
+				<div class="row">
+					<p>统计周期：</p>
+					<input type="text" class="Wdate" id="startDate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'endDate\')}'})"/>
+					-
+					<input type="text" class="Wdate" id="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}'})"/>
+				</div>
+				<div class="row">
+					<p>执行渠道：</p>
+					<select id="channel"  class="bg-border">
+
+					</select>
+				</div>
+				<div class="row">
+					<p>展示指标：</p>
+
+					<input class="show-selected-box"  id="selectedTags" name="tags" value="目标用户数,接触量,营销成功量"/>
+				</div>
+				<div class="row btns">
+					<button id="ensure" class="ensure border_radius">确定</button>
+					<button id="cancel" class="cancel border_radius">取消</button>
+				</div>
+			</div>
+            <div class="tags-box" id="tagsBox">
+                <div class="select-drop-menu" id="tags">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+		</div>
+		<!--end筛选弹框-->
+	</div>
+</div>
+</div>
+<!--start详细渠道弹框-->
+<div class="pop-box clearfix">
+</div>
+<!--end详细渠道弹框-->
+<!--start数据报表展示模态框 -->
+<div class="modal-wrap modal-wrap-detail">
+    <div class="modal-box">
+        <div class="modal-box-title">
+            <h3 style="display: inline-block;">活动效果数据报表展示</h3>
+            <a href="javascript: void(0);" class="modal-box-cancel">×</a>
+        </div>
+        <div class="query-box clearfix hide">
+            <div class="channel-drop">
+                <span>执行渠道：</span>
+                <select id="channelDrop" class="bg-border select-s-style">
+
+                </select>
+            </div>
+            <div class="tag-checkbox-list">
+                <span class="lt">选择指标：</span>
+                <div class="lt">
+                    <p class="m-select-style j-chooseTags">==请选择指标== <b></b></p>
+                    <div class="modal-tags-box" id="modalTags">
+                        <div class="select-drop-menu">
+                            <ul>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="query-btn-box">
+                <button class="query-btn j-query-chart">查询</button>
+            </div>
+        </div>
+        <!--图表-->
+        <div class="chart-tab" id="echartTab">
+
+        </div>
+    </div>
+</div>
+<!--end数据报表展示模态框-->
+<script type="text/javascript" src="./lib/public/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.tagsinput.js"></script>
+<script type="text/javascript" src="./lib/DatePicker/WdatePicker.js"></script>
+<script type="text/javascript"  src="./lib/public/jquery.slimscroll.min.js"></script>
+<script type="text/javascript" src="./lib/public/echarts-all.js"></script>
+<script type="text/javascript" src="./js/pager.js"></script>
+<script type="text/javascript" src="./js/slideTable.js"></script>
+<script type="text/javascript" src="./js/topNav.js"></script>
+<script type="text/javascript" src="./js/assessSideNav.js"></script>
+<script type="text/javascript" src="./js/generalFunc.js"></script>
+<script type="text/javascript" src="./js/iopModalDetails.js"></script>
+<script type="text/javascript" src="./js/activityAssessment.js"></script>
+<script src="./js/contentTab.js"></script>
+</body>
+</html>

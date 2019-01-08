@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asiainfo.fcm.mapper.primary.SMSTaskMapper">
+
+	<select id="getNeedSmsChannels" resultType="string">
+		select channel_id from channel where is_can_sms_approval = 1 and effective = 1
+	</select>
+
+	<select id="getMaxlevel" resultType="int">
+		SELECT MAX (approver_level) from approver
+	</select>
+
+	<select id="getSMSApprovalInfo" resultType="com.asiainfo.fcm.entity.ActivityApprovalInfo">
+		select
+			a.*
+		from activity_approval_info a
+		left join (
+		select activity_id,min(approver_level) approver_level from activity_approval_info where approval_result =0 group by activity_id
+		) b on a.activity_id =b.activity_id
+		left join activity_info c on a.activity_id = c.activity_id
+		where a.approval_result = 0 and c.activity_state not in (0,2) and a.approver_level = b.approver_level
+		and c.stopped = 0 and c.deleted = 0 and c.end_time >= CURRENT_DATE
+		and a.channel_id in
+		<foreach collection="channelIds" item="item" index="index" separator="," open="(" close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<select id="getSmsTemplate" parameterType="int" resultType="string">
+		select template_content from sms_template where approval_level = #{level} and template_type = 1
+	</select>
+
+	<insert id="insertSmsApproval" parameterType="com.asiainfo.fcm.model.ActivityApprovalSmsInfo" useGeneratedKeys="true" keyProperty="smsCode">
+		insert into activity_approval_sms_info(
+			activity_id,
+			activity_name,
+			channel_id,
+			channel_name,
+			activity_content,
+			approver_id,
+			approver_name,
+			approver_level,
+			approver_phone,
+			sms_approval_result,
+			sms_send_time,
+			sms_send_state
+		)values(
+			#{activityId},
+			#{activityName},
+			#{channelId},
+			#{channelName},
+			#{activityContent},
+			#{approverId},
+			#{approverName},
+			#{approverLevel},
+			#{approverPhone},
+			0,
+			CURRENT_TIMESTAMP,
+			1
+			)
+	</insert>
+
+	<select id="isSendedSms" parameterType="map" resultType="int">
+		select count(1) from activity_approval_sms_info
+		where activity_id = #{activityId} and channel_id = #{channelId} and approver_id = #{approverId} and approver_phone = #{approverPhone} and approver_level = #{approverLevel}
+		and sms_send_state = 1
+		and timestampdiff(8,char(current timestamp - timestamp(sms_send_time))) <![CDATA[ <= ]]> #{sendInterval}
+	</select>
+
+	<select id="getUnReplySmsApprovalInfo" parameterType="int" resultType="com.asiainfo.fcm.model.ActivityApprovalSmsInfo">
+		select * from activity_approval_sms_info where sms_approval_result = 0 and sms_send_state = 1
+		and timestampdiff(8,char(current timestamp - timestamp(sms_send_time))) <![CDATA[ <= ]]> #{validate}
+		order by sms_send_time asc
+	</select>
+
+	<update id="updateSmsApprovalInfo" parameterType="map">
+		update activity_approval_sms_info set sms_approval_result = #{result} where sms_code = #{smsCode}
+	</update>
+
+	<select id="getActivityApprovalResult" parameterType="map" resultType="com.asiainfo.fcm.entity.ActivityApprovalInfo">
+		select
+			*
+		from activity_approval_info
+		where activity_id = #{activityId} and channel_id = #{channelId}  and approver_level = #{approverLevel}
+	</select>
+
+	<select id="getPreApproverInfo" parameterType="map" resultType="com.asiainfo.fcm.entity.ApproverInfo">
+		select * from activity_approval_info
+		where activity_id = #{activityId} and channel_id = #{channelId} and approver_level = #{level}
+	</select>
+
+	<select id="getActivityChannelInfo" parameterType="string" resultType="com.asiainfo.fcm.entity.ActivityChannelInfo">
+		select * from activity_channel_info where activity_id = #{activityId}
+	</select>
+
+	<select id="getApproverInfo" parameterType="com.asiainfo.fcm.entity.ApproverInfo" resultType="com.asiainfo.fcm.entity.ApproverInfo">
+		select * from approver_info
+		where approval_group = #{approvalGroup} and approval_role = #{approvalRole} and is_receive_sms = 1
+		<if test="approverId !='' and approverId != null ">
+			and approver_id = #{approverId}
+		</if>
+	</select>
+
+	<select id="isCanSmsApproval" parameterType="map" resultType="int">
+		select
+			is_can_sms_approval
+		from channel_approval_setting
+		where channel_id = #{channelId} and city_id = #{cityId} and approval_level = #{approvalLevel}
+	</select>
+
+</mapper>

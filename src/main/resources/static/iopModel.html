@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>策略库-运营模型</title>
+
+	<link rel="stylesheet" type="text/css" href="css/generalStyle.css">
+	<link rel="stylesheet" type="text/css" href="css/area.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/iopPublicStyle.css">
+	<link rel="stylesheet" type="text/css" href="css/iopModel.css">
+
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="./lib/public/html5shiv.min.js"></script>
+	<script type="text/javascript" src="./lib/public/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+
+	<!--start 顶部导航 -->
+	<div class="nav-wrap">
+		<div class="logo lt">
+			<img src="./img/logo.png" alt="全触点"/>
+		</div>
+		<ul class="nav clearfix lt" id="headerNav">
+
+		</ul>
+		<div class="user rt clearfix">
+			<i class="user-icon"></i>
+			<span>您好，</span>
+			<span id="user">请登录</span>
+			<b title="退出">
+				<i class="exit"></i>
+			</b>
+		</div>
+	</div>
+	<!--end 顶部导航 -->
+	<!--左侧导航和主体内容-->
+	<div class="content-wrap clearfix">
+		<!--start 左侧导航 -->
+		<div class="side-nav">
+			<ul id="sideNav">
+
+			</ul>
+		</div>
+		<!--end 左侧导航 -->
+		<!--start主体内容-->
+		<div class="main">
+			<div class="content">
+				<div class="inner-content">
+					<div class="panel-title clearfix tab-nav">
+						<span class="title lt selected" data-type="1">
+							<a href="#provinceModel">本省上传(<span id="provinceModelNum" class="color-grey">0</span>)</a>
+						</span>
+						<span class="title lt" data-type="2">
+							<a href="#groupAssign">集团下发(<span id="groupAssignNum" class="color-grey">0</span>)</a>
+						</span>
+						<div class="rt clearfix">
+							<div class="lt search-box">
+								<input type="text" id="search" class="search" placeholder="支持名称、描述、目的和上报用户搜索"/>
+								<i></i>
+							</div>
+							<span id="filter-btn" class="filter-btn lt border_radius">筛选<i></i></span>
+							<a href="##" class="lt create-new">新建模型</a>
+							<span class="load-btn border_radius lt" id="download">
+								<i></i>
+								<span>数据下载</span>
+							</span>
+						</div>
+					</div>
+
+					<div class="content-tab">
+						
+						<div id="provinceModel" class="selected">
+							<div class="panel-mid-s">
+	     						<!--<p class="searchResult">"全省" "2016-03-01~2016-06-01"相关搜索结果25455个</p>-->
+	     					</div>
+							<div class="panel-bottom">
+								<table cellspacing="0" id="table1" class="table">
+									<thead>
+										<tr>
+											<td class="width-5">&nbsp;</td>
+											<td class="text-align-left">模型名称</td>
+											<td>省份</td>
+											<td>模型类型</td>
+											<td class="text-align-left">模型简述</td>
+											<td>创建人</td>
+											<td>上报人</td>
+											<td>创建时间</td>
+											<td>更新时间</td>
+											<td>上报时间</td>
+											<td>状态</td>
+											<td class="text-align-center">操作</td>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+							<div class="page-wrap clearfix" id="page1"></div>
+						</div>
+						<div id="groupAssign">
+							<div class="panel-mid-s">
+	     						<!--<p calss="searchResult">"全省" "2016-03-01~2016-06-01"相关搜索结果25455个</p>-->
+	     					</div>
+							<div class="panel-bottom">
+								<table cellspacing="0" id="table2" class="table">
+									<thead>
+										<tr>
+											<td class="width-5">&nbsp;</td>
+											<td class="text-align-left">模型名称</td>
+											<td>省份</td>
+											<td>模型类型</td>
+											<td class="text-align-left">模型简述</td>
+											<!--<td>创建人</td>-->
+											<!--<td>上报人</td>-->
+											<td>创建时间</td>
+											<td>更新时间</td>
+											<td>上报时间</td>
+											<td>状态</td>
+											<td class="text-align-center">操作</td>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+							<div class="page-wrap clearfix" id="page2">
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<!--end主体内容-->
+
+		<!--start筛选弹框-->
+		<form id="filter">
+			<div class="filter-panel">
+				<div class="inner-filter-panel">
+					<div class="row">
+						<p>模型类型：</p>
+						<select id="actType"  class="bg-border s-style">
+							<option value="">请选择</option>
+							<option value="1">4G产品类</option>
+							<option value="2">终端类</option>
+							<option value="3">流量类</option>
+							<option value="4">数字化服务类</option>
+							<option value="5">基础服务类</option>
+							<option value="6">PCC类</option>
+							<option value="7">宽带类</option>
+							<option value="9">其它类</option>
+						</select>
+					</div>
+					<div class="row">
+						<p class="clearfix">
+							创建时间：
+						</p>
+						<input type="text" class="Wdate" id="startDate" name="startDate" onFocus="WdatePicker({maxDate:'%y-%M-%d'})"/>
+						-
+						<input type="text" class="Wdate" id="endDate" name="endDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startDate\')}' })"/>
+					</div>
+
+					<div class="row btns">
+						<button id="ensure" class="ensure border_radius">确定</button>
+						<button id="cancel" class="cancel border_radius">取消</button>
+					</div>
+				</div>
+			</div>
+		</form>
+		<!--end筛选弹框-->
+
+	</div>
+	
+	<!--start新建模态框-->
+	<div class="modal-wrap modal-wrap-new">
+		<div class="modal-box">
+			<div class="modal-box-title">
+				<h3 style="display: inline-block;">新建模型</h3>
+				<a href="javascript: void(0);" class="modal-box-cancel">取消</a>
+				<a href="javascript: void(0);" id="saveNew" class="modal-box-save">保存</a>
+			</div>
+			<div class="modal-box-nav">
+				<ul>
+					<li class="on"><a href="#basicInfo">基本信息</a></li>
+					<li><a href="#requirementDesc">需求描述</a></li>
+					<li><a href="#environmentPrep">环境准备</a></li>
+					<li><a href="#dataPrep">数据准备</a></li>
+					<li><a href="#modelingProcess">建模过程</a></li>
+					<li><a href="#modelAssess">模型评估</a></li>
+				</ul>
+			</div>
+			<div class="modal-box-content">
+				<form id="formData1">
+					<div id="basicInfo" class="content-item content-item-new-modal">
+						<h3><span>基本信息</span></h3>
+						<div class="row">
+							<div class="col-mar">
+								<span class="item-property">活动编号：</span>
+								<span name="" id="activityId"></span>
+								<input type="hidden" name="modelId" value="">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block is-required">模型名称：</span>
+								<input class="h-block" name="modelName">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-1">
+								<span class="item-property h-block is-required">模型类型：</span>
+								<select class="select-style" name="modelType">
+									<option value="1">4G产品类</option>
+									<option value="2">终端类</option>
+									<option value="3">流量类</option>
+									<option value="4">数字化服务类</option>
+									<option value="5">基础服务类</option>
+									<option value="6">PCC类</option>
+									<option value="7">宽带类</option>
+									<option value="9">其它类</option>
+								</select>
+							</div>
+						</div>
+						<div class="row">
+							<!--<div class="col-1">
+								<span class="item-property is-required">创建时间：</span>
+								<input class=" Wdate h-iblock" type="text" onfocus="WdatePicker({minDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd'});">
+							</div>-->
+							<div class="col-1">
+								<span class="item-property h-block is-required">更新时间：</span>
+								<input class=" Wdate h-iblock" type="text" name="updateTime" onfocus="WdatePicker({minDate:'%y-%M-%d %H:%m:%s',dateFmt:'yyyy-MM-dd HH:mm:ss'});">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block is-required">模型简述：</span>
+								<textarea type="text" class="h-block" name="modelSimpleDesc"></textarea>
+								<!--<textarea  class="h-block higher" name="modelSimpleDesc" onkeydown="checkMaxInput1(this,200)" onkeyup="checkMaxInput1(this,200)" onfocus="resetMaxmsg();checkMaxInput1(this,200)" onblur="overWordsTyped(this,200);">--></textarea>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block is-required">模型目标：</span>
+								<textarea type="text" class="h-block" name="modelObjective"></textarea>
+							</div>
+						</div>
+					</div>
+					<div id="requirementDesc" class="content-item content-item-new-modal">
+						<h3><span>需求描述</span></h3>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block is-required">业务需求：</span>
+								<textarea type="text" class="h-block" name="businessDesc"></textarea>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block">需求提出方：</span>
+								<textarea type="text" class="h-block" name="businessPerson"></textarea>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block">目标用户量：</span>
+								<input type="text" class="h-block" name="objectiveUserNum">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block is-required">结果输出方式：</span>
+								<textarea type="text" class="h-block" name="resultType"></textarea>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block">需求应用场景：</span>
+								<textarea type="text" class="h-block" name="caseSence"></textarea>
+							</div>
+						</div>
+					</div>
+					<div id="environmentPrep" class="content-item content-item-new-modal">
+						<h3><span>环境准备</span></h3>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block">建模工具：</span>
+								<textarea type="text" class="h-block" name="modelTool"></textarea>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block">硬件要求：</span>
+								<textarea type="text" class="h-block" name="handwareReq"></textarea>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block">软件运行环境：</span>
+								<textarea type="text" class="h-block" name="softRun"></textarea>
+							</div>
+						</div>
+					</div>
+				</form>
+				<div id="dataPrep" class="content-item content-item-new-modal">
+					<h3><span>数据准备</span></h3>
+					<form id="dataDesc">
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block is-required">数据量：</span>
+								<input type="text" class="h-block" name="dataNum">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block is-required">时间范围：</span>
+								<textarea type="text" class="h-block" name="dateArrange"></textarea>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block">来源：</span>
+								<div class="file-box">
+									<label for="uploadFile1">文件：</label>
+									<div class="userdefined-file">
+										　　<input type="text" name="source" data-attachmentid="" id="fileName1" value="点击此处选取上传文件">
+										　　<button type="button" class="default-btn blue j-upload-file-btn">上传</button>
+										<button type="button" class="default-btn j-cancel-upload">取消</button>
+									</div>
+									<input type="file" name="file" id="uploadFile1">
+									<i class="upload-hint-msg">已上传</i>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block">字段说明：</span>
+								<div class="file-box">
+									<label for="uploadFile1">文件：</label>
+									<div class="userdefined-file">
+										　　<input type="text" name="filedDesc" data-attachmentid="" id="fileName2" value="点击此处选取上传文件">
+										　　<button type="button" class="default-btn blue j-upload-file-btn">上传</button>
+										<button type="button" class="default-btn ">取消</button>
+									</div>
+									<input type="file" name="file" id="uploadFile2">
+									<i class="upload-hint-msg">已上传</i>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block">变量列表：</span>
+								<div class="file-box">
+									<label for="uploadFile1">文件：</label>
+									<div class="userdefined-file">
+										　　<input type="text" name="varList" data-attachmentid="" id="fileName3" value="点击此处选取上传文件">
+										　　<button type="button" class="default-btn blue j-upload-file-btn">上传</button>
+										<button type="button" class="default-btn ">取消</button>
+									</div>
+									<input type="file" name="file" id="uploadFile3">
+									<i class="upload-hint-msg">已上传</i>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block ">变量选取依据：</span>
+								<div class="file-box">
+									<label for="uploadFile1">文件：</label>
+									<div class="userdefined-file">
+										　　<input type="text" name="varReason" data-attachmentid="" id="fileName4" value="点击此处选取上传文件">
+										　　<button type="button" class="default-btn blue j-upload-file-btn">上传</button>
+										<button type="button" class="default-btn ">取消</button>
+									</div>
+									<input type="file" name="file" id="uploadFile4">
+									<i class="upload-hint-msg">已上传</i>
+								</div>
+							</div>
+						</div>
+					</form>
+					<form id="dataHandle">
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block ">缺失处理：</span>
+								<textarea type="text" class="h-block" name="defaultHandle"></textarea>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block ">数据标准化处理：</span>
+								<textarea type="text" class="h-block" name="dataUniHandle"></textarea>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block ">异常值处理：</span>
+								<textarea type="text" class="h-block" name="errorHandle"></textarea>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block ">其他处理：</span>
+								<textarea type="text" class="h-block" name="otherHandle"></textarea>
+							</div>
+						</div>
+					</form>
+					<form id="formData3">
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block">数据输出格式：</span>
+								<div class="file-box">
+									<label for="uploadFile1">文件：</label>
+									<div class="userdefined-file">
+										　　<input type="text" name="outputFormat" data-attachmentid="" id="fileName5" value="点击此处选取上传文件">
+										　　<button type="button" class="default-btn blue j-upload-file-btn">上传</button>
+										<button type="button" class="default-btn ">取消</button>
+									</div>
+									<input type="file" name="file" id="uploadFile5">
+									<i class="upload-hint-msg">已上传</i>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<form id="formData2">
+					<div id="modelingProcess" class="content-item content-item-new-modal">
+						<h3><span>建模过程</span></h3>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block">样本数据：</span>
+								<div class="file-box">
+									<label for="uploadFile1">文件：</label>
+									<div class="userdefined-file">
+										　　<input type="text" name="exampleData" data-attachmentid="" id="fileName6" value="点击此处选取上传文件">
+										　　<button type="button" class="default-btn blue j-upload-file-btn">上传</button>
+										<button type="button" class="default-btn ">取消</button>
+									</div>
+									<input type="file" name="file" id="uploadFile6">
+									<i class="upload-hint-msg">已上传</i>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block is-required">核心算法：</span>
+								<textarea type="text" class="h-block" name="coreMethod"></textarea>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block">参数设定：</span>
+								<div class="file-box">
+									<label for="uploadFile1">文件：</label>
+									<div class="userdefined-file">
+										　　<input type="text" name="paramPersume" data-attachmentid="" id="fileName7" value="点击此处选取上传文件">
+										　　<button type="button" class="default-btn blue j-upload-file-btn">上传</button>
+										<button type="button" class="default-btn ">取消</button>
+									</div>
+									<input type="file" name="file" id="uploadFile7">
+									<i class="upload-hint-msg">已上传</i>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block">模型描述：</span>
+								<div class="file-box">
+									<label for="uploadFile1">文件：</label>
+									<div class="userdefined-file">
+										　　<input type="text" name="modelDesc" data-attachmentid="" id="fileName8" value="点击此处选取上传文件">
+										　　<button type="button" class="default-btn blue j-upload-file-btn">上传</button>
+										<button type="button" class="default-btn ">取消</button>
+									</div>
+									<input type="file" name="file" id="uploadFile8">
+									<i class="upload-hint-msg">已上传</i>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block">模型输出：</span>
+								<div class="file-box">
+									<label for="uploadFile1">文件：</label>
+									<div class="userdefined-file">
+										　　<input type="text" name="modelOutput" data-attachmentid="" id="fileName9" value="点击此处选取上传文件">
+										　　<button type="button" class="default-btn blue j-upload-file-btn">上传</button>
+										<button type="button" class="default-btn ">取消</button>
+									</div>
+									<input type="file" name="file" id="uploadFile9">
+									<i class="upload-hint-msg">已上传</i>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block">模型工程文件：</span>
+								<div class="file-box">
+									<label for="uploadFile1">文件：</label>
+									<div class="userdefined-file">
+										　　<input type="text" name="modelFile" data-attachmentid="" id="fileName10" value="点击此处选取上传文件">
+										　　<button type="button" class="default-btn blue j-upload-file-btn">上传</button>
+										<button type="button" class="default-btn ">取消</button>
+									</div>
+									<input type="file" name="file" id="uploadFile10">
+									<i class="upload-hint-msg">已上传</i>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				<div id="modelAssess" class="content-item content-item-new-modal">
+					<h3><span>模型评估</span></h3>
+					<form id="modeEva">
+						<div class="row">
+							<div class="col-1">
+								<span class="item-property h-block is-required">覆盖率：</span>
+								<input type="text" class="h-iblock" name="coverageRatio">
+							</div>
+							<div class="col-1">
+								<span class="item-property h-block is-required">命中率：</span>
+								<input type="text" class="h-iblock" name="goalRatio">
+							</div>
+							<div class="col-1">
+								<span class="item-property h-block is-required">准确率：</span>
+								<input type="text" class="h-iblock" name="accuracyRatio">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block">其它自定义指标：</span>
+								<div class="file-box">
+									<label for="uploadFile1">文件：</label>
+									<div class="userdefined-file">
+										　　<input type="text" name="otherSelfEva" data-attachmentid="" id="fileName14" value="点击此处选取上传文件">
+										　　<button type="button" class="default-btn blue j-upload-file-btn">上传</button>
+										<button type="button" class="default-btn ">取消</button>
+									</div>
+									<input type="file" name="file" id="uploadFile14">
+									<i class="upload-hint-msg">已上传</i>
+								</div>
+							</div>
+						</div>
+					</form>
+					<form id="modelKpiBO">
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block">转化率：</span>
+								<div class="file-box">
+									<label for="uploadFile1">文件：</label>
+									<div class="userdefined-file">
+										　　<input type="text" name="transformRatio" data-attachmentid="" id="fileName11" value="点击此处选取上传文件">
+										　　<button type="button" class="default-btn blue j-upload-file-btn">上传</button>
+										<button type="button" class="default-btn ">取消</button>
+									</div>
+									<input type="file" name="file" id="uploadFile11">
+									<i class="upload-hint-msg">已上传</i>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block">提升度：</span>
+								<div class="file-box">
+									<label for="uploadFile1">文件：</label>
+									<div class="userdefined-file">
+										　　<input type="text" name="increaseRatio" data-attachmentid="" id="fileName12" value="点击此处选取上传文件">
+										　　<button type="button" class="default-btn blue j-upload-file-btn">上传</button>
+										<button type="button" class="default-btn ">取消</button>
+									</div>
+									<input type="file" name="file" id="uploadFile12">
+									<i class="upload-hint-msg">已上传</i>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-3">
+								<span class="item-property h-block">其它自定义指标：</span>
+								<div class="file-box">
+									<label for="uploadFile1">文件：</label>
+									<div class="userdefined-file">
+										　　<input type="text" name="otherSelfKpi" data-attachmentid="" id="fileName13" value="点击此处选取上传文件">
+										　　<button type="button" class="default-btn blue j-upload-file-btn">上传</button>
+										<button type="button" class="default-btn ">取消</button>
+									</div>
+									<input type="file" name="file" id="uploadFile13">
+									<i class="upload-hint-msg">已上传</i>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--end新建模态框-->
+	<!--start详情模态框-->
+	<div class="modal-wrap modal-wrap-detail">
+		<div class="modal-box">
+			<div class="modal-box-title">
+				<h3>运营模型详情</h3>
+				<a href="javascript: void(0);" class="modal-box-close">×</a>
+			</div>
+			<div class="modal-box-nav">
+				<ul>
+					<li class="on"><a href="#basicInfo_d">基本信息</a></li>
+					<li><a href="#requirementDesc_d">需求描述</a></li>
+					<li><a href="#environmentPrep_d">环境准备</a></li>
+					<li><a href="#dataPrep_d">数据准备</a></li>
+					<li><a href="#modelingProcess_d">建模过程</a></li>
+					<li><a href="#modelAssess_d">模型评估</a></li>
+				</ul>
+			</div>
+			<div class="modal-box-content">
+				<div id="basicInfo_d" class="content-item">
+					<h3><span>基本信息</span></h3>
+					<div class="row">
+						<div class="col-2">
+							<span class="item-property">上报人：</span>
+							<span data-name="uploadName" ></span>
+						</div>
+						<div class="col-2">
+							<span class="item-property">省份：</span>
+							<span data-name="proName" ></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-2">
+							<span class="item-property">上报时间：</span>
+							<span data-name="uploadDateTime" ></span>
+						</div>
+						<div class="col-2">
+							<span class="item-property">创建时间：</span>
+							<span data-name="createTime" ></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-2">
+							<span class="item-property">更新时间：</span>
+							<span data-name="updateTime" ></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">模型名称：</span>
+							<span data-name="modelName"></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-1">
+							<span class="item-property">模型分类：</span>
+							<span data-name="modelType" ></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">模型描述：</span>
+							<span data-name="modelSimpleDesc" ></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">模型目标：</span>
+							<span data-name="modelObjective" ></span>
+						</div>
+					</div>
+				</div>
+				<div id="requirementDesc_d" class="content-item">
+					<h3><span>需求描述</span></h3>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">业务需求：</span>
+							<span data-name="businessDesc" >无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">需求提出方：</span>
+							<span data-name="businessPerson" >无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">目标用户量：</span>
+							<span data-name="objectiveUserNum" >无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">结果输出方式：</span>
+							<span data-name="resultType" >无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">需求应用场景：</span>
+							<span data-name="caseSence" >无</span>
+						</div>
+					</div>
+				</div>
+				<div id="environmentPrep_d" class="content-item">
+					<h3><span>环境准备</span></h3>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">建模工具：</span>
+							<span data-name="modelTool" >无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">硬件要求：</span>
+							<span data-name="handwareReq" >无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">软件运行环境：</span>
+							<span data-name="softRun" >无</span>
+						</div>
+					</div>
+				</div>
+				<div id="dataPrep_d" class="content-item">
+					<h3><span>数据准备</span></h3>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">数据量：</span>
+							<span data-name="dataNum">无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">时间范围：</span>
+							<span  data-name="dateArrange">无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">来源：</span>
+							<span data-name="source" data-file>无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">字段说明：</span>
+							<span data-name="filedDesc" data-file>无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">变量列表：</span>
+							<span data-name="varList" data-file>无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">变量选取依据：</span>
+							<span data-name="varReason" data-file>无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">缺失处理：</span>
+							<span data-name="defaultHandle" >无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">数据标准化处理：</span>
+							<span data-name="dataUniHandle">无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">异常值处理：</span>
+							<span data-name="errorHandle">无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">其他处理：</span>
+							<span data-name="otherHandle">无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">输出数据格式：</span>
+							<span data-name="outputFormat" data-file>无</span>
+						</div>
+					</div>
+				</div>
+				<div id="modelingProcess_d" class="content-item">
+					<h3><span>建模过程</span></h3>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">样本数据：</span>
+							<span data-name="exampleData" data-file>无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">核心算法：</span>
+							<span data-name="coreMethod" >无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">参数设定：</span>
+							<span data-name="paramPersume" data-file>无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">模型描述：</span>
+							<span data-name="modelDesc" data-file></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">模型输出：</span>
+							<span data-name="modelOutput" data-file>无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">模型工程文件：</span>
+							<span data-name="modelFile" data-file>无</span>
+						</div>
+					</div>
+				</div>
+				<div id="modelAssess_d" class="content-item">
+					<h3><span>模型评估</span></h3>
+					<div class="row">
+						<div class="col-2">
+							<span class="item-property">覆盖率：</span>
+							<span data-name="coverageRatio" >无</span>
+						</div>
+						<div class="col-2">
+							<span class="item-property">命中率：</span>
+							<span data-name="goalRatio" >无</span>
+						</div>
+
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">准确率：</span>
+							<span data-name="accuracyRatio">无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">其他自定义指标：</span>
+							<span data-name="otherSelfEva" data-file>无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-2">
+							<span class="item-property">转化率：</span>
+							<span data-name="transformRatio" data-file>无</span>
+						</div>
+						<div class="col-2">
+							<span class="item-property">提升度：</span>
+							<span data-name="increaseRatio" data-file>无</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<span class="item-property">其他自定义指标：</span>
+							<span data-name="otherSelfKpi" data-file>无</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--end详情模态框-->
+</div>
+</div>
+<script type="text/javascript" src="./lib/public/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.tagsinput.js"></script>
+<script type="text/javascript" src="./lib/DatePicker/WdatePicker.js"></script>
+<script type="text/javascript"  src="./lib/public/jquery.slimscroll.min.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.blockUI.js"></script>
+<script type="text/javascript" src="./lib/public/ajaxfileupload.js"></script>
+<script type="text/javascript" src="./js/pager.js"></script>
+<script type="text/javascript" src="./js/topNav.js"></script>
+<script type="text/javascript" src="./js/iopSideNav.js"></script>
+<script type="text/javascript" src="./js/generalFunc.js"></script>
+<script type="text/javascript" src="./js/iopPublicFuns.js"></script>
+<script type="text/javascript" src="./js/iopModel.js"></script>
+<script type="text/javascript" src="./js/iopModalDetails.js"></script>
+<script src="js/contentTab.js"></script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>details</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<style>
+		.bg-yellow {
+			background-color: yellow;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<table class="table table-bordered">
+			<caption class="text-center">新建本省上传模型</caption>
+			<tbody>
+				<tr class="bg-yellow">
+					<td colspan="4">模型库属性</td>
+				</tr>
+				<tr>
+					<td width="25%">模型编号</td>
+					<td name="templateCode" id="templateCode"><input type="text"></td>
+					<td width="25%">省份</td>
+					<td name="templateProvice" id="templateProvice"><input type="text"></td>
+				</tr>
+				<tr>
+					<td>上报时间</td>
+					<td name="templateSubmitTime" id="templateSubmitTime"><input type="text"></td>
+					<td>模型名称</td>
+					<td name="templateName" id="templateName"><input type="text"></td>
+				</tr>
+				<tr>
+					<td>模型分类</td>
+					<td name="templateType" id="templateType">
+						<select name="activity-type" id="activity-type"  >
+							<option value="4G产品类">4G产品类</option>
+							<option value="终端类">终端类</option>
+							<option value="流量类">流量类</option>
+							<option value="数字化服务类" selected>数字化服务类</option>
+							<option value="基础服务类">基础服务类</option>
+							<option value="PCC类">PCC类</option>
+							<option value="宽带类">宽带类</option>
+							<option value="其他类">其他类</option>
+						</select></td>
+						<td>模型简述</td>
+						<td name="templateDesc" id="templateDesc"><input type="text"></td>
+					</tr>
+					<tr>
+						<td>创建时间</td>
+						<td name="templateCreateTime" id="templateCreateTime"><input type="text"></td>
+						<td>更新时间</td>
+						<td name="templateUpdateTime" id="templateUpdateTime"><input type="text"></td>
+					</tr>
+
+					<tr>
+						<td>模型目标</td>
+						<td name="templateGoal" id="templateGoal"><input type="text"></td>
+						<td>业务需求</td>
+						<td name="templateBusinesRequest" id="templateBusinesRequest"><input type="text"></td>
+					</tr>
+					<tr>
+						<td>需求提出方</td>
+						<td name="templateDemandProvider" id="templateDemandProvider"><input type="text"></td>
+						<td>目标用户量</td>
+						<td name="templateCustomers" id="templateCustomers"><input type="text"></td>
+					</tr>
+					<tr>
+						<td>结果输出方式</td>
+						<td name="templateOutputType" id="templateOutputType"><input type="text"></td>
+						<td>需求应用场景</td>
+						<td name="templateApplySence" id="templateApplySence"><input type="text"></td>
+					</tr>
+					<tr>
+						<td>建模工具</td>
+						<td name="templateBuileTools" id="templateBuileTools"><input type="text"></td>
+						<td>硬件要求</td>
+						<td name="templateHardwareRequire" id="templateHardwareRequire"><input type="text"></td>
+					</tr>
+					<tr>
+						<td>软件运行环境</td>
+						<td name="runningEnviroment" id="runningEnviroment"><input type="text"></td>
+						<td>数据描述对象</td>
+						<td name="dataDescObj" id="dataDescObj"><input type="text"></td>
+					</tr>
+					<tr>
+						<td>数据预处理对象</td>
+						<td name="dataPreDealObj" id="dataPreDealObj"><input type="text"></td>
+						<td>输出数据格式</td>
+						<td name="dataOutputFormat" id="dataOutputFormat"><input type="text"></td>
+					</tr>
+					<tr>
+						<td>样本数据</td>
+						<td name="exampleData" id="exampleData"><input type="text"></td>
+						<td>核心算法</td>
+						<td name="coreAlgorithm" id="coreAlgorithm"><input type="text"></td>
+					</tr>
+					<tr>
+						<td>参数设定</td>
+						<td name="parameterSetting" id="parameterSetting"><input type="text"></td>
+						<td>模型输出</td>
+						<td name="outPutModel" id="outPutModel"><input type="text"></td>
+					</tr>
+					<tr>
+						<td>模型描述</td>
+						<td name="modelDesc" id="modelDesc"><input type="text"></td>
+						<td name="" id=""></td>
+						<td name="" id=""></td>
+					</tr>
+					<tr>
+						<td>模型工程文件</td>
+						<td name="modelProjectFile" id="modelProjectFile"><input type="text"></td>
+						<td>模型评估指标对象</td>
+						<td name="modelEvalutionObj" id="modelEvalutionObj"><input type="text"></td>
+					</tr>
+					<tr>
+						<td>业务效果评估对象</td>
+						<td name="businessEvalutionObj" id="businessEvalutionObj"><input type="text"></td>
+						<td>扩展内容</td>
+						<td name="expandContent" id="expandContent"><input type="text"></td>
+					</tr>
+					<tr class="bg-yellow">
+						<td colspan="4">数据描述属性</td>
+
+					</tr>
+
+					<tr>
+						<td>数据量</td>
+						<td name="dataSize" id="dataSize"><input type="text"></td>
+						<td>时间范围</td>
+						<td name="dataTimeRange" id="dataTimeRange"><input type="text"></td>
+					</tr>
+					<tr>
+						<td>来源</td>
+						<td name="dataSource" id="dataSource"><input type="text"></td>
+						<td>字段说明</td>
+						<td name="filedDesc" id="filedDesc"><input type="text"></td>
+					</tr>
+					<tr>
+						<td>变量列表</td>
+						<td name="itermList" id="itermList"><input type="text"></td>
+						<td>变量选取依据</td>
+						<td name="itermSelectCondition" id="itermSelectCondition"><input type="text"></td>
+					</tr>
+					<tr class="bg-yellow">
+						<td colspan="4">数据预处理属性</td>
+
+					</tr>
+
+					<tr>
+						<td>缺失处理</td>
+						<td name="processDeal" id="processDeal"><input type="text"></td>
+						<td>异常值处理</td>
+						<td name="exceptionDeal" id="exceptionDeal"><input type="text"></td>
+					</tr>
+					<tr>
+						<td>数据标准化处理</td>
+						<td name="dataFomalDeal" id="dataFomalDeal"><input type="text"></td>
+						<td>其他处理</td>
+						<td name="otherDeal" id="otherDeal"><input type="text"></td>
+					</tr>
+
+					<tr class="bg-yellow">
+						<td colspan="4">模型评估指标</td>
+					</tr>
+					<tr>
+						<td>覆盖率</td>
+						<td name="coverageRate" id="coverageRate"><input type="text"></td>
+						<td>命中率</td>
+						<td name="hitRate" id="hitRate"><input type="text"></td>
+					</tr>
+
+					<tr>
+						<td>准确率</td>
+						<td name="accuracyRate" id="accuracyRate"><input type="text"></td>
+						<td>其他自定义指标</td>
+						<td name="modelOtherDefinedIndex" id="modelOtherDefinedIndex"><input type="text"></td>
+					</tr>
+					<tr class="bg-yellow">
+						<td colspan="4">业务效果评估</td>
+
+					</tr>
+					<tr>
+						<td>转化率</td>
+						<td name="conversionRate" id="conversionRate"><input type="text"></td>
+						<td>其他自定义指标</td>
+						<td name="businessOtherDefinedIndex" id="businessOtherDefinedIndex"><input type="text"></td>
+					</tr>
+					<tr>
+						<td>提升度</td>
+						<td name="liftingDegree" id="liftingDegree"><input type="text"></td>
+
+					</tr>
+
+
+				</tbody>
+			</table>
+			<button class="btn btn-primary btn-lg center-block" id="submit" onclick="void submit();">提交</button>
+		</div>
+
+		<script src="js/jquery.js"></script>
+		<script src="js/submit.js"></script>
+	</body>
+	</html>

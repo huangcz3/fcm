@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>sysManageConfig.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+	<link rel="stylesheet" type="text/css" href="css/public/bootstrap.min.css">
+	<style>
+		.form-horizontal{
+			margin-top:50px;
+		}
+	</style>
+  </head>
+  
+  <body>
+	<form action="" class="form-horizontal">
+		<div class="form-group">
+			<label class="col-sm-2 control-label">审批人ID：</label>
+			<div class="col-sm-5">
+				<input type="text" name="approverId" class="form-control"/>
+			</div>		
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">审批人姓名：</label>
+			<div class="col-sm-5">
+				<input type="text" name="approverName" class="form-control"/>
+			</div>	
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">审批人层级：</label>
+			<div class="col-sm-5">
+				<select name="approverLevel" class="form-control">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-5">
+				<input type="submit" value="确定" class="btn btn-primary"/>
+				<input type="button" value="取消" class="btn"/>
+			</div>
+		</div>
+	</form>
+  <script type="text/javascript" src="./lib/public/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript" src="./js/topNav.js"></script>
+  <script type="text/javascript" src="./js/vicSideNav.js"></script>
+  <script type="text/javascript" src="./js/generalFunc.js"></script>
+  </body>
+</html>

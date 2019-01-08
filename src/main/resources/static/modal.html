@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/style.css">
+	<script src="js/jquery.js"></script>
+</head>
+<body>
+	<div class="modal-box">
+		<div class="modal-box-title">
+			<h3>运营场景详情</h3>
+			<a href="javascript: void(0);" class="modal-box-close">×</a>
+		</div>
+		<div class="modal-box-nav">
+			<ul>
+				<li class="on"><a href="#act_obj_pro">营销活动对象属性</a></li>
+				<li><a href="#sub_act_obj">子活动对象属性</a></li>
+				<li><a href="#time_strategy">时机策略对象属性</a></li>
+				<li><a href="#target_client">目标客户群对象属性</a></li>
+				<li><a href="#client_detail_obj">客户明细附件对象</a></li>
+				<li><a href="#product_obj">产品对象属性</a></li>
+				<li><a href="#channel_obj">渠道对象</a></li>
+				<li><a href="#operator_object_property">运营位对象属性</a></li>
+				<li><a href="#PCC">PCC策略对象属性</a></li>
+				<li><a href="#execute_action">执行动作对象属性</a></li>
+				<li><a href="#evaluation_obj">效果评估指标类对象</a></li>
+			</ul>
+		</div>
+		<div class="modal-box-content">
+			<div id="act_obj_pro" class="content-item">
+				<h3><span>营销活动对象属性</span></h3>
+				<div class="row">
+					<span class="item-property">活动策划模板编号：</span>
+					<span name="markingActTemplateNo" id="markingActTemplateNo">532</span>
+					<span class="right-property">
+						<span class="item-property">活动编号：</span>
+						<span name="markingActNo" id="markingActNo">5324523</span>
+					</span>
+				</div>
+				<div class="row">
+					<span class="item-property">活动名称：</span>
+					<span name="markingActName" id="markingActName"></span>
+				</div>
+				<div class="row">
+					<span class="item-property">活动状态：</span>
+					<span name="markingActStatue" id="markingActStatue">粉色粉色</span>
+					<span class="right-property">
+						<span class="item-property">开始时间：</span>
+						<span name="markingActStartTime" id="markingActStartTime">粉色粉色</span>
+					</span>
+				</div>
+				<div class="row">
+					<span class="item-property">活动结束时间：</span>
+					<span name="markingActEndTime" id="markingActEndTime"></span>
+					<span class="right-property">
+						<span class="item-property">二次策划完成时间：</span>
+						<span name="markingActsecondPlanEndTime" id="markingActsecondPlanEndTime"></span>
+					</span>
+				</div>
+				<div class="row">
+					<span class="item-property">省份：</span>
+					<span name="markingActprovice" id="markingActprovice"></span>
+					<span class="right-property">
+						<span class="item-property">活动类型：</span>
+						<span name="markingActType" id="markingActType"></span>
+					</span>
+				</div>
+				<div class="row">
+					<span class="item-property col-long">pcc策略：</span>
+					<span name="markingActPCCstrategy" id="markingActPCCstrategy"></span>
+				</div>
+				<div class="row">
+					<span class="item-property col-long">活动目的：</span>
+					<span name="markingActGoal" id="markingActGoal"></span>
+				</div>
+				<div class="row">
+					<span class="item-property col-long">子活动：</span>
+					<span name="markingChildAct" id="markingChildAct"></span>
+				</div>
+				<div class="row">
+					<span class="item-property col-long">活动效果评估指标：</span>
+					<span name="markingActEffectEvalution" id="markingActEffectEvalution" class="col-long-value"></span>
+				</div>
+				<div class="row">
+					<span class="item-property col-long">可扩展属性：</span>
+					<span name="markingActBaseInfoExpand" id="markingActBaseInfoExpand" class="col-long-value">这是一个简单的测试这是一个简单的测试这是一个简单的测试这是一个简单的测试这是一个简单的测试这是一个简单的测试这是一个简单的测试这是一个简单的测试这是一个简单的测试这是一个简单的测试</span>
+				</div>
+				<div class="row">
+					<span class="item-property col-long">活动描述：</span>
+					<span name="markingActDesc" id="markingActDesc" class="col-long-value">这是一个简单的测试这是一个简单的测试这是一个简单的测试这是一个简单的测试这是一个简单的测试这是一个简单的测试这是一个简单的测试这是一个简单的测试这是一个简单的测试这是一个简单的测试</span>
+				</div>
+				
+			</div>
+			<div id="sub_act_obj" class="content-item">
+				<h3><span>子活动对象属性</span></h3>
+				<div class="content-tab">
+					<ul class="content-tab-choise">
+						<li>超级星期天</li>
+						<div id="sub_1" class="tab-real-content hide">
+							
+							<div class="row">
+								<span class="item-property">活动编号：</span>
+								<span name="childActNo" id="childActNo">532</span>
+
+							</div>
+							<div class="row">
+								<span class="item-property">活动名称：</span>
+								<span name="childActName" id="childActName"></span>
+							</div>
+							<div class="row">
+								<span class="item-property">开始时间：</span>
+								<span name="childActStartTime" id="childActStartTime"></span>
+								<span class="right-property">
+									<span class="item-property">结束时间：</span>
+									<span name="childActEndTime" id="childActEndTime"></span>
+								</span>
+							</div>
+							<div class="row">
+								<span class="item-property col-long">可扩展属性：</span>
+								<span name="childActExpand" id="childActExpand" class="col-long-value"></span>
+
+							</div>
+							<div class="row">
+								<span class="item-property col-long">时机策略：</span>
+								<span class="col-long-value" name="childActOpportunityStrategy" id="childActOpportunityStrategy"></span>
+							</div>
+							<div class="row">
+								<span class="item-property col-long">目标客户群：</span>
+								<span class="col-long-value" name="childActTargetCustomers" id="childActTargetCustomers"></span>
+							</div>
+							<div class="row">
+								<span class="item-property col-long">产品：</span>
+								<span class="col-long-value" name="childActProduct" id="childActProduct"></span>
+							</div>
+							<div class="row">
+								<span class="item-property col-long">渠道：</span>
+								<span class="col-long-value" name="childActChannel" id="childActChannel"></span>
+							</div>
+
+							
+						</div>
+						<li>五一流量包</li>
+						<li>迁转4G资费存费</li>
+					</ul>
+				</div>		
+			</div>
+			<div id="time_strategy" class="content-item">
+				<h3><span>时机策略对象属性</span></h3>
+				
+				<div class="row">
+					<span class="item-property">时机(即时机ID)：</span>
+					<span name="opportunityId" id="opportunityId">532</span>
+
+				</div>
+				<div class="row">
+					<span class="item-property col-long">时机描述：</span>
+					<span class="col-long-value" name="opportunityDesc" id="opportunityDesc"></span>
+				</div>
+				<div class="row">
+					<span class="item-property col-long">渠道接触规则：</span>
+					<span class="col-long-value" name="opportunityChannelRule" id="opportunityChannelRule">粉色粉色</span>
+
+				</div>
+				<div class="row">
+					<span class="item-property col-long">是否多波次：</span>
+					<span class="col-long-value" name="opportunityIsWaves" id="opportunityIsWaves"></span>
+
+				</div>
+				<div class="row">
+					<span class="item-property col-long">时机对象的扩展内容：</span>
+					<span class="col-long-value" name="opportunityObjExpandDesc" id="opportunityObjExpandDesc"></span>
+				</div>
+				<div class="row">
+					<span class="item-property col-long">时间规则：</span>
+					<span class="col-long-value" name="opportunityRule" id="opportunityRule"></span>
+
+				</div>
+			</div>
+			<div id="target_client" class="content-item">
+				<h3><span>目标客户群对象属性</span></h3>
+				<div class="row">
+					<span class="item-property">目标客户群编号：</span>
+					<span name="targetCustomerNo" id="targetCustomerNo">532</span>
+					<span class="right-property">
+						<span class="item-property">目标客户群名称：</span>
+						<span name="targetCustomerName" id="targetCustomerName">532</span>
+					</span>
+				</div>
+				<div class="row">
+					<span class="item-property">客户群规模：</span>
+					<span name="targetCustomerSize" id="targetCustomerSize"></span>
+				</div>
+				<div class="row">
+					<span class="item-property col-long" >筛选规则：</span>
+					<span class="col-long-value" name="targetCustomerFilterRule" id="targetCustomerFilterRule">粉色粉色</span>
+
+				</div>
+				<div class="row">
+					<span class="item-property ">是否下发客户明细：</span>
+					<span name="isSendDetail" id="isSendDetail"></span>
+
+				</div>
+				<div class="row">
+					<span class="item-property">客户明细附件对象：</span>
+					<span name="targetCustomerDetail" id="targetCustomerDetail"></span>
+				</div>
+				<div class="row">
+					<span class="item-property col-long">描述：</span>
+					<span class="col-long-value" name="targetCustomerDesc" id="targetCustomerDesc"></span>
+				</div>
+			</div>
+			<div id="client_detail_obj" class="content-item">
+				<h3><span>客户明细附件对象</span></h3>
+				<div class="row">
+					<span class="item-property">客户明细附件文件名称：</span>
+					<span name="targetCustomerDetailName" id="targetCustomerDetailName">532</span>
+
+				</div>
+				<div class="row">
+					<span class="item-property">客户明细附件所在FTP的地址URL：</span>
+					<span name="targetCustomerDetailUrl" id="targetCustomerDetailUrl"></span>
+				</div>
+			</div>
+			<div id="product_obj" class="content-item">
+				<h3><span>产品对象属性</span></h3>
+				
+				<div class="row">
+					<span class="item-property">产品编码：</span>
+					<span name="productCode" id="productCode">532</span>
+					<span class="right-property">
+						<span class="item-property">产品名称：</span>
+						<span name="productName" id="productName">532</span>
+					</span>
+				</div>
+				<div class="row">
+					<span class="item-property">产品分类：</span>
+					<span name="productType" id="productType"></span>
+					<span class="right-property">
+						<span class="item-property">产品来源：</span>
+						<span name="productSource" id="productSource">532</span>
+					</span>
+				</div>
+				<div class="row">
+					<span class="item-property">计费方式：</span>
+					<span name="targetCustomerFilterRule" id="targetCustomerFilterRule"></span>
+
+				</div>
+				<div class="row">
+					<span class="item-property">产品图片：</span>
+					<span name="productPic" id="productPic"></span>
+					<span class="right-property">
+						<span class="item-property">产品链接地址：</span>
+						<span name="productLinkUrl" id="productLinkUrl">532</span>
+					</span>
+				</div>
+				<div class="row">
+					<span class="item-property col-long">广告语：</span>
+					<span class="col-long-value" name="productAdvertisement" id="productAdvertisement"></span>
+				</div>
+				<div class="row">
+					<span class="item-property col-long">产品可扩展信息：</span>
+					<span class="col-long-value" name="productExpandInfo" id="productExpandInfo"></span>
+				</div>
+				<div class="row">
+					<span class="item-property col-long">产品描述：</span>
+					<span class="col-long-value" name="productDesc" id="productDesc"></span>
+				</div>
+			</div>
+			<div id="channel_obj" class="content-item">
+				<h3><span>渠道对象</span></h3>
+				<div class="row">
+					<span class="item-property">渠道编码：</span>
+					<span name="channelCode" id="channelCode">532</span>
+					<span class="right-property">
+						<span class="item-property">渠道类型：</span>
+						<span name="channelType" id="channelType">532</span>
+					</span>
+				</div>
+				<div class="row">
+					<span class="item-property">渠道名称：</span>
+					<span name="channelName" id="channelName"></span>
+				</div>
+				<div class="row">
+					<span class="item-property col-long">营销用语：</span>
+					<span class="col-long-value" name="channelMarkingWords" id="channelMarkingWords"></span>
+				</div>
+				<div class="row">
+					<span class="item-property col-long">渠道触发规则说明：</span>
+					<span class="col-long-value" name="channelRuleProduce" id="channelRuleProduce"></span>
+				</div>
+				<div class="row">
+					<span class="item-property col-long">广告语：</span>
+					<span class="col-long-value" name="productAdvertisement" id="productAdvertisement"></span>
+				</div>
+				<div class="row">
+					<span class="item-property col-long">扩展信息：</span>
+					<span class="col-long-value" name="channelExpandInfo" id="channelExpandInfo"></span>
+				</div>
+				<div class="row">
+					<span class="item-property col-long">运营位信息：</span>
+					<span class="col-long-value" name="channelPosition" id="channelPosition"></span>
+				</div>
+			</div>
+			<div id="operator_object_property" class="content-item">
+				<h3><span>运营位对象属性</span></h3>
+				<div class="row">
+					<span class="item-property">运营位编码：</span>
+					<span name="" id="">532</span>
+					<span class="right-property">
+						<span class="item-property">运营位名称：</span>
+						<span name="" id="">532</span>
+					</span>
+				</div>
+				<div class="row">
+					<span class="item-property">排期开始时间：</span>
+					<span name="" id=""></span>
+					<span class="right-property">
+						<span class="item-property">排期结束时间：</span>
+						<span name="" id="">532</span>
+					</span>
+				</div>
+				<div class="row">
+					<span class="item-property col-long">扩展信息：</span>
+					<span class="col-long-value" name="" id=""></span>
+				</div>
+			</div>
+			<div id="PCC" class="content-item">
+				<h3><span>PCC策略对象属性</span></h3>
+				<div class="row">
+					<span class="item-property">策略编码：</span>
+					<span name="" id="">532</span>
+					<span class="right-property">
+						<span class="item-property">策略名称：</span>
+						<span name="" id=""></span>
+					</span>
+				</div>
+				<div class="row">
+					<span class="item-property">策略分类：</span>
+					<span name="" id="">532</span>
+					<span class="right-property">
+						<span class="item-property">策略生命周期：</span>
+						<span name="" id=""></span>
+					</span>
+				</div>
+				<div class="row">
+					<span class="item-property">策略分类：</span>
+					<span name="" id="">532</span>
+					<span class="right-property">
+						<span class="item-property">目标业务：</span>
+						<span name="" id=""></span>
+					</span>
+				</div>
+				<div class="row">
+					<span class="item-property">终端类型：</span>
+					<span name="" id="">532</span>
+					<span class="right-property">
+						<span class="item-property">执行动作对象：</span>
+						<span name="" id=""></span>
+					</span>
+				</div>
+				<div class="row">
+					<span class="item-property col-long">策略描述：</span>
+					<span class="col-long-value" name="" id="">532</span>
+				</div>
+			</div>
+			<div id="execute_action" class="content-item">
+				<h3><span>执行动作对象属性</span></h3>
+				<div class="row">
+					<span class="item-property">限速：</span>
+					<span name="" id="">532</span>
+					<span class="right-property">
+						<span class="item-property">速率保障：</span>
+						<span name="" id="" >5324523</span>
+					</span>
+				</div>
+				<div class="row">
+					<span class="item-property">降优先级：</span>
+					<span name="markingActName" id="markingActName"></span>
+					<span class="right-property">
+						<span class="item-property">提优先级：</span>
+						<span name="" id="" >5324523</span>
+					</span>
+				</div>
+				<div class="row">
+					<span class="item-property">提醒对象：</span>
+					<span name="" id="">粉色粉色</span>
+					<span class="right-property">
+						<span class="item-property">策略计费：</span>
+						<span name="" id="">粉色粉色</span>
+					</span>
+				</div>
+				<div class="row">
+					<span class="item-property">提醒方式：</span>
+					<span name="" id=""></span>
+					<span class="right-property">
+						<span class="item-property">提醒周期：</span>
+						<span name="" id=""></span>
+					</span>
+				</div>
+			</div>
+			<div id="evaluation_obj" class="content-item">
+				<h3><span>效果评估指标类对象</span></h3>
+				
+				<div class="row">
+					<span class="item-property">通用类指标：</span>
+					<span name="" id="">532</span>
+				</div>
+				<div class="row">
+					<span class="item-property">PCC策略指标：</span>
+					<span name="" id=""></span>
+
+				</div>
+				<div class="row">
+					<span class="item-property">其他业务类指标：</span>
+					<span name="" id=""></span>
+
+				</div>
+				<div class="row">
+					<span class="item-property">周期类型：</span>
+					<span name="" id=""></span>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="js/generalFunc.js"></script>
+<script src="./js/public/jquery.slimscroll.min.js"></script>
+<script src="js/iopModalDetails.js"></script>
+</body>
+</html>

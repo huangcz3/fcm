@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>营销活动</title>
+
+	<link rel="stylesheet" type="text/css" href="css/generalStyle.css">
+	<link rel="stylesheet" type="text/css" href="css/create.css">
+	<link rel="stylesheet" type="text/css" href="css/public/bootstrap.min.css">
+	<link rel="stylesheet" href="css/mystyle.css">
+		<script type="text/javascript" src="lib/public/jquery-2.0.3.min.js"></script>
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script type="text/javascript" src="./lib/public/html5shiv.min.js"></script>
+	<script type="text/javascript" src="./lib/public/excanvas.compiled.js"></script>
+	<![endif]-->
+	<style>
+		.main .content .inner-content{
+			width: 100%;
+			height: 100%;
+			background: #fff;
+			/*padding:10px 20px;*/
+			position:relative;
+		}
+
+		/*表格部分样式*/
+
+		.width-4{
+			width:4%;
+		}
+		.width-5{
+			width:5%;
+		}
+		.width-18{
+			width:18%;
+		}
+
+	</style>
+</head>
+<body>
+
+	<!--start 顶部导航 -->
+	<div class="nav-wrap">
+		<div class="logo lt">
+			<img src="./img/logo.png" alt="全触点"/>
+		</div>
+		<ul class="nav clearfix lt" id="headerNav">
+
+		</ul>
+		<div class="user rt clearfix">
+			<i class="user-icon"></i>
+			<span>您好，</span>
+			<span id="user"></span>
+			<b title="退出">
+				<i class="exit"></i>
+			</b>
+		</div>
+	</div>
+	<!--end 顶部导航 -->
+	<!--左侧导航和主体内容-->
+	<div class="content-wrap clearfix">
+		<!--start 左侧导航 -->
+		<div class="side-nav lt">
+			<ul id="sideNav">
+
+			</ul>
+		</div>
+		<!--end 左侧导航 -->
+
+		<!--start主体内容-->
+		<div class="main lt">
+			<div class="content">
+				<div class="inner-content">
+					<div class="panel-title clearfix">
+						<span class="title lt">
+							营销活动列表(
+							<span id="lists" class="color-grey">666</span>
+							)
+						</span>
+						<div class="rt clearfix">
+							<div class="lt search-box">
+								<input type="text" id="search" class="search" placeholder="支持活动名称、创建人搜索"/>
+								<i></i>
+							</div>
+							<span class="create-btn   border_radius  lt">
+								<i></i>
+								<a class="border_radius" href="##" onclick="createAct();">创建活动</a>
+							</span>		
+						</div>
+					</div>
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-2" style="width: 13%;">
+								<span class="">所属地市</span>
+								<select class=""></select>
+							</div>
+							<div class="col-md-2" style="width: 13%;">
+								<span class="">审批状态</span>
+								<select class=""></select>
+							</div>
+							<div class="col-md-2" style="width: 13%;">
+								<span class="">执行渠道</span>
+								<select class=""></select>
+							</div>
+							<div class="col-md-3" style="padding: 0;">
+								<span>开始时间</span>
+								<input type="text" class="Wdate" id="startDate" onFocus="WdatePicker({maxDate:'%y-%M-%d'})"/>	
+							</div>
+							<div class="col-md-3" style="padding: 0;">
+								<span>结束时间</span>
+								<input type="text" class="Wdate" id="startDate" onFocus="WdatePicker({maxDate:'%y-%M-%d'})"/>
+							</div>							
+							<div class="" style="padding: 0;margin: 0">
+								<span class="create-btn border_radius lt">
+									<a class="border_radius btn btn-primary" href="##">查询</a>
+								</span>	
+							</div>
+						</div>
+					</div>
+					
+
+					<div class="panel-bottom">
+						<table cellspacing="0" id="table" class="table">
+							<thead>
+								<tr>
+									<td class="" style="width: 10%;"></td>
+									<td class="" style="width: 7%;">活动名称</td>
+									<td class="text-center" style="width: 9.6%;">审批状态</td>
+									<td style="width: 6.6%;">活动ID</td>
+									<td style="width: 7.7%;">当前审批人</td>
+									<td style="width: 5.3%;">地市</td>
+									<td style="width: 9.08%;">开始时间</td>
+									<td style="width: 9%;">结束时间</td>
+									<td style="width: 9%;">创建时间</td>
+									<td style="width: 5.57%;">创建人</td>
+									<td style="width: 9%;">目标客户数</td>
+									<td style="width: 12.77%;">操作</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class=""><input type="checkbox" checked=""></td>
+									<td class="text-left"><span class="bg-primary">审批中</span></td>
+									<td class="text-left"><span class="bg-primary">审批中</span></td>
+									<td class="">2</td>
+									<td>3</td>
+									<td>123</td>
+									<td></td>
+									<td>24234</td>
+									<td>3435</td>
+									<td>
+										<a >详情</a>
+									</td>
+									<td>
+										<a >详情</a>
+									</td>
+									<td>
+										<a >详情</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="page-wrap clearfix" id="page">
+
+					</div>
+					<!--start模态框 -->
+					<div class="modal"><p>数据加载中...</p></div>
+					<!--end模态框 -->
+				</div>
+
+			</div>
+		</div>
+		<!--end主体内容-->
+		<!-- 创建活动 弹窗 -->
+		<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+			<div class="modal-dialog" style="width:1000px;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							&times;
+						</button>
+						<h4 class="modal-title" id="create_modal_title">
+							新建营销活动
+						</h4>
+					</div>
+					<div class="modal-body" style="height:480px;width:100%;">
+						<div class="modal-box-nav">
+							<ul class="create_ul nav-tab">
+								<li class="create_li active">
+									<p id="create_item_num" >01</p>
+									<a id="act_1" href="#act_content_1" data-toggle="tab"><p id="create_item_text_1">基本信息</p></a>
+								</li>
+								<li class="create_li">
+									<p id="create_item_num">02</p>
+									<a id="act_2" href="#act_content_2" data-toggle="tab"><p id="create_item_text_2">场景时间</p></a>
+								</li>
+								<li class="create_li">
+									<p id="create_item_num">03</p>
+									<a id="act_3" href="#act_content_3" data-toggle="tab"><p id="create_item_text_3">目标用户</p></a>
+								</li>
+								<li class="create_li">
+									<p id="create_item_num">04</p>
+									<a id="act_4" href="#act_content_4" data-toggle="tab"><p id="create_item_text_4">执行渠道</p></a>
+								</li>
+								<li class="create_li">
+									<p id="create_item_num">05</p>
+									<a id="act_5" href="#act_content_5" data-toggle="tab"><p id="create_item_text_5">统计口径</p></a>
+								</li>
+							</ul>
+						</div>
+						
+						<div class="modal-box-content tab-content">
+							<div id="act_content_1" class="content-item tab-pane active" style="float:left;width:80%;height:480px;">
+								<h3>基本信息1</h3>
+								<div class="content_item_content">
+									<div class="">
+										<span class="item-property">活动编号：</span>
+										<span name="act_num" id="act_num">532</span>
+										
+									</div>
+								</div>
+							</div>
+							<div id="act_content_2" class="content-item tab-pane" style="float:left;width:80%;height:480px;">
+								<h3>基本信息2</h3>
+								<div class="content_item_content">
+									<div class="">
+										<span class="item-property">活动编号：</span>
+										<span name="act_num" id="act_num">532</span>
+										
+									</div>
+								</div>
+							</div>
+							<div id="act_content_3" class="content-item tab-pane" style="float:left;width:80%;height:480px;">
+								<h3>基本信息3</h3>
+								<div class="content_item_content">
+									<div class="">
+										<span class="item-property">活动编号：</span>
+										<span name="act_num" id="act_num">532</span>
+										
+									</div>
+								</div>
+							</div>
+							<div id="act_content_4" class="content-item tab-pane" style="float:left;width:80%;height:480px;">
+								<h3>基本信息4</h3>
+								<div class="content_item_content">
+									<div class="">
+										<span class="item-property">活动编号：</span>
+										<span name="act_num" id="act_num">532</span>
+										
+									</div>
+								</div>
+							</div>
+							<div id="act_content_5" class="content-item tab-pane" style="float:left;width:80%;height:480px;">
+								<h3>基本信息5</h3>
+								<div class="content_item_content">
+									<div class="">
+										<span class="item-property">活动编号：</span>
+										<span name="act_num" id="act_num">532</span>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" onclick="nextStep()" >下一步</button>
+						<button type="button" class="btn btn-default" >保存</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+
+	</div>
+
+
+	<script type="text/javascript" src="./lib/public/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./lib/DatePicker/WdatePicker.js"></script>
+	<script type="text/javascript" src="./js/pager.js"></script>
+	<script type="text/javascript" src="./js/topNav.js"></script>
+	<script type="text/javascript" src="./js/markingActSideNav.js"></script>
+	<script type="text/javascript" src="./js/dataTest.js"></script>
+	<script type="text/javascript" src="./js/generalFunc.js"></script>
+	<script type="text/javascript"  src="./js/areaAssessment.js"></script>
+	<script type="text/javascript">
+		function createAct(){
+			$("#createModal").modal('show');
+		}
+		
+		
+	    $(function(){
+/* 	        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+	        	console.log($(this).index());
+	        	
+	            // 获取已激活的标签页的名称
+	            var activeTab = $(e.target).text();
+	            
+	            // 获取前一个激活的标签页的名称
+	            var previousTab = $(e.relatedTarget).text();
+	            
+	            var previousObj= $(e.relatedTarget);
+	            
+	        }); */
+	        $(function(){
+	            $(".create_li a").on("click",function(event){
+	            	var theobj = event.srcElement?event.srcElement:event.target;
+	                var num = $("#"+theobj.id).parent().attr("id"); 
+	                console.log(num)
+	                $(".nav-tabs li").eq(num).tab("show");
+	                
+	            });
+	        });
+	        
+	    });
+	    
+	    function nextStep(){
+	    	alert(1)
+	    	$('.create_ul li:eq(3) a').tab('show');
+	    }
+	    </script>
+</body>
+</html>

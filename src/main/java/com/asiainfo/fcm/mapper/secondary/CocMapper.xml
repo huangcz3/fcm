@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asiainfo.fcm.mapper.secondary.CocMapper">
+    <select id="getCocCustomerGroupsTotalRecord" parameterType="map" resultType="long">
+        select count(1) from
+            (select a.custom_group_id,a.custom_group_name,a.create_time,b.custom_num,
+            row_number() over(partition by a.custom_group_id order by b.data_date desc) rank from
+            ci_custom_group_info a
+            left join ci_custom_list_info b
+            on a.custom_group_id=b.custom_group_id
+            where a.create_user_id=#{creatorId} and a.status=1 and b.data_status=3 and b.custom_num>0 and b.data_time+1 month>=CURRENT_TIMESTAMP)
+        where rank=1
+    </select>
+    <select id="getCocCustomerGroups" parameterType="map" resultType="com.asiainfo.fcm.entity.CustomerGroupInfo">
+        select custom_group_id customer_group_id,custom_group_name customer_group_name,custom_num amount,update_cycle coc_group_cycle from
+            (select custom_group_id,custom_group_name,custom_num,update_cycle,
+            row_number() over(order by create_time desc) row_number
+            from
+                (select a.custom_group_id,a.custom_group_name,a.create_time,b.custom_num,a.update_cycle,
+                row_number() over(partition by a.custom_group_id order by b.data_date desc) rank
+                from ci_custom_group_info a
+                left join ci_custom_list_info b
+                on a.custom_group_id=b.custom_group_id
+                where a.create_user_id=#{creatorId} and a.status=1 and b.data_status=3 and b.custom_num>0 and b.data_time+1 month>=CURRENT_TIMESTAMP)
+            where rank=1
+        ) where row_number between #{page.startPosition} and #{page.endPosition}
+    </select>
+    <select id="getCocCustomerGroup" parameterType="map" resultType="com.asiainfo.fcm.entity.CustomerGroupInfo">
+        select
+            custom_group_name customer_group_name,
+            create_user_id creator_id,
+            create_time create_time,
+            1 create_type,
+            custom_num amount,
+            0 customize_flag,
+            1 effective,
+            0 remove_flag,
+            custom_group_id coc_group_id,
+            custom_group_name coc_group_name,
+            list_table_name coc_table_name,
+            update_cycle coc_group_cycle,
+            data_time
+        from (
+            select
+                a.custom_group_id,
+                a.custom_group_name,
+                a.create_user_id,
+                a.create_time,
+                b.custom_num,
+                b.list_table_name,
+                a.update_cycle,
+                b.data_time,
+                row_number() over(partition by a.custom_group_id order by b.data_time desc) rank
+            from ci_custom_group_info a
+            left join ci_custom_list_info b
+            on a.custom_group_id=b.custom_group_id
+            where a.custom_group_id=#{cocCustomerGroupId}
+            and b.data_status=3
+            and b.custom_num>0
+            and b.data_time+1 month>=CURRENT_TIMESTAMP
+        ) where rank=1
+    </select>
+    <!--<select id="getCocCustomerGroupDetailTotalRecord" parameterType="string" resultType="long">-->
+    <!--select count(1) from ${_parameter}-->
+    <!--</select>-->
+    <select id="getCocCustomerGroupDetail" parameterType="map" resultType="com.asiainfo.fcm.entity.CustomerGroupDetail">
+        select distinct phone_no from ${customerGroupInfo.cocTableName}
+    </select>
+    <select id="getCocTimestamp" resultType="java.sql.Timestamp">
+        values CURRENT_TIMESTAMP
+    </select>
+</mapper>

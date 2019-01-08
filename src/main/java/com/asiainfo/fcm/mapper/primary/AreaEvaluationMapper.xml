@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asiainfo.fcm.mapper.primary.AreaEvaluationMapper">
+
+	<select id="getCityEvalution" parameterType="java.util.Map" resultType="java.util.Map">
+		select * from (
+			select
+				ROW_NUMBER() OVER(order by t.vic_num desc) AS ROWNUM,
+				t.*,
+				case when t.task_num is null then 0 else t.task_num end task_num2 ,
+				case when t.respones_num is null then 0 else t.respones_num end response_num ,
+				case when b.channel_name is null then '全部渠道' else b.channel_name end channel_name ,
+				c.city_name
+			from qcd.marking_activity_mx_pg_city_zonghe t
+			left join channel b on t.channel_id = b.channel_id
+			left join city c on t.city_id = c.city_id
+			where t.op_time = #{date} and t.type = #{isFiltered} and t.channel_id = #{channelId}
+			<if test='areaId != "@" '>
+				and t.city_id = #{areaId}
+			</if>
+			<choose>
+				<when test='channelId != "@" '>
+					and t.parent_id ='1'
+				</when>
+				<otherwise>
+					and t.parent_id ='#' and t.city_id !='@'
+				</otherwise>
+			</choose>
+		) a
+		where a.ROWNUM BETWEEN #{startRow}+1 AND #{startRow} + 10 order by a.vic_num DESC
+
+	</select>
+
+	<select id="getCityCountIndex" parameterType="java.util.Map" resultType="java.util.Map">
+		select
+			*
+		from qcd.marking_activity_mx_pg_city_zonghe
+		where parent_id='#' and type = #{isFiltered} and city_id = #{areaId} 
+		and channel_id = #{channelId} and op_time = #{date}
+	</select>
+
+	<select id="getCityEvalutionAllPage" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select
+			count(1)
+		from qcd.marking_activity_mx_pg_city_zonghe t
+		where  t.op_time = #{date} and t.type = #{isFiltered}and t.channel_id = #{channelId}
+		<if test='areaId != "@" '>
+			and t.city_id = #{areaId}
+		</if>
+		<choose>
+			<when test='channelId != "@" '>
+				and t.parent_id ='1'
+			</when>
+			<otherwise>
+				and t.parent_id ='#' and t.city_id !='@'
+			</otherwise>
+		</choose>
+
+	</select>
+
+	<select id="getCityEvalutionAll" parameterType="java.util.Map" resultType="java.util.Map">
+		select
+			t.*,
+			case when t.task_num is null then 0 else t.task_num end task_num2,
+			case when t.respones_num is null then 0 else t.respones_num end response_num,
+			case when b.channel_name is null then '全部渠道' else b.channel_name end channel_name ,
+			c.city_name
+		from qcd.marking_activity_mx_pg_city_zonghe t
+		left join channel b on t.channel_id = b.channel_id
+		left join city c on t.city_id = c.city_id
+		where t.op_time = #{date} and t.type = #{isFiltered} and t.channel_id = #{channelId}
+		<if test='areaId != "@" '>
+			and t.city_id = #{areaId}
+		</if>
+		<choose>
+			<when test='channelId != "@" '>
+				and t.parent_id ='1'
+			</when>
+			<otherwise>
+				and t.parent_id ='#' and t.city_id !='@'
+			</otherwise>
+		</choose>
+		order by t.vic_num DESC
+	</select>
+
+</mapper>

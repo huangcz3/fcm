@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>效果评估-渠道评估</title>
+
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/generalStyle.css">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="./lib/public/html5shiv.min.js"></script>
+    <script type="text/javascript" src="./lib/public/respond.min.js"></script>
+    <script type="text/javascript" src="./lib/public/excanvas.compiled.js"></script>
+    <![endif]-->
+    <style>
+        /*表格部分样式*/
+        .width-4{
+            width:4%;
+        }
+        .width-5{
+            width:5%;
+        }
+        .width-18{
+            width:18%;
+        }
+
+    </style>
+</head>
+<body>
+
+<!--start 顶部导航 -->
+<div class="nav-wrap">
+    <div class="logo lt">
+        <img src="./img/logo.png" alt="全触点"/>
+    </div>
+    <ul class="nav clearfix lt" id="headerNav">
+
+    </ul>
+    <div class="user rt clearfix">
+        <i class="user-icon"></i>
+        <span>您好，</span>
+        <span id="user"></span>
+        <b title="退出">
+            <i class="exit"></i>
+        </b>
+    </div>
+</div>
+<!--end 顶部导航 -->
+<!--左侧导航和主体内容-->
+<div class="content-wrap clearfix">
+    <!--start 左侧导航 -->
+    <div class="side-nav">
+        <ul id="sideNav">
+
+        </ul>
+    </div>
+    <!--end 左侧导航 -->
+
+    <!--start主体内容-->
+    <div class="main">
+        <div class="content">
+            <div class="inner-content">
+                <div class="panel-title clearfix">
+						<span class="title lt">
+							渠道列表(
+							<span id="lists" class="color-grey"></span>
+							)
+						</span>
+                    <div class="rt clearfix">
+
+                        <span class="filter-btn border_radius" id="filter-btn">筛选<i></i></span>
+                    </div>
+                </div>
+
+                <div class="panel-mid clearfix">
+                    <div class="lt whole-prov">
+                        <p>
+                            <b id="city">全省</b> 								<span class="load-btn border_radius" id="download">
+									<i></i>
+									<span >数据下载</span>
+								</span>
+                        </p>
+                        <span>
+								统计周期：
+								<span id="statisticMonth"></span>&nbsp;&nbsp;
+								渠道：
+								<span id="statisticChannel"></span>
+							</span>
+                    </div>
+                    <div class="grid-wrap lt clearfix j-total-panel">
+                        <ul class="lt">
+                            <li>任务数量</li>
+                            <li id="total_TASK_NUM"></li>
+                        </ul>
+                        <i class="lt"></i>
+                        <ul class="lt">
+                            <li>活动数量</li>
+                            <li id="total_ACT_NUM"></li>
+                        </ul>
+                        <i class="lt"></i>
+                        <ul class="lt">
+                            <li>目标用户数</li>
+                            <li id="total_OBJ_NUM"></li>
+                        </ul>
+                        <i class="lt"></i>
+                        <ul class="lt">
+                            <li>接触量</li>
+                            <li id="total_TOUCH_NUM"></li>
+                        </ul>
+                        <i class="lt"></i>
+                        <ul class="lt">
+                            <li>营销成功量</li>
+                            <li id="total_VIC_NUM"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel-bottom">
+                    <table cellspacing="0" id="table" class="table">
+                        <thead>
+                        <tr>
+                            <td class="width-4">&nbsp;</td>
+                            <td class="width-18 text-align-left">执行渠道</td>
+                            <td class="width-5">地市</td>
+                            <td>任务数量</td>
+                            <td>活动数量</td>
+                            <td>目标用户数</td>
+                            <td>接触量</td>
+                            <!-- <td>响应量</td> -->
+                            <td>营销成功量</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="page-wrap clearfix" id="page">
+
+                </div>
+                <!--start模态框 -->
+                <div class="modal"><p>数据加载中...</p></div>
+                <!--end模态框 -->
+            </div>
+
+        </div>
+    </div>
+    <!--end主体内容-->
+
+    <!--start页面弹框-->
+    <div class="filter-panel">
+        <div class="inner-filter-panel">
+            <div class="row">
+                <p>地市：</p>
+                <select id="area"  class="bg-border">
+
+                </select>
+            </div>
+            <div class="row">
+                <p>统计周期：</p>
+                <input id="dateInput" class=" Wdate" type="text" onfocus="var date=sDate();WdatePicker({maxDate:date,dateFmt:'yyyy-MM'});"/>
+
+            </div>
+            <div class="row">
+                <p>执行渠道：</p>
+                <select id="channel"  class="bg-border">
+
+                </select>
+            </div>
+            <div class="row">
+                <p>口径：</p>
+                <div class="radio-box clearfix">
+                    <p>
+                        <input class="radio-input" type="radio" name="filter" value="0" checked/>
+                        <label><span class="selected"></span>剔重</label>
+                    </p>
+                    <p>
+                        <input class="radio-input" type="radio" name="filter" value="1" />
+                        <label><span></span>未剔重</label>
+                    </p>
+                </div>
+            </div>
+            <div class="row btns">
+                <button id="ensure" class="ensure border_radius">确定</button>
+                <button id="cancel" class="cancel border_radius">取消</button>
+            </div>
+        </div>
+    </div>
+    <!--end页面弹框-->
+</div>
+
+<script type="text/javascript" src="./lib/public/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./lib/DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="./js/pager.js"></script>
+<script type="text/javascript" src="./js/topNav.js"></script>
+<script type="text/javascript" src="./js/assessSideNav.js"></script>
+<script type="text/javascript" src="./js/generalFunc.js"></script>
+<script type="text/javascript"  src="./js/channelAssessment.js"></script>
+</body>
+</html>

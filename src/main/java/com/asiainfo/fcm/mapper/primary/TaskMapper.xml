@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asiainfo.fcm.mapper.primary.TaskMapper">
+    <resultMap id="task" type="com.asiainfo.fcm.entity.Task">
+        <id column="task_id" property="taskId"></id>
+        <result column="task_name" property="taskName"></result>
+        <result column="creator_id" property="creatorId"></result>
+        <result column="creator_name" property="creatorName"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="start_time" property="startTime"></result>
+        <result column="end_time" property="endTime"></result>
+        <result column="city_id" property="cityId"></result>
+        <result column="city_name" property="cityName"></result>
+        <collection property="activityList" ofType="com.asiainfo.fcm.entity.Activity" column="task_id">
+            <result column="activity_id" property="activityId"></result>
+            <result column="activity_name" property="activityName"></result>
+        </collection>
+    </resultMap>
+
+
+    <select id="getActivityTotalRecord4Task" parameterType="map" resultType="long">
+        select
+            count(*)
+        from activity_info
+        where city_id=#{cityId}
+        and create_time>CURRENT_TIMESTAMP - 3 MONTH
+        and (activity_id like '%'||#{keyword}||'%' OR activity_name like '%'||#{keyword}||'%')
+    </select>
+    <select id="getActivity4Task" parameterType="map" resultType="com.asiainfo.fcm.entity.Activity">
+        select
+            activity_id,
+            activity_name
+        from (
+            select
+                activity_id,
+                activity_name,
+                row_number() over(order by create_time desc) row_number
+            from activity_info
+            where city_id=#{cityId}
+            and create_time>CURRENT_TIMESTAMP - 3 MONTH
+            and (activity_id like '%'||#{keyword}||'%' OR activity_name like '%'||#{keyword}||'%')
+        ) where row_number between #{page.startPosition} and #{page.endPosition}
+    </select>
+    <select id="getTaskStartAndEndTime" parameterType="list" resultType="com.asiainfo.fcm.entity.Task">
+        select min(start_time) start_time,max(end_time) end_time from activity_info
+        where activity_id in
+        <foreach collection="list" item="activity" index="index" open="(" close=")" separator=",">
+            #{activity.activityId}
+        </foreach>
+    </select>
+    <insert id="addTask" parameterType="com.asiainfo.fcm.entity.Task">
+        insert into task (
+            task_id,
+            task_name,
+            creator_id,
+            creator_name,
+            create_time,
+            start_time,
+            end_time,
+            city_id,
+            city_name,
+            business_type_id,
+            business_type_name,
+            marketing_purpose_id,
+            marketing_purpose_name,
+            effective
+        ) values (
+            #{taskId},
+            #{taskName},
+            #{creatorId},
+            #{creatorName},
+            CURRENT_TIMESTAMP,
+            #{startTime},
+            #{endTime},
+            #{cityId},
+            #{cityName},
+            #{businessTypeId},
+            #{businessTypeName},
+            #{marketingPurposeId},
+            #{marketingPurposeName},
+            1
+        )
+    </insert>
+    <insert id="addTaskActivity" parameterType="com.asiainfo.fcm.entity.Task">
+        insert into task_activity (
+        task_id,
+        task_name,
+        activity_id,
+        activity_name
+        ) values
+        <foreach collection="activityList" item="activity" index="index" open="" close="" separator=",">
+            (
+            #{taskId},
+            #{taskName},
+            #{activity.activityId},
+            #{activity.activityName}
+            )
+        </foreach>
+    </insert>
+    <select id="getTasksTotalRecord" parameterType="map" resultType="long">
+        select count(1) from task
+        <where>
+            <if test='task.cityId != "1" '>
+                city_id=#{task.cityId}
+            </if>
+            <if test="task.taskName!=null and task.taskName!=''">
+                and task_name like '%'||#{task.taskName}||'%'
+            </if>
+            <if test="task.startTime!=null and task.startTime!=''">
+                and create_time>=#{task.startTime}
+            </if>
+            <if test="task.endTime!=null and task.endTime!=''">
+                and #{task.endTime}>=create_time
+            </if>
+            and effective=1
+        </where>
+    </select>
+
+    <select id="getTasks" parameterType="map" resultMap="task">
+        select
+        a.task_id,
+        a.task_name,
+        a.creator_id,
+        a.creator_name,
+        a.create_time,
+        a.start_time,
+        a.end_time,
+        a.city_id,
+        a.city_name,
+        b.activity_id,
+        b.activity_name
+        from (
+        select
+        task_id,
+        task_name,
+        creator_id,
+        creator_name,
+        create_time,
+        start_time,
+        end_time,
+        city_id,
+        city_name
+        from (
+        select
+        task_id,
+        task_name,
+        creator_id,
+        creator_name,
+        create_time,
+        start_time,
+        end_time,
+        city_id,
+        city_name,
+        row_number() over(order by create_time desc) row_number
+        from task
+        <where>
+            <if test='task.cityId != "1" '>
+                city_id=#{task.cityId}
+            </if>
+            <if test="
+                task.taskName!=null and task.taskName!=''">
+                and task_name like '%'||#{task.taskName}||'%'
+            </if>
+            <if test="task.startTime!=null and task.startTime!=''">
+                and create_time>=#{task.startTime}
+            </if>
+            <if test="task.endTime!=null and task.endTime!=''">
+                and #{task.endTime}>=create_time
+            </if>
+            and effective=1
+        </where>
+        )
+        where row_number between #{page.startPosition} and #{page.endPosition}
+        ) a
+        left join task_activity b
+        on a.task_id=b.task_id
+        order by a.create_time desc,b.activity_id desc
+    </select>
+    <select id="getRelativeActivityNum" parameterType="string" resultType="int">
+        select
+          count(1)
+        from (select * from task_activity where task_id = #{taskId})
+    </select>
+    <update id="deleteTask" parameterType="string">
+        update task set effective=0 where task_id=#{taskId}
+    </update>
+    <select id="getTaskDetail" parameterType="string" resultType="com.asiainfo.fcm.entity.Task">
+        select * from task where task_id = #{taskId}
+    </select>
+    <select id="getRelativeActivities" parameterType="string" resultType="com.asiainfo.fcm.entity.TaskActivityRel">
+        select * from task_activity where task_id = #{taskId}
+    </select>
+
+    <insert id="recordOplog" parameterType="map">
+        insert into activity_op_record_info(
+            activity_id,
+            user_id,
+            user_name,
+            user_phone,
+            op_type,
+            op_code,
+            op_name,
+            op_result,
+            op_time
+        ) values(
+            #{activityId},
+            #{userId},
+            #{userName},
+            #{userPhone},
+            1,
+            #{opCode},
+            #{opName},
+            1,
+            #{opTime}
+        )
+    </insert>
+
+    <update id="editTask" parameterType="com.asiainfo.fcm.entity.Task">
+        update task
+        set
+          task_name=#{taskName},
+          start_time=#{startTime},
+          end_time=#{endTime},
+          business_type_id=#{businessTypeId},
+          business_type_name=#{businessTypeName},
+          marketing_purpose_id=#{marketingPurposeId},
+          marketing_purpose_name=#{marketingPurposeName}
+        where
+          task_id=#{taskId}
+    </update>
+
+    <delete id="deleteTaskActivity" parameterType="string">
+        delete task_activity where task_id=#{taskId}
+    </delete>
+
+    <select id="getTaskListDownload" parameterType="map" resultType="map">
+        select * from task
+        <where>
+            <if test='cityId != "1" '>
+                city_id=#{cityId}
+            </if>
+            <if test="
+                searchVal!=null and searchVal!=''">
+                and task_name like '%'||#{searchVal}||'%'
+            </if>
+            <if test="startTime!=null and startTime!=''">
+                and create_time>=#{startTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and #{endTime}>=create_time
+            </if>
+            and effective=1
+        </where>
+        order by create_time desc
+    </select>
+</mapper>

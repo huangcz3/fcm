@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>效果评估-红海行动</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="./css/public/bootstrap-fileinput.css">
+    <link rel="stylesheet" type="text/css" href="./css/public/bootstrap-tagsinput.css">
+    <link rel="stylesheet" type="text/css" href="css/area.css">
+    <link rel="stylesheet" type="text/css" href="css/generalStyle.css">
+    <link rel="stylesheet" type="text/css" href="layui/css/layui.css">
+
+    <link rel="stylesheet" href="css/style.css">
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="./lib/public/html5shiv.min.js"></script>
+    <script type="text/javascript" src="./lib/public/excanvas.compiled.js"></script>
+
+    <![endif]-->
+
+</head>
+
+<body>
+<!--start 开始顶部导航 -->
+<div class="nav-wrap">
+    <div class="logo lt">
+        <img src="./img/logo.png" alt="全触点"/>
+    </div>
+    <ul class="nav clearfix lt" id="headerNav">
+
+    </ul>
+    <div class="user rt clearfix">
+        <i class="user-icon"></i>
+        <span>您好，</span>
+        <span id="user"></span>
+        <b title="退出">
+            <i class="exit"></i>
+        </b>
+    </div>
+</div>
+<!--end 顶部导航 -->
+<!--左侧导航和主体内容-->
+<div class="content-wrap">
+    <!--start 左侧导航 -->
+    <div class="side-nav">
+        <ul id="sideNav">
+        </ul>
+    </div>
+    <!--end 左侧导航 -->
+
+    <!--start主体内容-->
+    <div class="main" >
+        <div class="content" >
+            <div class="inner-content" style="overflow: auto" >
+                <div class="panel-title clearfix">
+						<span class="title lt">
+							红海行动
+							<span id="activities_num" class="color-grey"></span>
+						</span>
+                    <div class="rt clearfix">
+                        <input type="text" class="Wdate lt" id="startDate" onFocus="WdatePicker({maxDate:'%y-%M-%d'})"/>
+                        <a href="##" id="queryByDate" class="create-new lt">确定</a>
+                        <span class="load-btn border_radius lt" id="download">
+                            <i></i>
+                            <span>数据下载</span>
+                        </span>
+
+                    </div>
+                </div>
+
+                <div class="content-tab" style="overflow: auto">
+                    <div id="activities" class="selected" >
+                        <div class="panel-bottom" >
+                            <table  id="redSeaTable" class="layui-table">
+                                <thead >
+                                <tr rowspan="3"  lay-data="{fixed: 'left'}">
+                                        <th lay-data="{fixed: 'left', width: 160, align: 'center'}" rowspan="3">端口</th>
+                                        <td lay-data="{fixed: 'left', width: 160, align: 'center'}" rowspan="3" >部门</td>
+                                        <td lay-data="{align: 'center'}" colspan="15">规模保有</td>
+                                        <td lay-data="{align: 'center'}" colspan="15">价值提升</td>
+                                </tr>
+                                <tr rowspan="3"  lay-data="{fixed: 'left'}">
+                                    <td lay-data="{align: 'center'}" colspan="5">不限量</td>
+                                    <td lay-data="{align: 'center'}" colspan="5">移动圈子</td>
+                                    <td lay-data="{align: 'center'}" colspan="5">宽带电视圈子</td>
+                                    <td lay-data="{align: 'center'}" colspan="5">流量价值包</td>
+                                    <td lay-data="{align: 'center'}" colspan="5">电视包</td>
+                                    <td lay-data="{align: 'center'}" colspan="5">不限量加速包</td>
+                                </tr>
+                                <tr rowspan="3" lay-data="{fixed: 'left'}">
+                                    <td style="width:10%;" >3-6月目标值（万）</td>
+                                    <td style="width:10%;" >日必达</td>
+                                    <td style="width:10%;" >累计办理量</td>
+                                    <td style="width:10%;" >目标完成率</td>
+                                    <td style="width:10%;" >当日完成量</td>
+                                    <td style="width:10%;" >3-6月目标值（万）</td>
+                                    <td style="width:10%;" >日必达</td>
+                                    <td style="width:10%;" >累计办理量</td>
+                                    <td style="width:10%;" >目标完成率</td>
+                                    <td style="width:10%;" >当日完成量</td>
+                                    <td style="width:10%;" >3-6月目标值（万）</td>
+                                    <td style="width:10%;" >日必达</td>
+                                    <td style="width:10%;" >累计办理量</td>
+                                    <td style="width:10%;" >目标完成率</td>
+                                    <td style="width:10%;" >当日完成量</td>
+
+                                    <td style="width:10%;" >3-6月目标值（万）</td>
+                                    <td style="width:10%;" >日必达</td>
+                                    <td style="width:10%;" >累计办理量</td>
+                                    <td style="width:10%;" >目标完成率</td>
+                                    <td style="width:10%;" >当日完成量</td>
+                                    <td style="width:10%;" >3-6月目标值（万）</td>
+                                    <td style="width:10%;" >日必达</td>
+                                    <td style="width:10%;" >累计办理量</td>
+                                    <td style="width:10%;" >目标完成率</td>
+                                    <td style="width:10%;" >当日完成量</td>
+                                    <td style="width:10%;" >3-6月目标值（万）</td>
+                                    <td style="width:10%;" >日必达</td>
+                                    <td style="width:10%;" >累计办理量</td>
+                                    <td style="width:10%;" >目标完成率</td>
+                                    <td style="width:10%;" >当日完成量</td>
+                                </tr>
+                                </thead>
+                                <tbody id="redSeaTbody">
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="page-wrap clearfix" id="page"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end主体内容-->
+</div>
+
+<script type="text/javascript" src="./lib/public/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="./lib/public/jquery.blockUI.js"></script>
+<script type="text/javascript" src="./lib/DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="./js/topNav.js"></script>
+<script type="text/javascript" src="./js/assessSideNav.js"></script>
+<Script type="text/javascript" src="./js/getUser.js"></Script>
+<script type="text/javascript" src="./js/generalFunc.js"></script>
+<script type="text/javascript" src="./js/redSeaReport.js"></script>
+<script type="text/javascript" src="./js/redSeaReportTab.js"></script>
+
+
+</body>
+</html>

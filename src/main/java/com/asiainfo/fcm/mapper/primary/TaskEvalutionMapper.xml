@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asiainfo.fcm.mapper.primary.TaskEvalutionMapper">
+    <select id="getTaskEvalutionList" parameterType="java.util.Map" resultType="com.asiainfo.fcm.entity.TaskEvalution">
+        select
+        *
+        from (
+            select
+                row_number() over(order by op_time desc) row_number,
+                task_id,
+                task_name,
+                city_id,
+                city_name,
+                target_num,
+                touch_num,
+                touch_rate,
+                vic_num,
+                vic_rate,
+                related_num,
+                op_time
+            from
+                task_envalution
+            <where>
+                <if test="cityId != 0">
+                    city_id = #{cityId}
+                </if>
+                <if test='startTime !=null and  startTime !="" and endTime !="" and endTime !=null'>
+                    and op_time between #{startTime} and #{endTime}
+                </if>
+                <if test="searchVal != '' and searchVal != null ">
+                    and task_name like concat(concat('%',#{searchVal}),'%')
+                </if>
+            </where>
+        ) t
+        where t.row_number between #{startRow}+1 and #{startRow}+#{lengthRow} order by t.op_time desc
+    </select>
+
+    <select id="getTaskEvalutionListTotals" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select
+            count(1)
+        from
+            task_envalution
+        <where>
+            <if test="cityId != 0">
+                city_id = #{cityId}
+            </if>
+            <if test='startTime !=null and  startTime !="" and endTime !="" and endTime !=null'>
+                and op_time between #{startTime} and #{endTime}
+            </if>
+            <if test="searchVal != '' and searchVal != null ">
+                and task_name like concat(concat('%',#{searchVal}),'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="getAllTaskEvalutionList" parameterType="map" resultType="map">
+        select * from task_envalution
+        <where>
+            <if test="cityId != 0">
+                city_id = #{cityId}
+            </if>
+            <if test='startTime !=null and  startTime !="" and endTime !="" and endTime !=null'>
+                and op_time between #{startTime} and #{endTime}
+            </if>
+            <if test="searchVal != '' and searchVal != null ">
+                and task_name like concat(concat('%',#{searchVal}),'%')
+            </if>
+        </where>
+        order by op_time desc
+    </select>
+</mapper>
